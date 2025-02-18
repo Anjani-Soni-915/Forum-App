@@ -1,0 +1,45 @@
+import dbConfig from "../config/db";
+import { Sequelize, Dialect, Options, Model, ModelStatic } from "sequelize";
+import userModel from "./user.model";
+import topicModel from "./topics.model";
+import replyModel from "./reply.model";
+import subscriptionModel from "./subscription.model";
+
+interface DbInterface {
+  Sequelize: typeof Sequelize; //The Sequelize class itself, used to configure and interact with the database.
+  sequelize: Sequelize; //An instance of the Sequelize class, representing the active connection to the database.
+  User: ModelStatic<Model<any, any>>;
+  Topic: ModelStatic<Model<any, any>>;
+  Reply: ModelStatic<Model<any, any>>;
+  Subscription: ModelStatic<Model<any, any>>;
+}
+
+const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
+  host: dbConfig.HOST,
+  dialect: dbConfig.dialect as Dialect,
+  pool: {
+    max: dbConfig.pool.max,
+    min: dbConfig.pool.min,
+    acquire: dbConfig.pool.acquire,
+    idle: dbConfig.pool.idle,
+  },
+} as Options);
+
+const db: DbInterface = {
+  Sequelize,
+  sequelize,
+  User: userModel(sequelize),
+  Topic: topicModel(sequelize),
+  Reply: replyModel(sequelize),
+  Subscription: subscriptionModel(sequelize),
+};
+
+// Initialize model associations
+Object.keys(db).forEach((modelName) => {
+  const model = db[modelName as keyof DbInterface] as any;
+  if (model && model.associate) {
+    model.associate(db);
+  }
+});
+
+export default db;
