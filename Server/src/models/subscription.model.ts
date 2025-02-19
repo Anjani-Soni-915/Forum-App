@@ -4,6 +4,7 @@ interface SubscriptionAttributes {
   id: number;
   userId: number;
   topicId: number;
+  status?: boolean;
 }
 
 interface SubscriptionCreationAttributes
@@ -16,6 +17,7 @@ export class Subscription
   public id!: number;
   public userId!: number;
   public topicId!: number;
+  public status!: boolean;
 
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
@@ -39,6 +41,11 @@ export default (sequelize: Sequelize) => {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
+      status: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: true,
+      },
     },
     {
       sequelize,
@@ -47,12 +54,9 @@ export default (sequelize: Sequelize) => {
       timestamps: true,
     }
   );
-  //   const forceSync = false;
 
-  //   sequelize.sync({ force: forceSync }).then(() => {
-  //     if (forceSync) {
-  //       console.log("🔖~ Subscription table created!");
-  //     }
+  //   sequelize.sync({ force: true }).then(() => {
+  //     console.log("Subscriptions table created!");
   //   });
 
   return Subscription;

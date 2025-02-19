@@ -6,6 +6,7 @@ interface ReplyAttributes {
   topicId: number;
   text: string;
   likes?: number;
+  status?: boolean;
 }
 
 interface ReplyCreationAttributes extends Optional<ReplyAttributes, "id"> {}
@@ -19,6 +20,7 @@ export class Reply
   public topicId!: number;
   public text!: string;
   public likes!: number;
+  public status!: boolean;
 
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
@@ -51,6 +53,11 @@ export default (sequelize: Sequelize) => {
         allowNull: true,
         defaultValue: 0,
       },
+      status: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: true,
+      },
     },
     {
       sequelize,
@@ -60,13 +67,8 @@ export default (sequelize: Sequelize) => {
     }
   );
 
-  //   const forceSync = true;
-
-  //   sequelize.sync({ force: forceSync }).then(() => {
-  //     if (forceSync) {
-  //       console.log("🔖~ Replies table created!");
-  //     }
+  //   sequelize.sync({ force: true }).then(() => {
+  //     console.log("reply table created!");
   //   });
-
   return Reply;
 };

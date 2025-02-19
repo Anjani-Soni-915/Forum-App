@@ -1,12 +1,14 @@
-import express, { Request, Response } from "express";
-import cors from "cors";
+import express from "express";
 import dotenv from "dotenv";
 import db from "./models/index.model";
-// import route from "./routes/index";
-import path from "path";
+import typeDefs from "./graphql/index.graphql";
+import resolvers from "./graphql/resolvers/index.resolver";
+import { ApolloServer } from "apollo-server-express";
+
 dotenv.config();
 
 const JWT_SECRET = process.env.JWT_SECRET;
+const PORT = process.env.PORT || 4000;
 
 if (!JWT_SECRET) {
   throw new Error("JWT_SECRET is not defined in the environment variables");
@@ -14,14 +16,10 @@ if (!JWT_SECRET) {
 
 const app = express();
 
-// const corsOptions: cors.CorsOptions = {
-//   origin: "http://localhost:5173",
-// };
-
-// app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Sync the database
 db.sequelize
   .sync()
   .then(() => {
@@ -31,18 +29,26 @@ db.sequelize
     console.error("Failed to sync db: " + err.message);
   });
 
-// Set up the default route
-// app.use("/", route);
-// Simple route
-app.get("/", (req: Request, res: Response) => {
-  res.json("Welcome to the server!!");
+const server = new ApolloServer({
+  typeDefs,
+  resolvers,
+  cache: "bounded",
 });
 
-// Importing all the routes
-// require("./routes/index");
+async function startServer() {
+  console.log("calling------------>");
+  try {
+    await server.start();
+    server.applyMiddleware({ app });
 
-// Set port and listen for requests
-const PORT = process.env.PORT ? parseInt(process.env.PORT, 10) : 4000;
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}.`);
-});
+    // Start the express server
+    app.listen(PORT, () => {
+      console.log(
+        `~ Server running at http://localhost:${PORT}${server.graphqlPath}`
+      );
+    });
+  } catch (err) {
+    console.error("Server startup failed:", err);
+  }
+}
+startServer();

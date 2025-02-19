@@ -8,7 +8,7 @@ interface UserAttributes {
   password: string;
   status?: boolean;
   image?: string;
-  dob?: Date;
+  dob?: string;
   profession?: string;
 }
 
@@ -25,7 +25,7 @@ export class User
   public lName!: string;
   public email!: string;
   public image!: string;
-  public dob!: Date;
+  public dob!: string;
   public profession!: string;
   public password!: string;
   public status!: boolean;
@@ -62,7 +62,7 @@ export default (sequelize: Sequelize) => {
         allowNull: true,
       },
       dob: {
-        type: DataTypes.DATE,
+        type: DataTypes.STRING,
         allowNull: true,
       },
       profession: {
