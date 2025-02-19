@@ -4,6 +4,8 @@ import userModel from "./user.model";
 import topicModel from "./topics.model";
 import replyModel from "./reply.model";
 import subscriptionModel from "./subscription.model";
+import topicLikesModel from "./topicLikes.model";
+import replyLikesModel from "./replyLikes.model";
 
 interface DbInterface {
   Sequelize: typeof Sequelize; //The Sequelize class itself, used to configure and interact with the database.
@@ -12,6 +14,8 @@ interface DbInterface {
   Topic: ModelStatic<Model<any, any>>;
   Reply: ModelStatic<Model<any, any>>;
   Subscription: ModelStatic<Model<any, any>>;
+  TopicLikes: ModelStatic<Model<any, any>>;
+  replyLikes: ModelStatic<Model<any, any>>;
 }
 
 const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
@@ -32,6 +36,8 @@ const db: DbInterface = {
   Topic: topicModel(sequelize),
   Reply: replyModel(sequelize),
   Subscription: subscriptionModel(sequelize),
+  TopicLikes: topicLikesModel(sequelize),
+  replyLikes: replyLikesModel(sequelize),
 };
 
 // Initialize model associations

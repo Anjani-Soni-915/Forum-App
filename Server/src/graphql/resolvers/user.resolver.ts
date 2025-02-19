@@ -7,15 +7,19 @@ import {
 
 export default {
   Query: {
-    getUserById: async (_: any, { id }: { id: number }) => {
+    getUserById: async (_: any, __: any, context: any) => {
+      if (!context) throw new Error("Unauthorized"); // Token required
       try {
-        return await UserController.getUserById(id);
+        const userId = context.user.id;
+        return await UserController.getUserById(userId);
       } catch (error: any) {
         console.error(error);
         throw new Error(`Error fetching user by ID: ${error.message}`);
       }
     },
-    getUser: async () => {
+
+    getUser: async (_: any, __: any, context: any) => {
+      if (!context.user) throw new Error("Unauthorized"); //token required
       try {
         return await UserController.getAllUser();
       } catch (error: any) {
@@ -24,6 +28,7 @@ export default {
       }
     },
   },
+
   Mutation: {
     createUser: async (_: any, { input }: { input: CreateUserInput }) => {
       try {
@@ -39,26 +44,30 @@ export default {
         return await UserController.login(input);
       } catch (error: any) {
         console.error(error);
-        throw new Error(`Error creating user: ${error.message}`);
+        throw new Error(`Error logging in user: ${error.message}`);
       }
     },
 
     updateUser: async (
       _: any,
-      { id, input }: { id: number; input: UpdateUserInput }
+      { input }: { input: UpdateUserInput },
+      context: any
     ) => {
+      if (!context.user) throw new Error("Unauthorized"); // token required
       try {
-        return await UserController.updateUser(id, input);
+        return await UserController.updateUser(context.user.id, input);
       } catch (error: any) {
         console.error(error);
         throw new Error(`Error updating user: ${error.message}`);
       }
     },
-    deleteUser: async (_: any, { id }: { id: number }) => {
+
+    deleteUser: async (_: any, { id }: { id: number }, context: any) => {
+      if (!context.user) throw new Error("Unauthorized"); // token required
       try {
         return await UserController.deleteUser(id);
       } catch (error: any) {
-        console.error(error); // log the actual error
+        console.error(error);
         throw new Error(`Error deleting user: ${error.message}`);
       }
     },

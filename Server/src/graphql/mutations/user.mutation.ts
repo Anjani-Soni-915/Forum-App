@@ -4,7 +4,7 @@ export default gql`
   type Mutation {
     createUser(input: CreateUserInput!): UserResponse
     login(input: LoginInput!): UserResponse
-    updateUser(id: Int!, input: UpdateUserInput!): UserResponse
+    updateUser(input: UpdateUserInput!): UserResponse
     deleteUser(id: Int!): String
   }
 `;

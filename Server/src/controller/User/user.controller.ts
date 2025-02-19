@@ -1,14 +1,18 @@
 import { User } from "../../models/user.model";
 import { CreateUserInput, LoginInput, UpdateUserInput } from "./user.interface";
 import jwt from "jsonwebtoken";
-// import bcrypt from "bcryptjs";
 import bcrypt from "bcrypt";
-import { randomBytes, scryptSync } from "crypto";
 
 const UserController = {
-  getUserById: async (id: number) => {
+  getUserById: async (userId: number) => {
     try {
-      const user = await User.findByPk(id);
+      const user = await User.findOne({
+        where: {
+          id: userId,
+          status: true,
+        },
+      });
+
       if (!user) {
         throw new Error("User not found");
       }
@@ -22,7 +26,7 @@ const UserController = {
   // Get all users
   getAllUser: async () => {
     try {
-      const users = await User.findAll();
+      const users = await User.findAll({ where: { status: true } });
       if (users.length === 0) {
         throw new Error("No users found");
       }
@@ -36,13 +40,6 @@ const UserController = {
   // create User
   createUser: async (input: CreateUserInput) => {
     try {
-      if (typeof input.password !== "string") {
-        throw new Error("Password must be a string");
-      }
-
-      if (!input.password) {
-        throw new Error("Password is required");
-      }
       const existingUser = await User.findOne({
         where: { email: input.email },
       });
@@ -61,11 +58,11 @@ const UserController = {
       const accessToken = jwt.sign(
         { userId: user.id, email: user.email },
         process.env.JWT_SECRET as string,
-        { expiresIn: "1h" }
+        { expiresIn: "10h" }
       );
 
       const refreshToken = jwt.sign(
-        { userId: user.id, email: user.email },
+        { id: user.id, email: user.email },
         process.env.JWT_SECRET as string,
         { expiresIn: "7d" }
       );
@@ -101,9 +98,9 @@ const UserController = {
       }
 
       const accessToken = jwt.sign(
-        { userId: user.id, email: user.email },
+        { id: user.id, email: user.email },
         process.env.JWT_SECRET as string,
-        { expiresIn: "1h" }
+        { expiresIn: "10h" }
       );
 
       const refreshToken = jwt.sign(
@@ -149,16 +146,20 @@ const UserController = {
   // Delete a user
   deleteUser: async (id: number) => {
     try {
-      const user = await User.findByPk(id);
-      if (!user) {
-        throw new Error("User not found");
-      }
-      await user.destroy();
+      const user = await User.findOne({
+        where: { id, status: true },
+      });
 
-      return "User deleted successfully";
+      if (!user) {
+        throw new Error("User not found or already deleted");
+      }
+
+      await user.update({ status: false });
+
+      return "User  deleted successfully";
     } catch (error: any) {
       console.error("Error in deleteUser:", error.message);
-      throw new Error(error.message);
+      throw new Error(`Error deleting user: ${error.message}`);
     }
   },
 };
