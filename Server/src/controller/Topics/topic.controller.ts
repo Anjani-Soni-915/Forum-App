@@ -1,4 +1,8 @@
+import { Reply } from "../../models/reply.model";
+import { Subscription } from "../../models/subscription.model";
+import { TopicLikes } from "../../models/topicLikes.model";
 import { Topic } from "../../models/topics.model";
+import { User } from "../../models/user.model";
 import { CreateTopicInput, UpdateTopicInput } from "./topic.interface";
 
 const topicController = {
@@ -25,7 +29,18 @@ const topicController = {
 
   getTopicById: async (id: number) => {
     try {
-      const data = await Topic.findOne({ where: { id: id, status: true } });
+      const data = await Topic.findOne({
+        where: { id: id, status: true },
+        include: [
+          { model: User, as: "userData" },
+          { model: Reply, as: "replyData" },
+          { model: TopicLikes, as: "topicLikesData" },
+          {
+            model: Subscription,
+            as: "subscriptionData",
+          },
+        ],
+      });
       if (!data) {
         throw new Error("data not found");
       }
@@ -38,7 +53,18 @@ const topicController = {
 
   getTopics: async () => {
     try {
-      const datas = await Topic.findAll({ where: { status: true } });
+      const datas = await Topic.findAll({
+        where: { status: true },
+        include: [
+          { model: User, as: "userData" },
+          { model: Reply, as: "replyData" },
+          { model: TopicLikes, as: "topicLikesData" },
+          {
+            model: Subscription,
+            as: "subscriptionData",
+          },
+        ],
+      });
       if (datas.length === 0) {
         throw new Error("No data found");
       }

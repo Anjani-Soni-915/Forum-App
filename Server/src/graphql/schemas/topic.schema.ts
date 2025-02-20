@@ -11,6 +11,10 @@ export default gql`
     repliesCount: Int!
     tags: [String]!
     status: Boolean!
+    userData: User
+    subscriptionData: [Subscription]
+    replyData: [Reply]
+    topicLikesData: [TopicLikes]
   }
 
   input CreateTopicInput {

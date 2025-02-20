@@ -1,4 +1,6 @@
 import { Subscription } from "../../models/subscription.model";
+import { User } from "../../models/user.model";
+import { Topic } from "../../models/topics.model";
 import {
   CreateSubscriptionInput,
   UpdateSubscriptionInput,
@@ -31,7 +33,13 @@ const subscriptionController = {
 
   getSubscriptionById: async (id: number) => {
     try {
-      const data = await Subscription.findOne({ where: { id, status: true } });
+      const data = await Subscription.findOne({
+        where: { id, status: true },
+        include: [
+          { model: User, as: "userData" },
+          { model: Topic, as: "topicData" },
+        ],
+      });
       if (!data) {
         throw new Error("Subscription not found");
       }
@@ -44,7 +52,13 @@ const subscriptionController = {
 
   getSubscriptions: async () => {
     try {
-      const datas = await Subscription.findAll({ where: { status: true } });
+      const datas = await Subscription.findAll({
+        where: { status: true },
+        include: [
+          { model: User, as: "userData" },
+          { model: Topic, as: "topicData" },
+        ],
+      });
       if (datas.length === 0) {
         throw new Error("No subscriptions found");
       }

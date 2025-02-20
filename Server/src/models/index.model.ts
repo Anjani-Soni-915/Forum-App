@@ -15,7 +15,7 @@ interface DbInterface {
   Reply: ModelStatic<Model<any, any>>;
   Subscription: ModelStatic<Model<any, any>>;
   TopicLikes: ModelStatic<Model<any, any>>;
-  replyLikes: ModelStatic<Model<any, any>>;
+  ReplyLikes: ModelStatic<Model<any, any>>;
 }
 
 const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
@@ -37,7 +37,7 @@ const db: DbInterface = {
   Reply: replyModel(sequelize),
   Subscription: subscriptionModel(sequelize),
   TopicLikes: topicLikesModel(sequelize),
-  replyLikes: replyLikesModel(sequelize),
+  ReplyLikes: replyLikesModel(sequelize),
 };
 
 // Initialize model associations

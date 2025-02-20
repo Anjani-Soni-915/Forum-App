@@ -2,6 +2,12 @@ import { User } from "../../models/user.model";
 import { CreateUserInput, LoginInput, UpdateUserInput } from "./user.interface";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
+import { Topic } from "../../models/topics.model";
+import { Model } from "sequelize";
+import { Reply } from "../../models/reply.model";
+import { Subscription } from "../../models/subscription.model";
+import { TopicLikes } from "../../models/topicLikes.model";
+import { ReplyLikes } from "../../models/replyLikes.model";
 
 const UserController = {
   getUserById: async (userId: number) => {
@@ -11,6 +17,16 @@ const UserController = {
           id: userId,
           status: true,
         },
+        include: [
+          { model: Topic, as: "topicData" },
+          { model: Reply, as: "replyData" },
+          {
+            model: Subscription,
+            as: "subscriptionData",
+          },
+          { model: TopicLikes, as: "topicLikesData" },
+          { model: ReplyLikes, as: "replyLikesData" },
+        ],
       });
 
       if (!user) {
@@ -26,7 +42,19 @@ const UserController = {
   // Get all users
   getAllUser: async () => {
     try {
-      const users = await User.findAll({ where: { status: true } });
+      const users = await User.findAll({
+        where: { status: true },
+        include: [
+          { model: Topic, as: "topicData" },
+          { model: Reply, as: "replyData" },
+          {
+            model: Subscription,
+            as: "subscriptionData",
+          },
+          { model: TopicLikes, as: "topicLikesData" },
+          { model: ReplyLikes, as: "replyLikesData" },
+        ],
+      });
       if (users.length === 0) {
         throw new Error("No users found");
       }

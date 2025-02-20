@@ -11,6 +11,11 @@ export default gql`
     profession: String!
     password: String!
     status: Boolean!
+    topicData: [Topic]
+    replyData: [Reply]
+    subscriptionData: [Subscription]
+    topicLikesData: [TopicLikes]
+    replyLikesData: [ReplyLikes]
   }
 
   input CreateUserInput {

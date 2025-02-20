@@ -1,4 +1,6 @@
 import { Sequelize, DataTypes, Model, Optional } from "sequelize";
+import { Subscription } from "./subscription.model";
+import { TopicLikes } from "./topicLikes.model";
 interface TopicAttributes {
   id: number;
   title: string;
@@ -89,6 +91,29 @@ export default (sequelize: Sequelize) => {
       timestamps: true,
     }
   );
+
+  Topic.associate = function (models: any) {
+    Topic.belongsTo(models.User, {
+      foreignKey: "userId",
+      as: "userData",
+      onDelete: "CASCADE",
+    });
+    Topic.hasMany(models.Subscription, {
+      foreignKey: "topicId",
+      as: "subscriptionData",
+      onDelete: "CASCADE",
+    });
+    Topic.hasMany(models.Reply, {
+      foreignKey: "topicId",
+      as: "replyData",
+      onDelete: "CASCADE",
+    });
+    Topic.hasMany(models.TopicLikes, {
+      foreignKey: "topicId",
+      as: "topicLikesData",
+      onDelete: "CASCADE",
+    });
+  };
 
   //   const forceSync = false;
 

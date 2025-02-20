@@ -55,5 +55,18 @@ export default (sequelize: Sequelize) => {
     }
   );
 
+  ReplyLikes.associate = function (models: any) {
+    ReplyLikes.belongsTo(models.User, {
+      foreignKey: "userId",
+      as: "userData",
+      onDelete: "CASCADE",
+    });
+    ReplyLikes.belongsTo(models.Reply, {
+      foreignKey: "replyId",
+      as: "replyData",
+      onDelete: "CASCADE",
+    });
+  };
+
   return ReplyLikes;
 };

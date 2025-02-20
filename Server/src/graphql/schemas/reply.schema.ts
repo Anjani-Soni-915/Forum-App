@@ -8,6 +8,9 @@ export default gql`
     text: String!
     likes: Int
     status: Boolean
+    userData: User
+    topicData: Topic
+    replyLikesData: [ReplyLikes]
   }
 
   input CreateReplyInput {

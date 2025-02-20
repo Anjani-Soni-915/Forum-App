@@ -1,4 +1,5 @@
 import { Sequelize, DataTypes, Model, Optional } from "sequelize";
+import { ReplyLikes } from "./replyLikes.model";
 
 interface ReplyAttributes {
   id: number;
@@ -66,6 +67,23 @@ export default (sequelize: Sequelize) => {
       timestamps: true,
     }
   );
+  Reply.associate = function (models: any) {
+    Reply.belongsTo(models.User, {
+      foreignKey: "userId",
+      as: "userData",
+      onDelete: "CASCADE",
+    });
+    Reply.belongsTo(models.Topic, {
+      foreignKey: "topicId",
+      as: "topicData",
+      onDelete: "CASCADE",
+    });
+    Reply.hasMany(models.ReplyLikes, {
+      foreignKey: "replyId",
+      as: "replyLikesData",
+      onDelete: "CASCADE",
+    });
+  };
 
   //   sequelize.sync({ force: true }).then(() => {
   //     console.log("reply table created!");

@@ -1,18 +1,19 @@
 import { Reply } from "../../models/reply.model";
+import { ReplyLikes } from "../../models/replyLikes.model";
+import { Topic } from "../../models/topics.model";
+import { User } from "../../models/user.model";
 import { CreateReplyInput, UpdateReplyInput } from "./reply.interface";
 
 const replyController = {
   createReply: async (userId: number, input: CreateReplyInput) => {
     try {
       console.log("input---->", input);
-      if (!userId) {
-        throw new Error("Authentication required");
-      }
+      if (!userId) throw new Error("Authentication required");
 
-      const reply = await Reply.create({
-        ...input,
-        userId,
-      });
+      const { topicId } = input;
+
+      const reply = await Reply.create({ ...input, userId });
+      await Topic.increment({ repliesCount: 1 }, { where: { id: topicId } });
 
       return {
         message: "Reply created successfully",
@@ -26,7 +27,14 @@ const replyController = {
 
   getReplyById: async (id: number) => {
     try {
-      const data = await Reply.findOne({ where: { id, status: true } });
+      const data = await Reply.findOne({
+        where: { id, status: true },
+        include: [
+          { model: User, as: "userData" },
+          { model: Topic, as: "topicData" },
+          { model: ReplyLikes, as: "replyLikesData" },
+        ],
+      });
       if (!data) {
         throw new Error("Reply not found");
       }
@@ -39,7 +47,14 @@ const replyController = {
 
   getReplies: async () => {
     try {
-      const datas = await Reply.findAll({ where: { status: true } });
+      const datas = await Reply.findAll({
+        where: { status: true },
+        include: [
+          { model: User, as: "userData" },
+          { model: Topic, as: "topicData" },
+          { model: ReplyLikes, as: "replyLikesData" },
+        ],
+      });
       if (datas.length === 0) {
         throw new Error("No replies found");
       }

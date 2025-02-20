@@ -1,4 +1,5 @@
 import { Sequelize, DataTypes, Model, Optional } from "sequelize";
+import { Topic } from "./topics.model";
 
 interface SubscriptionAttributes {
   id: number;
@@ -54,6 +55,18 @@ export default (sequelize: Sequelize) => {
       timestamps: true,
     }
   );
+  Subscription.associate = function (models: any) {
+    Subscription.belongsTo(models.User, {
+      foreignKey: "userId",
+      as: "userData",
+      onDelete: "CASCADE",
+    });
+    Subscription.belongsTo(models.Topic, {
+      foreignKey: "topicId",
+      as: "topicData",
+      onDelete: "CASCADE",
+    });
+  };
 
   //   sequelize.sync({ force: true }).then(() => {
   //     console.log("Subscriptions table created!");

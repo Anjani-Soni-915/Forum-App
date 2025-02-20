@@ -55,5 +55,18 @@ export default (sequelize: Sequelize) => {
     }
   );
 
+  TopicLikes.associate = function (models: any) {
+    TopicLikes.belongsTo(models.User, {
+      foreignKey: "userId",
+      as: "userData",
+      onDelete: "CASCADE",
+    });
+    TopicLikes.belongsTo(models.Topic, {
+      foreignKey: "topicId",
+      as: "topicData",
+      onDelete: "CASCADE",
+    });
+  };
+
   return TopicLikes;
 };

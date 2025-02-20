@@ -6,6 +6,8 @@ export default gql`
     userId: Int!
     topicId: Int!
     status: Boolean!
+    userData: User
+    topicData: Topic
   }
 
   input CreateTopicLikesInput {
@@ -27,6 +29,8 @@ export default gql`
     userId: Int!
     replyId: Int!
     status: Boolean!
+    userData: User
+    replyData: Reply
   }
 
   input CreateReplyLikesInput {

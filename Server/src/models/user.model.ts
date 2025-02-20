@@ -1,4 +1,7 @@
 import { Sequelize, DataTypes, Model, Optional } from "sequelize";
+import { Subscription } from "./subscription.model";
+import { TopicLikes } from "./topicLikes.model";
+import { ReplyLikes } from "./replyLikes.model";
 
 interface UserAttributes {
   id: number;
@@ -87,13 +90,35 @@ export default (sequelize: Sequelize) => {
     }
   );
 
-  //   User.associate = function (models: any) {
-  //     // Define relationships
-  //     User.hasMany(models.Ratings, {
-  //       foreignKey: "userId",
-  //       onDelete: "CASCADE",
-  //     });
-  //   };
+  User.associate = function (models: any) {
+    User.hasMany(models.Topic, {
+      foreignKey: "userId",
+      as: "topicData", // Add alias
+      onDelete: "CASCADE",
+    });
+
+    User.hasMany(models.Reply, {
+      foreignKey: "userId",
+      as: "replyData",
+      onDelete: "CASCADE",
+    });
+
+    User.hasMany(models.Subscription, {
+      foreignKey: "userId",
+      as: "subscriptionData",
+      onDelete: "CASCADE",
+    });
+    User.hasMany(models.TopicLikes, {
+      foreignKey: "userId",
+      as: "topicLikesData",
+      onDelete: "CASCADE",
+    });
+    User.hasMany(models.ReplyLikes, {
+      foreignKey: "userId",
+      as: "replyLikesData",
+      onDelete: "CASCADE",
+    });
+  };
 
   // Sync database with force true (Warning: This will drop and recreate the table on every restart)
   //   const forceSync = false;

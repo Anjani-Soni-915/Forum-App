@@ -6,6 +6,8 @@ export default gql`
     userId: Int!
     topicId: Int!
     status: Boolean!
+    userData: User
+    topicData: Topic
   }
 
   input CreateSubscriptionInput {

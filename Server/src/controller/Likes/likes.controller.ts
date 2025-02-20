@@ -1,33 +1,57 @@
 import { TopicLikes } from "../../models/topicLikes.model";
 import { ReplyLikes } from "../../models/replyLikes.model";
+import { Op } from "sequelize";
 import {
   CreateReplyLikesInput,
   CreateTopicLikesInput,
   UpdateReplyLikesInput,
   UpdateTopicLikesInput,
 } from "./likes.interface";
+import { User } from "../../models/user.model";
+import { Topic } from "../../models/topics.model";
+import { Reply } from "../../models/reply.model";
 
 const topicLikesController = {
   createTopicLikes: async (userId: number, input: CreateTopicLikesInput) => {
     try {
-      if (!userId) {
-        throw new Error("Authentication required");
+      if (!userId) throw new Error("Authentication required");
+
+      const { topicId } = input;
+      let topicLike = await TopicLikes.findOne({ where: { userId, topicId } });
+
+      const newStatus = topicLike ? !topicLike.status : true;
+      if (topicLike) await topicLike.update({ status: newStatus });
+      else
+        topicLike = await TopicLikes.create({ ...input, userId, status: true });
+
+      if (newStatus) {
+        await Topic.increment({ likes: 1 }, { where: { id: topicId } });
+      } else {
+        await Topic.decrement(
+          { likes: 1 },
+          { where: { id: topicId, likes: { [Op.gt]: 0 } } }
+        );
       }
 
-      const topicLikes = await TopicLikes.create({ ...input, userId });
       return {
-        message: "Topic like created successfully",
-        topicLikes,
+        message: newStatus ? "Topic liked" : "Topic unliked",
+        topicLikes: topicLike,
       };
     } catch (error: any) {
-      console.error("Error in createTopicLike:", error.message);
-      throw new Error(error.message || "Failed to create topic like");
+      console.error("Error in createTopicLikes:", error.message);
+      throw new Error(error.message || "Failed to update topic like");
     }
   },
 
   getTopicLikes: async () => {
     try {
-      const likes = await TopicLikes.findAll({ where: { status: true } });
+      const likes = await TopicLikes.findAll({
+        where: { status: true },
+        include: [
+          { model: User, as: "userData" },
+          { model: Topic, as: "topicData" },
+        ],
+      });
       if (likes.length === 0) {
         throw new Error("No topic likes found");
       }
@@ -60,24 +84,44 @@ const topicLikesController = {
 const replyLikesController = {
   createReplyLikes: async (userId: number, input: CreateReplyLikesInput) => {
     try {
-      if (!userId) {
-        throw new Error("Authentication required");
+      if (!userId) throw new Error("Authentication required");
+
+      const { replyId } = input;
+      let replyLike = await ReplyLikes.findOne({ where: { userId, replyId } });
+
+      const newStatus = replyLike ? !replyLike.status : true;
+      if (replyLike) await replyLike.update({ status: newStatus });
+      else
+        replyLike = await ReplyLikes.create({ ...input, userId, status: true });
+
+      if (newStatus) {
+        await Reply.increment({ likes: 1 }, { where: { id: replyId } });
+      } else {
+        await Reply.decrement(
+          { likes: 1 },
+          { where: { id: replyId, likes: { [Op.gt]: 0 } } }
+        );
       }
 
-      const replyLikes = await ReplyLikes.create({ ...input, userId });
       return {
-        message: "Reply like created successfully",
-        replyLikes,
+        message: newStatus ? "Reply liked" : "Reply unliked",
+        replyLikes: replyLike,
       };
     } catch (error: any) {
-      console.error("Error in createReplyLike:", error.message);
-      throw new Error(error.message || "Failed to create reply like");
+      console.error("Error in createReplyLikes:", error.message);
+      throw new Error(error.message || "Failed to update reply like");
     }
   },
 
   getReplyLikes: async () => {
     try {
-      const likes = await ReplyLikes.findAll({ where: { status: true } });
+      const likes = await ReplyLikes.findAll({
+        where: { status: true },
+        include: [
+          { model: User, as: "userData" },
+          { model: Reply, as: "replyData" },
+        ],
+      });
       if (likes.length === 0) {
         throw new Error("No reply likes found");
       }
