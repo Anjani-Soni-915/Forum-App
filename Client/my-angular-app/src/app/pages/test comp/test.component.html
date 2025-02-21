@@ -1,0 +1,33 @@
+<div *ngIf="loading">Loading topics...</div>
+<div *ngIf="error">Error loading topics: {{ error.message }}</div>
+<div>
+  <h2>Create New Topic</h2>
+  <form (submit)="addTopic()">
+    <label>Title:</label>
+    <input type="text" [(ngModel)]="newTopic.title" required />
+
+    <label>Description:</label>
+    <textarea [(ngModel)]="newTopic.description" required></textarea>
+
+    <label>Tags (comma-separated):</label>
+    <input type="text" [(ngModel)]="tagsInput" />
+
+    <button type="submit">Create Topic</button>
+  </form>
+</div>
+
+<div>
+<div *ngIf="topics.length > 0">
+  <h2>Topics List======</h2>
+  <ul>
+    <li *ngFor="let topic of topics">
+      <h3>{{ topic.title }}</h3>
+      <p>{{ topic.description }}</p>
+      <p><strong>Tags:</strong> {{ topic.tags | json }}</p>
+      <p><strong>Likes:</strong> {{ topic.likes }} | <strong>Views:</strong> {{ topic.views }}</p>
+      <p><strong>Replies:</strong> {{ topic.repliesCount }}</p>
+      <p><strong>Posted by:</strong> {{ topic.userData.fName }}</p>
+    </li>
+  </ul>
+</div>
+
