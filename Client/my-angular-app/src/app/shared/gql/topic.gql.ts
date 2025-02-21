@@ -12,9 +12,12 @@ export const GET_TOPICS = gql`
       views
       repliesCount
       status
+      createdAt
+      updatedAt
       userData {
         id
         fName
+        lName
       }
     }
   }

@@ -8,13 +8,13 @@ import {
 } from '../../shared/interface/topic.interface';
 
 @Component({
-  selector: 'app-home',
+  selector: 'test-home',
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './test.component.html',
   styleUrls: ['./test.component.scss'],
 })
-export class HomeComponent implements OnInit {
+export class TestComponent implements OnInit {
   topics: Topic[] = [];
   loading = true;
   error: any;

@@ -13,9 +13,12 @@ export interface Topic {
   repliesCount: number;
   tags: string[];
   status?: boolean;
+  createdAt: string;
+  updatedAt: string;
   userData: {
     id: number;
     fName: string;
+    lName: string;
   };
 }
 

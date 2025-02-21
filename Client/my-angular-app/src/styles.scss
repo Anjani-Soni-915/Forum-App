@@ -1,1 +1,18 @@
-/* You can add global styles to this file, and also import other style files */
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap");
+
+* {
+  font-family: "Poppins", sans-serif;
+}
+
+:root {
+  --primary-color: steelblue;
+  --secondary-color: #2291f1;
+  --accent-color: #ffffff;
+  --background-color: #f8f9fa;
+  --error-color: #ce3e3e;
+  --navbar-gradient: linear-gradient(90deg, rgb(29, 44, 175), #147ff1, #313eaa);
+  --gradient-color: linear-gradient(90deg, rgb(29, 44, 175), #147ff1, #3e9bff);
+  --input-color: rgb(65, 65, 65);
+  --grey-background: rgb(197, 196, 196);
+}
+// background: linear-gradient(90deg, rgb(29, 44, 175), #147ff1, #313eaa);

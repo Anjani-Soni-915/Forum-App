@@ -1,1 +1,48 @@
-<p>home works!</p>
+<app-navbar></app-navbar>
+
+<div class="forum-container">
+
+  <div class="digi-forum-tittle">
+    <p>Discussion Forum</p>
+    <button class="ask-btn">Start a Discussion</button>
+  </div>
+
+  <div class="topic-data">
+    <div class="topic-header">
+      <h1>Topics</h1>
+      <div class="counts-data">
+        <p>Replies</p>
+        <p>Views</p>
+        <p>Likes</p>
+      </div>
+
+    </div>
+
+    <div *ngFor="let topic of topics" class="topic-card">
+
+      <img src="/profile.jpg">
+      <div class="main-topic-cont">
+      <div class="tpoic-content">
+        <h2>{{ topic.title }}</h2>
+        <h3>{{ topic.description }}</h3>
+        <div class="user-data">
+          <p>{{ topic.userData.fName}} {{topic.userData.lName }}</p>
+          <p>{{ topic.createdAt | date:'mediumDate' }}</p>
+        </div>
+      </div>
+
+     <div class="count-values">
+      <p>{{ topic.likes }}</p>
+      <p>{{ topic.views }}</p>
+      <p>{{ topic.repliesCount }}</p>
+     </div>
+
+
+    </div>
+    </div>
+
+
+
+  </div>
+
+</div>

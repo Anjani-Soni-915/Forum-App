@@ -11,6 +11,8 @@ export default gql`
     repliesCount: Int!
     tags: [String]!
     status: Boolean!
+    createdAt: String!
+    updatedAt: String!
     userData: User
     subscriptionData: [Subscription]
     replyData: [Reply]
