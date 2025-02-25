@@ -19,6 +19,13 @@ export default gql`
     topicLikesData: [TopicLikes]
   }
 
+  type PaginatedTopics {
+    totalItems: Int!
+    totalPages: Int!
+    currentPage: Int!
+    topics: [Topic]!
+  }
+
   input CreateTopicInput {
     title: String!
     description: String!

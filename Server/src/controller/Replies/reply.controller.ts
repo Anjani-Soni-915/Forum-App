@@ -34,6 +34,7 @@ const replyController = {
           { model: Topic, as: "topicData" },
           { model: ReplyLikes, as: "replyLikesData" },
         ],
+        order: [["createdAt", "DESC"]],
       });
       if (!data) {
         throw new Error("Reply not found");
@@ -54,6 +55,7 @@ const replyController = {
           { model: Topic, as: "topicData" },
           { model: ReplyLikes, as: "replyLikesData" },
         ],
+        order: [["createdAt", "DESC"]],
       });
       if (datas.length === 0) {
         throw new Error("No replies found");

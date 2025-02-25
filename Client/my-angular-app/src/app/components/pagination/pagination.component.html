@@ -1,0 +1,12 @@
+<p-paginator
+  [rows]="rows"
+  [totalRecords]="totalRecords"
+  [first]="(currentPage - 1) * rows"
+  [showPageLinks]="true"
+  [showJumpToPageDropdown]="false"
+  [showFirstLastIcon]="true"
+  [showCurrentPageReport]="false"
+  [rowsPerPageOptions]="[]"
+  (onPageChange)="changePage($event)"
+>
+</p-paginator>

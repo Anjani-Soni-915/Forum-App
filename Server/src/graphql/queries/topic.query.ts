@@ -6,3 +6,5 @@ export default gql`
     getTopics: [Topic]
   }
 `;
+
+// getTopics(page: Int, pageSize: Int): PaginatedTopics!

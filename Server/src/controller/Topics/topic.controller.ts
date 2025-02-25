@@ -4,6 +4,7 @@ import { TopicLikes } from "../../models/topicLikes.model";
 import { Topic } from "../../models/topics.model";
 import { User } from "../../models/user.model";
 import { CreateTopicInput, UpdateTopicInput } from "./topic.interface";
+import { number } from "joi";
 
 const topicController = {
   createTopic: async (userId: number, input: CreateTopicInput) => {
@@ -40,6 +41,7 @@ const topicController = {
             as: "subscriptionData",
           },
         ],
+        order: [["createdAt", "DESC"]],
       });
       if (!data) {
         throw new Error("data not found");
@@ -50,6 +52,47 @@ const topicController = {
       throw new Error(error.message);
     }
   },
+  // getTopics: async (page: number = 1, pageSize: number = 4) => {
+  //   try {
+  //     // Ensure valid pagination parameters
+  //     const validPage = page > 0 ? page : 1;
+  //     const validPageSize = pageSize > 0 ? pageSize : 4;
+  //     const offset = (validPage - 1) * validPageSize;
+
+  //     const { count, rows } = await Topic.findAndCountAll({
+  //       where: { status: true },
+  //       distinct: true,
+  //       include: [
+  //         { model: User, as: "userData" },
+  //         { model: Reply, as: "replyData" },
+  //         { model: TopicLikes, as: "topicLikesData" },
+  //         { model: Subscription, as: "subscriptionData" },
+  //       ],
+  //       order: [["createdAt", "DESC"]],
+  //       limit: validPageSize,
+  //       offset: offset,
+  //     });
+
+  //     if (rows.length === 0) {
+  //       return {
+  //         totalItems: count,
+  //         totalPages: Math.ceil(count / validPageSize),
+  //         currentPage: validPage,
+  //         topics: [],
+  //       };
+  //     }
+
+  //     return {
+  //       totalItems: count,
+  //       totalPages: Math.ceil(count / validPageSize),
+  //       currentPage: validPage,
+  //       topics: rows,
+  //     };
+  //   } catch (error: any) {
+  //     console.error("Error in getTopics:", error.message);
+  //     throw new Error(error.message || "Failed to fetch topics");
+  //   }
+  // },
 
   getTopics: async () => {
     try {
@@ -64,6 +107,7 @@ const topicController = {
             as: "subscriptionData",
           },
         ],
+        order: [["createdAt", "DESC"]],
       });
       if (datas.length === 0) {
         throw new Error("No data found");

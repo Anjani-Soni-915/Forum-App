@@ -1,48 +1,105 @@
 <app-navbar></app-navbar>
 
 <div class="forum-container">
-
-  <div class="digi-forum-tittle">
-    <p>Discussion Forum</p>
-    <button class="ask-btn">Start a Discussion</button>
-  </div>
-
-  <div class="topic-data">
-    <div class="topic-header">
-      <h1>Topics</h1>
-      <div class="counts-data">
-        <p>Replies</p>
-        <p>Views</p>
-        <p>Likes</p>
-      </div>
-
+  <div class="digi-forum-wrapper">
+    <!-- Forum Title and Start Discussion Button -->
+    <div class="digi-forum-tittle">
+      <p>Discussion Forum</p>
+      <button class="ask-btn" (click)="openModal()">Start a Discussion</button>
     </div>
 
-    <div *ngFor="let topic of topics" class="topic-card">
-
-      <img src="/profile.jpg">
-      <div class="main-topic-cont">
-      <div class="tpoic-content">
-        <h2>{{ topic.title }}</h2>
-        <h3>{{ topic.description }}</h3>
-        <div class="user-data">
-          <p>{{ topic.userData.fName}} {{topic.userData.lName }}</p>
-          <p>{{ topic.createdAt | date:'mediumDate' }}</p>
+    <div class="topic-data">
+      <!-- Topics Header -->
+      <div class="topic-header">
+        <h1>Topics</h1>
+        <div class="counts-data">
+          <p>Replies</p>
+          <p>Views</p>
+          <p>Likes</p>
         </div>
       </div>
 
-     <div class="count-values">
-      <p>{{ topic.likes }}</p>
-      <p>{{ topic.views }}</p>
-      <p>{{ topic.repliesCount }}</p>
-     </div>
+      <!-- Loop through topics -->
+      <div *ngFor="let topic of topics" class="topic-card">
+        <div class="main-topic-cont">
+          <img
+            [src]="topic.userData.image || '/profile2.webp'"
+            alt="Profile"
+            class="profile-img"
+          />
 
+          <div class="tpoic-content">
+            <h2>{{ topic.title }}</h2>
+            <h3>{{ topic.description }}</h3>
+            <div class="user-data">
+              <p>{{ topic.userData.fName }} {{ topic.userData.lName }}</p>
+              <p>{{ topic.createdAt | date : "mediumDate" }}</p>
+            </div>
+          </div>
+        </div>
 
+        <div class="count-values">
+          <div class="count-design">
+            <p>Replies</p>
+            <h4>{{ topic.repliesCount }}</h4>
+          </div>
+
+          <div class="count-design">
+            <p>Views</p>
+            <h4>{{ topic.views }}</h4>
+          </div>
+          <div class="count-design">
+            <p>Likes</p>
+            <h4>{{ topic.likes }}</h4>
+          </div>
+        </div>
+      </div>
     </div>
+
+    <!-- Modal for Creating a Discussion -->
+    <div class="backdrop" *ngIf="isModalOpen"></div>
+    <div class="modal" *ngIf="isModalOpen">
+      <div class="modal-content">
+        <span class="close-btn" (click)="closeModal()">&times;</span>
+        <h2>Start a Discussion</h2>
+
+        <form
+          [formGroup]="topicForm"
+          (ngSubmit)="postTopic()"
+          class="modal-form"
+        >
+          <div class="modal-inputs">
+            <label for="title">Title</label>
+            <input
+              id="title"
+              type="text"
+              formControlName="title"
+              placeholder="Enter Title"
+              required
+            />
+
+            <label for="description">Description</label>
+            <textarea
+              id="description"
+              formControlName="description"
+              placeholder="Enter Description"
+              required
+            ></textarea>
+
+            <label for="tagsInput">Tags</label>
+            <input
+              id="tagsInput"
+              type="text"
+              formControlName="tagsInput"
+              placeholder="Enter Tags (comma-separated)"
+            />
+          </div>
+
+          <button type="submit" [disabled]="topicForm.invalid">
+            Post Topic
+          </button>
+        </form>
+      </div>
     </div>
-
-
-
   </div>
-
 </div>

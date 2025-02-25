@@ -37,7 +37,7 @@ export class TestComponent implements OnInit {
   loadTopics() {
     this.topicService.fetchTopics().subscribe({
       next: (topics) => {
-        this.topics = topics;
+        // this.topics = topics;
         this.loading = false;
       },
       error: (err) => {

@@ -16,6 +16,18 @@ export default {
       }
     },
 
+    // getTopics: async (_: any, args: { page?: number; pageSize?: number }) => {
+    //   try {
+    //     return await topicController.getTopics(
+    //       args.page ?? 1,
+    //       args.pageSize ?? 4
+    //     );
+    //   } catch (error: any) {
+    //     console.error("Error in fetch:", error.message);
+    //     throw new Error(error.message || "Failed to fetch topics");
+    //   }
+    // },
+
     getTopicById: async (_: any, { id }: { id: number }) => {
       try {
         return await topicController.getTopicById(id);

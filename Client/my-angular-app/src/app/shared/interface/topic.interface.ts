@@ -19,7 +19,15 @@ export interface Topic {
     id: number;
     fName: string;
     lName: string;
+    image: string;
   };
+}
+
+export interface PaginatedTopics {
+  totalItems: number;
+  totalPages: number;
+  currentPage: number;
+  topics: Topic[];
 }
 
 export interface GetTopicsResponse {

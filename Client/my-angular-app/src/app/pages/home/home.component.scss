@@ -9,6 +9,10 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  .digi-forum-wrapper {
+    padding: 0px 20px;
+    box-sizing: border-box;
+  }
 }
 
 .digi-forum-tittle {
@@ -44,12 +48,13 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 20px;
+  padding: 20px 0px;
 
   .main-topic-cont {
     display: flex;
     width: 100%;
-    justify-content: space-between;
+    cursor: pointer;
+    // justify-content: space-between;
   }
 
   .topic-header {
@@ -58,10 +63,11 @@
     align-items: center;
     width: 100%;
     margin-bottom: 20px;
-    padding: 0px 15px;
+    padding: 12px 24px;
     background-color: var(--primary-color);
+    box-sizing: border-box;
     // background-color: var(--grey-background);
-    border-radius: 28px;
+    border-radius: 0px;
 
     h1 {
       // color: var(--input-color);
@@ -69,7 +75,6 @@
       margin: 0;
       font-weight: 400;
       font-size: 20px;
-      padding-left: 40px;
     }
   }
   .tpoic-content {
@@ -86,29 +91,63 @@
       font-weight: 400;
       color: var(--input-color);
       width: 725px;
-      white-space: nowrap; // Prevents text from wrapping to a new line
-      overflow: hidden; // Hides the overflowing text
-      text-overflow: ellipsis; // Adds "..." when the text is too long
-      max-width: 100%; // Ensures it works inside a flexible container
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 100%;
+    }
+  }
+
+  .counts-data {
+    display: flex;
+    align-items: center;
+    /* gap: 58px; */
+    font-size: 20px;
+    color: #ffffff;
+    /* padding: 0px 40px; */
+    width: 270px;
+    justify-content: space-around;
+    p {
+      margin: 0;
+    }
+  }
+  .count-design {
+    background: #1d4bbb1a;
+    /* padding: 8px; */
+    border-radius: 100%;
+    height: 54px;
+    width: 54px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+    color: var(--primary-color);
+    line-height: 17px;
+
+    p {
+      margin: 0;
+      font-size: 9px;
+      font-weight: 500;
+    }
+
+    h4 {
+      font-size: 18px;
+      margin: 0;
+      font-weight: 500;
     }
   }
   .count-values {
     display: flex;
-    gap: 102px;
-    padding-right: 57px;
+    gap: 39px;
+    width: 270px;
+    padding-left: 15px;
+    padding-right: 12px;
     font-size: 18px;
     align-items: center;
     color: var(--input-color);
     font-weight: 500;
-  }
-  .counts-data {
-    display: flex;
     justify-content: space-around;
-    align-items: center;
-    gap: 58px;
-    font-size: 20px;
-    color: #ffffff;
-    padding: 0px 40px;
   }
 
   .topic-card {
@@ -119,7 +158,9 @@
     margin: 10px 0;
     border-radius: 8px;
     border: none;
+    box-sizing: border-box;
     box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+    overflow-x: auto;
 
     img {
       height: 90px;
@@ -142,4 +183,139 @@
       }
     }
   }
+}
+
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+  width: 40%;
+  max-width: 500px;
+  z-index: 1001;
+}
+
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+  width: 40%;
+  max-width: 500px;
+  z-index: 1001;
+}
+
+.modal-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  width: 100%; // Ensure proper alignment
+
+  h2 {
+    margin: 0;
+    font-size: 26px;
+    color: var(--primary-color);
+    font-weight: 500;
+  }
+
+  .modal-form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .modal-inputs {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    label {
+      font-size: 14px;
+      font-weight: 400;
+      color: var(--input-color);
+      margin-bottom: -8px;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      font-size: 14px;
+      box-sizing: border-box;
+      outline: none;
+      color: var(--input-color);
+      transition: border 0.3s ease;
+
+      &:hover {
+        border: 1px solid #ddd;
+      }
+    }
+
+    textarea {
+      width: 100%;
+      height: 150px;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      font-size: 14px;
+      box-sizing: border-box;
+      outline: none;
+      color: var(--input-color);
+      transition: border 0.3s ease;
+      &:hover {
+        border: 1px solid #ddd;
+      }
+    }
+  }
+
+  button {
+    background: var(--primary-color);
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    width: 100%;
+    transition: background 0.3s ease;
+
+    &:disabled {
+      background: grey;
+      cursor: not-allowed;
+    }
+  }
+}
+
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 30px;
+  cursor: pointer;
+  color: var(--input-color);
+  font-weight: 400;
+}
+
+.backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  pointer-events: none;
 }

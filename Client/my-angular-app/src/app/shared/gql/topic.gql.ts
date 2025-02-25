@@ -18,10 +18,38 @@ export const GET_TOPICS = gql`
         id
         fName
         lName
+        image
       }
     }
   }
 `;
+//   query GetTopics($page: Int!, $pageSize: Int!) {
+//     getTopics(page: $page, pageSize: $pageSize) {
+//       totalItems
+//       totalPages
+//       currentPage
+//       topics {
+//         id
+//         title
+//         description
+//         tags
+//         userId
+//         likes
+//         views
+//         repliesCount
+//         status
+//         createdAt
+//         updatedAt
+//         userData {
+//           id
+//           fName
+//           lName
+//           image
+//         }
+//       }
+//     }
+//   }
+// `;
 
 export const CREATE_TOPIC = gql`
   mutation createTopic($input: CreateTopicInput!) {
@@ -36,7 +64,6 @@ export const CREATE_TOPIC = gql`
         views
         repliesCount
         tags
-        status
       }
     }
   }

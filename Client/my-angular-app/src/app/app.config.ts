@@ -8,8 +8,8 @@ import { setContext } from '@apollo/client/link/context';
 import { HomeComponent } from './pages/home/home.component';
 import { routes } from './app.routes';
 
-const TOKEN =
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwiZW1haWwiOiJvcmFuZ2VAZ21haWwuY29tIiwiaWF0IjoxNzQwMDUyNDQyLCJleHAiOjE3NDAwODg0NDJ9.gTC6__cO1XcNZRPoQfMtZIjQWGu24ietwe7adln4Ml8';
+export const TOKEN =
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwiZW1haWwiOiJqb2huQGdtYWlsLmNvbSIsImlhdCI6MTc0MDQ1OTQ1NCwiZXhwIjoxNzQwNDk1NDU0fQ.hu3XTz-H_bRy6v1EiIoGPXQrnSGwJ_4YG4UwBMleFjU';
 
 export const appConfig: ApplicationConfig = {
   providers: [
