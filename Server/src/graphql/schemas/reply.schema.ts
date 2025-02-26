@@ -8,6 +8,8 @@ export default gql`
     text: String!
     likes: Int
     status: Boolean
+    createdAt: String!
+    updatedAt: String!
     userData: User
     topicData: Topic
     replyLikesData: [ReplyLikes]

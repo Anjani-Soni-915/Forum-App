@@ -7,12 +7,17 @@ import { InMemoryCache } from '@apollo/client/core';
 import { setContext } from '@apollo/client/link/context';
 import { HomeComponent } from './pages/home/home.component';
 import { routes } from './app.routes';
+import { providePrimeNG } from 'primeng/config';
+import Aura from '@primeng/themes/aura';
 
 export const TOKEN =
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwiZW1haWwiOiJqb2huQGdtYWlsLmNvbSIsImlhdCI6MTc0MDQ1OTQ1NCwiZXhwIjoxNzQwNDk1NDU0fQ.hu3XTz-H_bRy6v1EiIoGPXQrnSGwJ_4YG4UwBMleFjU';
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwiZW1haWwiOiJqb2huQGdtYWlsLmNvbSIsImlhdCI6MTc0MDU2MDg1OSwiZXhwIjoxNzQwNTk2ODU5fQ.UpitI55eF0EHg9sul_EddpDP-Q9TLviMghYGfeCjrNg';
 
 export const appConfig: ApplicationConfig = {
   providers: [
+    providePrimeNG({
+      theme: { preset: Aura },
+    }),
     provideHttpClient(),
     provideRouter(routes), // Register routes
     provideApollo(() => {

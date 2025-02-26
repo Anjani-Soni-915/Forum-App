@@ -1,7 +1,8 @@
 .forum-container {
   width: 100%;
-  max-width: 80rem;
-  margin: 100px auto 0 auto;
+  max-width: 80vw;
+  min-width: 79vw;
+  margin: 94px auto 0 auto;
   background-color: var(--background-color);
   border-radius: 5px;
   box-shadow: 0px 4px 5px rgba(100, 96, 96, 0.2);
@@ -70,22 +71,23 @@
     border-radius: 0px;
 
     h1 {
-      // color: var(--input-color);
       color: #ffffff;
       margin: 0;
       font-weight: 400;
       font-size: 20px;
     }
   }
-  .tpoic-content {
+  .topic-content {
     padding-left: 21px;
-    h2 {
+    h2,
+    .heading {
       margin: 0;
-      font-size: 20px;
+      font-size: 18px;
       font-weight: 500;
       color: var(--input-color);
     }
-    h3 {
+    h3,
+    .description {
       margin: 1px;
       font-size: 13px;
       font-weight: 400;
@@ -95,6 +97,10 @@
       overflow: hidden;
       text-overflow: ellipsis;
       max-width: 100%;
+    }
+    .heading,
+    .description {
+      display: block;
     }
   }
 
@@ -150,6 +156,24 @@
     justify-content: space-around;
   }
 
+  .topic-card-wrapper {
+    max-height: calc(100vh - 320px);
+    height: 655px;
+    overflow-y: auto;
+    transition: opacity 0.3s ease-in-out;
+  }
+
+  .topic-card-wrapper.loading {
+    overflow: hidden;
+  }
+
+  .loading-spinner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+
   .topic-card {
     width: 100%;
     border: 1px solid #ddd;
@@ -160,7 +184,6 @@
     border: none;
     box-sizing: border-box;
     box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
-    overflow-x: auto;
 
     img {
       height: 90px;
@@ -218,13 +241,29 @@
   flex-direction: column;
   align-items: center;
   gap: 10px;
-  width: 100%; // Ensure proper alignment
+  width: 100%;
 
-  h2 {
-    margin: 0;
-    font-size: 26px;
-    color: var(--primary-color);
-    font-weight: 500;
+  .modal-header {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-between;
+
+    h2 {
+      margin: 0;
+      font-size: 20px;
+      color: var(--primary-color);
+      font-weight: 500;
+    }
+    .close-btn {
+      background-color: #ffffff;
+      color: var(--input-color);
+      border: none;
+      font-size: 25px;
+      padding: 0;
+      margin-top: -1px;
+      cursor: pointer;
+    }
   }
 
   .modal-form {
@@ -246,6 +285,10 @@
       font-weight: 400;
       color: var(--input-color);
       margin-bottom: -8px;
+
+      span {
+        color: var(--error-color);
+      }
     }
 
     input {
@@ -270,6 +313,7 @@
       padding: 10px;
       border: 1px solid #ddd;
       border-radius: 5px;
+      margin-bottom: -8px;
       font-size: 14px;
       box-sizing: border-box;
       outline: none;
@@ -281,32 +325,32 @@
     }
   }
 
-  button {
+  .input-wrapper {
+    .error-mgs {
+      span {
+        color: var(--error-color);
+        font-size: 12px;
+      }
+    }
+  }
+
+  .submit {
     background: var(--primary-color);
     color: white;
     padding: 10px 15px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    font-size: 14px;
+    font-size: 16px;
     width: 100%;
     transition: background 0.3s ease;
 
     &:disabled {
-      background: grey;
+      background: rgb(214, 210, 210);
+      font-size: 16px;
       cursor: not-allowed;
     }
   }
-}
-
-.close-btn {
-  position: absolute;
-  top: 10px;
-  right: 15px;
-  font-size: 30px;
-  cursor: pointer;
-  color: var(--input-color);
-  font-weight: 400;
 }
 
 .backdrop {

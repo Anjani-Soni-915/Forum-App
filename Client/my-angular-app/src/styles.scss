@@ -1,19 +1,30 @@
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap");
+@import "primeicons/primeicons.css";
 
-* {
-  font-family: "Poppins", sans-serif;
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap");
+
+body {
+  font-family: "Inter", sans-serif;
 }
+
+// @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap");
+// * {
+//   font-family: "Poppins", sans-serif;
+// }
 
 :root {
   --primary-color: #0865b3;
   --secondary-color: #2291f1;
   --accent-color: #ffffff;
-  --background-color: #f8f9fa;
+  --background-color: #ffffff;
   --error-color: #ce3e3e;
   --navbar-gradient: linear-gradient(90deg, rgb(29, 44, 175), #147ff1, #313eaa);
   --gradient-color: linear-gradient(90deg, rgb(29, 44, 175), #147ff1, #3e9bff);
-  --input-color: rgb(65, 65, 65);
+  // --input-color: rgb(65, 65, 65);
+  --input-color: #5a5a5a;
+  --grey-color: #808080;
   --grey-background: rgb(197, 196, 196);
   overflow: hidden;
 }
 // background: linear-gradient(90deg, rgb(29, 44, 175), #147ff1, #313eaa);
+
+// f1f1f1a3

@@ -7,20 +7,25 @@ export interface Topic {
   id: number;
   title: string;
   description: string;
-  userId: number;
+  tags: string[];
+  repliesCount: number;
   likes: number;
   views: number;
-  repliesCount: number;
-  tags: string[];
-  status?: boolean;
   createdAt: string;
-  updatedAt: string;
   userData: {
     id: number;
     fName: string;
     lName: string;
-    image: string;
+    image?: string;
+    profession?: string;
   };
+  replyData: { id: number; text: string; likes: number; createdAt: string }[];
+  topicLikesData: {
+    id: number;
+    userId: number;
+    topicId: number;
+    status: boolean;
+  }[];
 }
 
 export interface PaginatedTopics {
@@ -40,7 +45,7 @@ export interface CreateTopicInput {
   likes: number;
   views: number;
   repliesCount: number;
-  tags: string[];
+  tags?: string[];
 }
 
 export interface CreateTopicResponse {

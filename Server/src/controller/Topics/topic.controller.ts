@@ -52,72 +52,68 @@ const topicController = {
       throw new Error(error.message);
     }
   },
-  // getTopics: async (page: number = 1, pageSize: number = 4) => {
-  //   try {
-  //     // Ensure valid pagination parameters
-  //     const validPage = page > 0 ? page : 1;
-  //     const validPageSize = pageSize > 0 ? pageSize : 4;
-  //     const offset = (validPage - 1) * validPageSize;
-
-  //     const { count, rows } = await Topic.findAndCountAll({
-  //       where: { status: true },
-  //       distinct: true,
-  //       include: [
-  //         { model: User, as: "userData" },
-  //         { model: Reply, as: "replyData" },
-  //         { model: TopicLikes, as: "topicLikesData" },
-  //         { model: Subscription, as: "subscriptionData" },
-  //       ],
-  //       order: [["createdAt", "DESC"]],
-  //       limit: validPageSize,
-  //       offset: offset,
-  //     });
-
-  //     if (rows.length === 0) {
-  //       return {
-  //         totalItems: count,
-  //         totalPages: Math.ceil(count / validPageSize),
-  //         currentPage: validPage,
-  //         topics: [],
-  //       };
-  //     }
-
-  //     return {
-  //       totalItems: count,
-  //       totalPages: Math.ceil(count / validPageSize),
-  //       currentPage: validPage,
-  //       topics: rows,
-  //     };
-  //   } catch (error: any) {
-  //     console.error("Error in getTopics:", error.message);
-  //     throw new Error(error.message || "Failed to fetch topics");
-  //   }
-  // },
-
-  getTopics: async () => {
+  getTopics: async (page: number = 1, pageSize: number = 10) => {
     try {
-      const datas = await Topic.findAll({
+      const validPage = page > 0 ? page : 1;
+      const validPageSize = pageSize > 0 ? pageSize : 10;
+      const offset = (validPage - 1) * validPageSize;
+
+      console.log(
+        `Fetching topics - Page: ${validPage}, PageSize: ${validPageSize}`
+      );
+
+      const { count, rows } = await Topic.findAndCountAll({
         where: { status: true },
+        distinct: true,
         include: [
           { model: User, as: "userData" },
           { model: Reply, as: "replyData" },
           { model: TopicLikes, as: "topicLikesData" },
-          {
-            model: Subscription,
-            as: "subscriptionData",
-          },
+          { model: Subscription, as: "subscriptionData" },
         ],
         order: [["createdAt", "DESC"]],
+        limit: validPageSize,
+        offset: offset,
       });
-      if (datas.length === 0) {
-        throw new Error("No data found");
-      }
-      return datas;
+
+      console.log(`Total Topics: ${count}, Fetched: ${rows.length}`);
+
+      return {
+        totalItems: count,
+        totalPages: Math.ceil(count / validPageSize),
+        currentPage: validPage,
+        topics: rows,
+      };
     } catch (error: any) {
-      console.error("Error in getAlldata:", error.message);
-      throw new Error(error.message);
+      console.error("Error in getTopics:", error.message);
+      throw new Error(error.message || "Failed to fetch topics");
     }
   },
+
+  // getTopics: async () => {
+  //   try {
+  //     const datas = await Topic.findAll({
+  //       where: { status: true },
+  //       include: [
+  //         { model: User, as: "userData" },
+  //         { model: Reply, as: "replyData" },
+  //         { model: TopicLikes, as: "topicLikesData" },
+  //         {
+  //           model: Subscription,
+  //           as: "subscriptionData",
+  //         },
+  //       ],
+  //       order: [["createdAt", "DESC"]],
+  //     });
+  //     if (datas.length === 0) {
+  //       throw new Error("No data found");
+  //     }
+  //     return datas;
+  //   } catch (error: any) {
+  //     console.error("Error in getAlldata:", error.message);
+  //     throw new Error(error.message);
+  //   }
+  // },
   updateTopic: async (id: number, input: UpdateTopicInput) => {
     try {
       const data = await Topic.findByPk(id);
