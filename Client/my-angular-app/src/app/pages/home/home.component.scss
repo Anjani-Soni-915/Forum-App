@@ -5,11 +5,8 @@
   margin: 94px auto 0 auto;
   background-color: var(--background-color);
   border-radius: 5px;
-  box-shadow: 0px 4px 5px rgba(100, 96, 96, 0.2);
+  box-shadow: 2px 4px 14px rgba(100, 96, 96, 0.2);
   padding: 20px 120px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   .digi-forum-wrapper {
     padding: 0px 20px;
     box-sizing: border-box;
@@ -44,7 +41,6 @@
 
 .topic-data {
   width: 100%;
-  max-width: 80rem;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -53,7 +49,7 @@
 
   .main-topic-cont {
     display: flex;
-    width: 100%;
+    width: calc(100% - 270px);
     cursor: pointer;
     // justify-content: space-between;
   }
@@ -79,6 +75,9 @@
   }
   .topic-content {
     padding-left: 21px;
+    margin-top: 11px;
+    width: calc(100% - 108px);
+
     h2,
     .heading {
       margin: 0;
@@ -161,6 +160,7 @@
     height: 655px;
     overflow-y: auto;
     transition: opacity 0.3s ease-in-out;
+    width: 100%;
   }
 
   .topic-card-wrapper.loading {
@@ -318,11 +318,17 @@
       box-sizing: border-box;
       outline: none;
       color: var(--input-color);
+      resize: none;
       transition: border 0.3s ease;
       &:hover {
         border: 1px solid #ddd;
       }
     }
+    // textarea::placeholder {
+    //   font-family: "Inter", sans-serif;
+    //   font-size: 14px;
+    //   color: var(--grey-color);
+    // }
   }
 
   .input-wrapper {
@@ -363,3 +369,8 @@
   z-index: 1000;
   pointer-events: none;
 }
+
+// height: calc(100svh - 114px);
+// max-height: calc(100svh - 114px);
+// overflow: auto;
+// max-width: 80vw;

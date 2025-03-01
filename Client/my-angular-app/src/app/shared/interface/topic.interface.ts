@@ -3,6 +3,29 @@ export interface UserData {
   fName: string;
 }
 
+export interface ReplyData {
+  id: number;
+  text: string;
+  likes: number;
+  status: boolean;
+  createdAt: string;
+  replyLikesData: ReplyLikesData[];
+  userData: {
+    id: number;
+    fName: string;
+    lName: string;
+    email: string;
+    image: string;
+    profession: string;
+  };
+}
+
+export interface ReplyLikesData {
+  id: number;
+  status: boolean;
+  userId: number;
+  replyId: number;
+}
 export interface Topic {
   id: number;
   title: string;
@@ -19,7 +42,7 @@ export interface Topic {
     image?: string;
     profession?: string;
   };
-  replyData: { id: number; text: string; likes: number; createdAt: string }[];
+  replyData: ReplyData[];
   topicLikesData: {
     id: number;
     userId: number;

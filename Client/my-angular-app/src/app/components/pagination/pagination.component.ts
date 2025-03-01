@@ -16,7 +16,6 @@ export class PaginationComponent {
   @Output() pageChange = new EventEmitter<any>();
 
   changePage(event: any) {
-    console.log('Page changed:', event);
     this.pageChange.emit(event);
   }
 }

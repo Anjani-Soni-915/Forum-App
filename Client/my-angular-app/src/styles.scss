@@ -1,4 +1,5 @@
 @import "primeicons/primeicons.css";
+// @import "ngx-toastr/toastr.scss";
 
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap");
 
@@ -10,7 +11,12 @@ body {
 // * {
 //   font-family: "Poppins", sans-serif;
 // }
-
+textarea::placeholder,
+input::placeholder {
+  font-family: "Inter", sans-serif;
+  font-size: 13px;
+  color: var(--grey-color);
+}
 :root {
   --primary-color: #0865b3;
   --secondary-color: #2291f1;
@@ -25,6 +31,25 @@ body {
   --grey-background: rgb(197, 196, 196);
   overflow: hidden;
 }
-// background: linear-gradient(90deg, rgb(29, 44, 175), #147ff1, #313eaa);
 
 // f1f1f1a3
+// toast style
+// :host ::ng-deep .p-toast-top-right {
+//   position: fixed;
+//   top: 63px;
+//   right: 20px;
+//   z-index: 1102;
+// }
+
+:host::ng-deep .p-toast {
+  width: var(--p-toast-width);
+  white-space: pre-line;
+  word-break: break-word;
+  top: 67px !important;
+}
+
+// :host ::ng-deep .p-toast.p-component.p-toast-top-right {
+//   top: 163px !important; /* Moves the toaster below the navbar */
+//   right: 20px !important; /* Ensures it stays on the right */
+//   z-index: 99999 !important; /* Ensures it's visible */
+// }

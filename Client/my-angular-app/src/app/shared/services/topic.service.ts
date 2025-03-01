@@ -10,7 +10,6 @@ import {
   PaginatedTopics,
   Topic,
 } from '../interface/topic.interface';
-import { TOKEN } from '../../app.config';
 
 @Injectable({
   providedIn: 'root',
@@ -22,7 +21,7 @@ export class TopicService {
       .watchQuery<{ getTopicById: Topic }>({
         query: GET_TOPIC_BY_ID,
         variables: { id: Number(topicId) },
-        fetchPolicy: 'network-only',
+        fetchPolicy: 'no-cache',
       })
       .valueChanges.pipe(
         map(({ data }) => {
@@ -39,7 +38,7 @@ export class TopicService {
       .watchQuery<{ getTopics: PaginatedTopics }>({
         query: GET_TOPICS,
         variables: { page, pageSize },
-        fetchPolicy: 'network-only',
+        fetchPolicy: 'no-cache',
       })
       .valueChanges.pipe(
         map(({ data }) => {
@@ -51,17 +50,11 @@ export class TopicService {
   createTopic(
     input: CreateTopicInput
   ): Observable<CreateTopicResponse['createTopic']> {
-    console.log('Sending token:', TOKEN);
-
     return this.apollo
       .mutate<CreateTopicResponse>({
         mutation: CREATE_TOPIC,
         variables: { input },
-        context: {
-          headers: {
-            Authorization: `Bearer ${TOKEN}`,
-          },
-        },
+        context: {},
       })
       .pipe(map(({ data }) => data!.createTopic));
   }

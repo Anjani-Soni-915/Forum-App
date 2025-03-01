@@ -5,6 +5,25 @@ import { User } from "../../models/user.model";
 import { CreateReplyInput, UpdateReplyInput } from "./reply.interface";
 
 const replyController = {
+  // createReply: async (userId: number, input: CreateReplyInput) => {
+  //   try {
+  //     console.log("input---->", input);
+  //     if (!userId) throw new Error("Authentication required");
+
+  //     const { topicId } = input;
+
+  //     const reply = await Reply.create({ ...input, userId });
+  //     await Topic.increment({ repliesCount: 1 }, { where: { id: topicId } });
+
+  //     return {
+  //       message: "Reply created successfully",
+  //       reply,
+  //     };
+  //   } catch (error: any) {
+  //     console.error("Error in createReply:", error.message);
+  //     throw new Error(error.message || "Failed to create reply");
+  //   }
+  // },
   createReply: async (userId: number, input: CreateReplyInput) => {
     try {
       console.log("input---->", input);
@@ -12,12 +31,27 @@ const replyController = {
 
       const { topicId } = input;
 
+      // Create reply
       const reply = await Reply.create({ ...input, userId });
+
+      // Increment the replies count in the topic
       await Topic.increment({ repliesCount: 1 }, { where: { id: topicId } });
+
+      // Fetch the newly created reply with user data
+      const replyWithUser = await Reply.findOne({
+        where: { id: reply.id },
+        include: [
+          {
+            model: User,
+            as: "userData",
+            attributes: ["id", "fName", "lName", "image"],
+          },
+        ],
+      });
 
       return {
         message: "Reply created successfully",
-        reply,
+        reply: replyWithUser,
       };
     } catch (error: any) {
       console.error("Error in createReply:", error.message);

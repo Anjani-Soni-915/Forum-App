@@ -7,11 +7,13 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { SkeletonModule } from 'primeng/skeleton';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import {
   CreateTopicInput,
   Topic,
   PaginatedTopics,
 } from '../../shared/interface/topic.interface';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-home',
@@ -41,7 +43,8 @@ export class HomeComponent implements OnInit {
   constructor(
     private topicService: TopicService,
     private fb: FormBuilder,
-    private router: Router
+    private router: Router,
+    private messageService: MessageService
   ) {
     this.topicForm = this.fb.group({
       title: [
@@ -49,7 +52,7 @@ export class HomeComponent implements OnInit {
         [
           Validators.required,
           Validators.minLength(5),
-          Validators.maxLength(30),
+          Validators.maxLength(100),
         ],
       ],
 
@@ -66,7 +69,6 @@ export class HomeComponent implements OnInit {
     this.loading = true;
     this.topicService.fetchTopics(this.currentPage, this.pageSize).subscribe({
       next: (response: PaginatedTopics) => {
-        console.log('Fetched topics:', response);
         this.topics = response.topics;
         this.totalPages = response.totalPages;
         this.loading = false;
@@ -107,8 +109,6 @@ export class HomeComponent implements OnInit {
 
     this.isFetchingMore = true;
     this.currentPage++;
-
-    console.log(`Loading Page: ${this.currentPage}`);
 
     this.topicService.fetchTopics(this.currentPage, this.pageSize).subscribe({
       next: (response: PaginatedTopics) => {
@@ -159,6 +159,11 @@ export class HomeComponent implements OnInit {
           this.topics = [];
           window.scrollTo({ top: 0, behavior: 'smooth' });
           this.loadTopics();
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Success',
+            detail: 'Topic post successfully!',
+          });
         } else {
           console.error('Unexpected API response:', response);
         }
@@ -170,132 +175,21 @@ export class HomeComponent implements OnInit {
     });
   }
   openModal() {
-    this.isModalOpen = true;
+    const token = localStorage.getItem('accessToken');
+    if (token) {
+      this.isModalOpen = true;
+    } else {
+      this.messageService.add({
+        severity: 'info',
+        summary: 'Info',
+        detail: 'Login first to start discussion',
+      });
+      this.isModalOpen = false;
+    }
   }
 
   closeModal() {
     this.isModalOpen = false;
+    this.topicForm.reset();
   }
 }
-
-// import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
-// import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-// import { NavbarComponent } from '../../components/navbar/navbar.component';
-// import { TopicService } from '../../shared/services/topic.service';
-// import { CommonModule } from '@angular/common';
-// import { ReactiveFormsModule } from '@angular/forms';
-// import {
-//   CreateTopicInput,
-//   Topic,
-// } from '../../shared/interface/topic.interface';
-
-// @Component({
-//   selector: 'app-home',
-//   standalone: true,
-//   imports: [NavbarComponent, CommonModule, ReactiveFormsModule],
-//   templateUrl: './home.component.html',
-//   styleUrl: './home.component.scss',
-// })
-// export class HomeComponent implements OnInit {
-//   topics: Topic[] = [];
-//   loading = false;
-//   error: string | null = null;
-//   topicForm: FormGroup;
-//   isModalOpen = false;
-
-//   // Infinite Scroll Variables
-//   offset = 0; // Tracks the number of topics loaded
-//   pageSize = 4; // Number of topics per API call
-//   allTopicsLoaded = false; // Prevents unnecessary API calls
-
-//   @ViewChild('scrollAnchor', { static: false }) scrollAnchor!: ElementRef;
-
-//   constructor(private topicService: TopicService, private fb: FormBuilder) {
-//     this.topicForm = this.fb.group({
-//       title: ['', Validators.required],
-//       description: ['', Validators.required],
-//       tagsInput: [''],
-//     });
-//   }
-
-//   ngOnInit() {
-//     this.loadTopics();
-//     this.setupInfiniteScroll();
-//   }
-
-//   loadTopics() {
-//     if (this.loading || this.allTopicsLoaded) return;
-//     this.loading = true;
-
-//     this.topicService.fetchTopics(this.offset, this.pageSize).subscribe({
-//       next: (response) => {
-//         if (response.topics.length > 0) {
-//           this.topics = [...this.topics, ...response.topics];
-//           this.offset += this.pageSize;
-//         } else {
-//           this.allTopicsLoaded = true;
-//         }
-//         this.loading = false;
-//       },
-//       error: (err) => {
-//         this.error = 'Failed to load topics. Please try again.';
-//         this.loading = false;
-//       },
-//     });
-//   }
-
-//   setupInfiniteScroll() {
-//     const observer = new IntersectionObserver(
-//       (entries) => {
-//         if (entries[0].isIntersecting) {
-//           this.loadTopics();
-//         }
-//       },
-//       { threshold: 1.0 }
-//     );
-
-//     setTimeout(() => {
-//       if (this.scrollAnchor) {
-//         observer.observe(this.scrollAnchor.nativeElement);
-//       }
-//     }, 1000);
-//   }
-
-//   postTopic() {
-//     if (this.topicForm.invalid) return;
-
-//     const { title, description, tagsInput } = this.topicForm.value;
-//     const newTopic: CreateTopicInput = {
-//       title,
-//       description,
-//       likes: 0,
-//       views: 0,
-//       repliesCount: 0,
-//       tags: tagsInput
-//         .split(',')
-//         .map((tag: string) => tag.trim())
-//         .filter((tag: string) => tag !== ''),
-//     };
-
-//     this.topicService.createTopic(newTopic).subscribe({
-//       next: (response) => {
-//         if (response && response.topic) {
-//           this.topics = [response.topic, ...this.topics];
-//           this.topicForm.reset();
-//           this.isModalOpen = false;
-//         }
-//       },
-//       error: (err) => {
-//         this.error = 'Failed to post topic. Please try again.';
-//       },
-//     });
-//   }
-
-//   openModal() {
-//     this.isModalOpen = true;
-//   }
-
-//   closeModal() {
-//     this.isModalOpen = false;
-//   }
-// }

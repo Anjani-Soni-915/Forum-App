@@ -84,7 +84,7 @@ const UserController = {
       });
 
       const accessToken = jwt.sign(
-        { userId: user.id, email: user.email },
+        { id: user.id, email: user.email },
         process.env.JWT_SECRET as string,
         { expiresIn: "10h" }
       );
@@ -132,7 +132,7 @@ const UserController = {
       );
 
       const refreshToken = jwt.sign(
-        { userId: user.id, email: user.email },
+        { id: user.id, email: user.email },
         process.env.JWT_SECRET as string,
         { expiresIn: "7d" }
       );

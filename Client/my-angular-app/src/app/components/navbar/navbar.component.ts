@@ -1,9 +1,92 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { ReactiveFormsModule } from '@angular/forms';
+import { LoginComponent } from '../login/login.component';
+import { SignupComponent } from '../signup/signup.component';
+import { Router } from '@angular/router';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-navbar',
-  imports: [],
+  standalone: true,
+  imports: [LoginComponent, CommonModule, ReactiveFormsModule, SignupComponent],
   templateUrl: './navbar.component.html',
-  styleUrl: './navbar.component.scss',
+  styleUrls: ['./navbar.component.scss'],
 })
-export class NavbarComponent {}
+export class NavbarComponent implements OnInit {
+  isLoginModalOpen = false;
+  isSignupModalOpen = false;
+  isDropdownOpen = false;
+  isLoggedIn = !!localStorage.getItem('accessToken');
+  userName = localStorage.getItem('fName') || null;
+  image = localStorage.getItem('image') || null;
+
+  constructor(private route: Router, private messageService: MessageService) {}
+  ngOnInit() {
+    this.checkUserLoginStatus();
+  }
+
+  checkUserLoginStatus() {
+    const token = localStorage.getItem('accessToken');
+
+    if (token) {
+      this.isLoggedIn = true;
+      this.userName = localStorage.getItem('fName');
+      this.image = localStorage.getItem('image');
+    }
+  }
+
+  toggleDropdown() {
+    this.isDropdownOpen = !this.isDropdownOpen;
+  }
+
+  logout() {
+    localStorage.clear();
+    this.isLoggedIn = false;
+    this.isDropdownOpen = false;
+    this.route.navigateByUrl('/');
+
+    this.messageService.add({
+      severity: 'success',
+      summary: 'Success',
+      detail: 'Login successful!',
+    });
+  }
+
+  // Open Signup Modal
+  signupOpen() {
+    this.isSignupModalOpen = true;
+    this.isLoginModalOpen = false;
+  }
+
+  // Close Signup Modal
+  signupClose() {
+    this.isSignupModalOpen = false;
+    this.checkUserLoginStatus();
+  }
+
+  // Open Login Modal
+  openLoginModal() {
+    this.isLoginModalOpen = true;
+
+    this.isSignupModalOpen = false;
+  }
+
+  // Close Login Modal
+  closeLoginModal() {
+    this.isLoginModalOpen = false;
+    this.checkUserLoginStatus();
+  }
+
+  // Switch from Signup to Login
+  switchToLogin() {
+    this.isSignupModalOpen = false;
+    this.isLoginModalOpen = true;
+  }
+
+  // Switch from Login to Signup
+  switchToSignup() {
+    this.isLoginModalOpen = false;
+    this.isSignupModalOpen = true;
+  }
+}

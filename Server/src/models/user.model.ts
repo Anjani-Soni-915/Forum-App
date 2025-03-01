@@ -121,13 +121,13 @@ export default (sequelize: Sequelize) => {
   };
 
   // Sync database with force true (Warning: This will drop and recreate the table on every restart)
-  //   const forceSync = false;
+  // const forceSync = true;
 
-  //   sequelize.sync({ force: forceSync }).then(() => {
-  //     if (forceSync) {
-  //       console.log("🔖~ User table created!");
-  //     }
-  //   });
+  // sequelize.sync({ force: forceSync }).then(() => {
+  //   if (forceSync) {
+  //     console.log("🔖~ User table created!");
+  //   }
+  // });
 
   return User;
 };

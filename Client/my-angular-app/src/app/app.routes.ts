@@ -7,5 +7,5 @@ export const routes: Routes = [
 
   { path: 'topic/:id', component: TopicDetailsComponent },
 
-  { path: '**', redirectTo: 'home' },
+  { path: '**', redirectTo: '' },
 ];

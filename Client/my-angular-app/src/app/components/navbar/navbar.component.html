@@ -1,5 +1,4 @@
 <nav class="navbar">
-
   <div class="logo">
     <img src="/logo.svg" alt="Logo" />
   </div>
@@ -14,11 +13,44 @@
     <div class="search-bar">
       <input type="text" placeholder="Search..." />
       <button class="search-btn">
-        <img src="/search.png" alt="Search">
+        <img src="/search.png" alt="Search" />
       </button>
     </div>
 
-    <button class="login-btn">Login</button>
+    <div class="nav-right">
+      <button *ngIf="!isLoggedIn" class="login-btn" (click)="openLoginModal()">
+        Login
+      </button>
+      <div *ngIf="isLoggedIn" class="user-dropdown">
+        <div class="user-profile">
+          <img [src]="image ? image : '/profile2.webp'" alt="Profile" />
 
+          <span class="user-name" (click)="toggleDropdown()">{{
+            userName
+          }}</span>
+        </div>
+
+        <div class="dropdown-menu" [class.open]="isDropdownOpen">
+          <ul>
+            <li>Subscribed</li>
+            <li class="logout-btn" (click)="logout()">Logout</li>
+          </ul>
+        </div>
+      </div>
+    </div>
   </div>
 </nav>
+
+<!-- Include the Login Modal Component -->
+<app-login
+  *ngIf="isLoginModalOpen"
+  (opensignup)="signupOpen()"
+  (close)="closeLoginModal()"
+></app-login>
+<!-- <app-signup *ngIf="isSignupModalOpen" (close)="signupClose()"></app-signup> -->
+<app-signup
+  *ngIf="isSignupModalOpen"
+  (close)="signupClose()"
+  (isopenLogin)="openLoginModal()"
+>
+</app-signup>

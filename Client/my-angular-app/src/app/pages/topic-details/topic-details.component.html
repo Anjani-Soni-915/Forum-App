@@ -45,7 +45,7 @@
 
       <!-- btns  -->
       <div class="topic-btns">
-        <button class="reply">Reply</button>
+        <button (click)="openReplyModal()" class="reply">Reply</button>
         <button class="subscribe">Subscribe</button>
       </div>
     </div>
@@ -57,7 +57,7 @@
     <div class="desc-count-box">
       <div class="description-box">
         <!-- <span>{{ topic.title }}</span> -->
-        <p>{{ topic.description }}</p>
+        <pre>{{ topic.description }}</pre>
       </div>
 
       <div class="divider"></div>
@@ -82,17 +82,20 @@
       </div>
 
       <div class="reply-loop" *ngIf="topic?.replyData?.length; else noReplies">
-        <div class="reply-card" *ngFor="let reply of topic?.replyData">
+        <div
+          class="reply-card"
+          *ngFor="let reply of topic?.replyData; index as i"
+        >
           <div class="reply-header">
             <img
-              [src]="topic?.userData?.image"
+              [src]="reply.userData.image"
               alt="User Avatar"
               class="avatar"
             />
             <div class="reply-wrapper">
               <div class="user-info">
                 <p class="username">
-                  {{ topic?.userData?.fName }} {{ topic?.userData?.lName }}
+                  {{ reply?.userData?.fName }} {{ reply?.userData?.lName }}
                 </p>
                 <p class="reply-date">
                   {{ reply.createdAt | date : "medium" }}
@@ -103,14 +106,17 @@
                 <div class="edit-likes">
                   <div class="reply-actions">
                     <img
-                      [src]="'/like1.png'"
-                      alt="Like Icon"
+                      [src]="checkIsLiked(reply) ? '/like.png' : '/like1.png'"
+                      (click)="toggleReplyLike(reply, i)"
+                      alt="Like Reply"
                       class="like-icon"
-                      (click)="toggleReplyLike(reply)"
                     />
                     <span>{{ reply.likes }}</span>
                   </div>
-                  <i class="pi pi-pencil edit-icon"></i>
+
+                  <!-- <div>
+                    <i class="pi pi-pencil edit-icon"></i>
+                  </div> -->
                 </div>
               </div>
             </div>
@@ -121,9 +127,15 @@
       <ng-template #noReplies>
         <div class="no-reply-box">
           <p class="no-replies">No replies yet. Be the first to reply!</p>
-          <button class="reply">Reply</button>
+          <button (click)="openReplyModal()" class="reply">Reply</button>
         </div>
       </ng-template>
     </div>
   </div>
 </div>
+<app-reply-modal
+  *ngIf="showReplyModal && topic?.id"
+  [topicId]="topic?.id!"
+  (replyPosted)="onReplyPosted($event)"
+  (close)="showReplyModal = false"
+></app-reply-modal>

@@ -50,7 +50,20 @@ export const GET_TOPIC_BY_ID = gql`
         id
         text
         likes
+        status
         createdAt
+        replyLikesData {
+          id
+          status
+          userId
+          replyId
+        }
+        userData {
+          id
+          fName
+          lName
+          image
+        }
       }
       topicLikesData {
         id

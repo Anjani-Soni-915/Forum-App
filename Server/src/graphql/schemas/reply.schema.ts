@@ -30,5 +30,6 @@ export default gql`
   type ReplyResponse {
     message: String!
     reply: Reply!
+    userData: User
   }
 `;

@@ -1,8 +1,10 @@
 .topic-id-container {
   width: 100%;
-  max-width: 90vw;
-  height: 100vh;
-  max-height: fit-content;
+
+  height: calc(100svh - 114px);
+  max-height: calc(100svh - 114px);
+  overflow: auto;
+  max-width: 80vw;
 
   margin: 94px auto 0 auto;
   background-color: var(--background-color);
@@ -134,6 +136,7 @@
         border-radius: 27px;
         font-size: 15px;
         font-weight: 500;
+        cursor: pointer;
         box-shadow: 3px 3px 10px rgba(8 8 8 / 14%);
       }
 
@@ -169,11 +172,11 @@
 
   .desc-count-box {
     border-radius: 4px;
-    // padding: 40px;
-    // box-shadow: 0px 0px 5px rgba(8, 8, 8, 0.14);
     display: flex;
     align-items: center;
     gap: 45px;
+    justify-content: space-between;
+    width: 100%;
 
     .divider {
       width: 2px;
@@ -190,13 +193,18 @@
         // color: var(--primary-color);
         color: var(--input-color);
       }
-      p {
+      pre {
         font-size: 15px;
         font-weight: 400;
         color: var(--grey-color);
+        font-family: "Inter", sans-serif;
         margin-top: 4px;
         width: 100%;
+        max-width: 80rem;
         text-align: justify;
+        white-space: pre-wrap;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
       }
     }
 
@@ -273,7 +281,8 @@
     .reply-loop {
       margin-top: 20px;
       overflow-y: auto;
-      height: 339px;
+      // height: 339px;
+      max-height: 342px;
     }
 
     .reply-card {
@@ -283,6 +292,7 @@
       margin-bottom: 10px;
       box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
       // height: 13vh;
+      // max-height: 13vh;
     }
 
     .reply-header {
@@ -294,6 +304,7 @@
     .avatar {
       width: 70px;
       height: 70px;
+      min-width: 70px;
       border-radius: 50%;
       margin-right: 10px;
       box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
@@ -334,10 +345,16 @@
         font-size: 13px;
         text-align: justify;
         color: var(--input-color);
+        font-family: "Inter", sans-serif;
+        max-width: 80rem;
+        text-align: justify;
+        white-space: pre-wrap;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
       }
       .edit-likes {
         display: flex;
-        gap: 80px;
+        gap: 22px;
         margin-top: 9px;
 
         .edit-icon {

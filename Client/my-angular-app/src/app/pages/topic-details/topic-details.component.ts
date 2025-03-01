@@ -1,16 +1,23 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Topic } from '../../shared/interface/topic.interface';
+import { ReplyData, Topic } from '../../shared/interface/topic.interface';
 import { TopicService } from '../../shared/services/topic.service';
 import { LikeTopicService } from '../../shared/services/likeTopic.service';
 import { NavbarComponent } from '../../components/navbar/navbar.component';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
+import { ReplyModalComponent } from '../../components/reply-modal/reply-modal.component';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-topic-details',
   standalone: true,
-  imports: [NavbarComponent, CommonModule, ReactiveFormsModule],
+  imports: [
+    NavbarComponent,
+    CommonModule,
+    ReactiveFormsModule,
+    ReplyModalComponent,
+  ],
   templateUrl: './topic-details.component.html',
   styleUrls: ['./topic-details.component.scss'],
 })
@@ -18,19 +25,61 @@ export class TopicDetailsComponent implements OnInit {
   topic: Topic | null = null;
   likesCount: number = 0;
   likeStatus: boolean | null = null;
+  showReplyModal = false;
 
   loading = false;
   error: string | null = null;
+  userId = localStorage.getItem('userId') || 0;
 
   constructor(
     private route: ActivatedRoute,
     private topicService: TopicService,
-    private likeTopicService: LikeTopicService
+    private likeTopicService: LikeTopicService,
+    private messageService: MessageService
   ) {}
 
   ngOnInit() {
+    const storedUserId = localStorage.getItem('userId');
+
+    if (storedUserId) {
+      this.userId = +storedUserId;
+    }
+    console.log('on in it');
     this.getTopicById();
   }
+
+  // getTopicById() {
+  //   this.loading = true;
+  //   const topicId = this.route.snapshot.paramMap.get('id');
+
+  //   if (!topicId || isNaN(+topicId)) {
+  //     this.error = 'Invalid topic ID';
+  //     this.loading = false;
+  //     return;
+  //   }
+
+  //   this.topicService.fetchTopicById(+topicId).subscribe({
+  //     next: (response: any) => {
+  //       this.topic = {
+  //         ...response,
+  //         replyData: response.replyData || [],
+  //       };
+  //       this.likesCount = response.likes || 0;
+
+  //       const userLike = response.topicLikesData?.find(
+  //         (like: any) => like.userId === this.userId
+  //       );
+
+  //       this.likeStatus = userLike ? userLike.status : false;
+
+  //       this.loading = false;
+  //     },
+  //     error: () => {
+  //       this.error = 'Failed to load topic details.';
+  //       this.loading = false;
+  //     },
+  //   });
+  // }
 
   getTopicById() {
     this.loading = true;
@@ -46,16 +95,19 @@ export class TopicDetailsComponent implements OnInit {
       next: (response: any) => {
         this.topic = {
           ...response,
-          replyData: response.replyData || [],
+          replyData: response.replyData.map((reply: any) => ({
+            ...reply,
+            status: reply.status ?? false,
+          })),
         };
-        this.likesCount = response.likes;
-        const userLike = response.topicLikesData.find(
-          (like: any) => like.userId === 4 // Static now
-        );
-        if (userLike) {
-          this.likeStatus = userLike.status;
-        }
+        console.log('data------------>', this.topic, response);
+        this.likesCount = response.likes || 0;
 
+        const userLike = response.topicLikesData?.find(
+          (like: any) => like.userId === this.userId
+        );
+
+        this.likeStatus = userLike ? userLike.status : false;
         this.loading = false;
       },
       error: () => {
@@ -64,12 +116,70 @@ export class TopicDetailsComponent implements OnInit {
       },
     });
   }
-  toggleReplyLike(reply: any) {
-    reply.likes = reply.likes + 1; // Increment likes (replace with actual API logic)
-    console.log(`Reply ${reply.id} liked!`);
+  onReplyPosted(reply: ReplyData) {
+    if (!this.topic?.replyData) return;
+
+    this.topic.replyData.unshift(reply);
+  }
+
+  checkIsLiked(reply: ReplyData) {
+    return reply.replyLikesData?.find((likes) => likes?.userId === this.userId)
+      ?.status;
+  }
+
+  toggleReplyLike(reply: ReplyData, replyIndex: number) {
+    const userId = localStorage.getItem('userId') || 0;
+    console.log('id-------------->', userId);
+    if (!userId) {
+      this.messageService.add({
+        severity: 'info',
+        summary: 'Info',
+        detail: 'Login to like !',
+      });
+    }
+    if (!this.topic?.replyData) return;
+
+    this.likeTopicService.createReplyLike({ replyId: reply.id }).subscribe({
+      next: (response) => {
+        if (response && response.replyLikes) {
+          const currentUserLike = reply?.replyLikesData?.findIndex(
+            (likes) => likes?.userId === this.userId
+          );
+          const allLikes = [...reply?.replyLikesData];
+          if (currentUserLike >= 0) {
+            allLikes?.splice(currentUserLike, 1, {
+              ...response?.replyLikes,
+            });
+          } else {
+            allLikes?.push({
+              ...response?.replyLikes,
+            });
+          }
+          const updatedReply = {
+            ...reply,
+            replyLikesData: [...allLikes],
+            likes: response?.replyLikes?.status
+              ? reply?.likes + 1
+              : reply?.likes - 1,
+          };
+          this.topic?.replyData.splice(replyIndex, 1, updatedReply);
+        }
+      },
+      error: () => {
+        this.topic!.replyData[replyIndex] = reply;
+      },
+    });
   }
 
   toggleLike() {
+    const userId = localStorage.getItem('userId') || 0;
+    if (!userId) {
+      this.messageService.add({
+        severity: 'info',
+        summary: 'Info',
+        detail: 'Login to like !',
+      });
+    }
     if (!this.topic) return;
 
     const prevLikes = this.likesCount;
@@ -92,6 +202,20 @@ export class TopicDetailsComponent implements OnInit {
           this.likesCount = prevLikes;
         },
       });
+  }
+
+  openReplyModal() {
+    const userId = localStorage.getItem('userId') || 0;
+    if (!userId) {
+      this.messageService.add({
+        severity: 'info',
+        summary: 'Info',
+        detail: 'Login to Reply!',
+      });
+      this.showReplyModal = false;
+    } else if (this.topic?.id) {
+      this.showReplyModal = true;
+    }
   }
 }
 

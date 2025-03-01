@@ -1,0 +1,281 @@
+<div class="modal-overlay" (click)="closeModal()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <!-- Signup Header -->
+    <div class="signup-header">
+      <h2>Sign Up</h2>
+      <button class="close-btn" (click)="closeModal()">&times;</button>
+    </div>
+
+    <!-- Avatar Selection Section -->
+    <div class="avatar-container">
+      <!-- Circle (Selected Avatar) -->
+      <div class="selected-avatar">
+        <img [src]="selectedAvatar || defaultAvatar" alt="Selected Avatar" />
+        <p>Select Avatar!</p>
+      </div>
+
+      <!-- Small Avatar Options -->
+      <div class="avatar-options">
+        <img
+          *ngFor="let avatar of avatars"
+          [src]="avatar"
+          class="avatar-option"
+          [class.selected]="avatar === selectedAvatar"
+          (click)="selectAvatar(avatar)"
+        />
+      </div>
+    </div>
+
+    <form [formGroup]="signupForm" (ngSubmit)="signUp()">
+      <div class="form-wrapper">
+        <!-- <form [formGroup]="signupForm" (ngSubmit)="signUp()"> -->
+        <div class="form-wrapper">
+          <div class="parent-wrapper">
+            <div class="input-wrapper">
+              <label>First Name</label>
+              <input
+                type="text"
+                formControlName="fName"
+                placeholder="Enter First Name"
+              />
+              <div
+                class="error"
+                *ngIf="
+                  signupForm.get('fName')?.invalid &&
+                  signupForm.get('fName')?.touched
+                "
+              >
+                First name is required (2-50 characters).
+              </div>
+            </div>
+
+            <div class="input-wrapper">
+              <label>Last Name</label>
+              <input
+                type="text"
+                formControlName="lName"
+                placeholder="Enter Last Name"
+              />
+              <div
+                class="error"
+                *ngIf="
+                  signupForm.get('lName')?.invalid &&
+                  signupForm.get('lName')?.touched
+                "
+              >
+                Last name is required (2-50 characters).
+              </div>
+            </div>
+          </div>
+
+          <div class="parent-wrapper">
+            <div class="input-wrapper">
+              <label>Email</label>
+              <input
+                type="email"
+                formControlName="email"
+                placeholder="Enter Email"
+              />
+              <div
+                class="error"
+                *ngIf="
+                  signupForm.get('email')?.invalid &&
+                  signupForm.get('email')?.touched
+                "
+              >
+                Valid email is required.
+              </div>
+            </div>
+
+            <div class="input-wrapper">
+              <label>Date of Birth</label>
+              <input
+                type="date"
+                formControlName="dob"
+                style="font-size: 12px"
+              />
+              <div
+                class="error"
+                *ngIf="
+                  signupForm.get('dob')?.invalid &&
+                  signupForm.get('dob')?.touched
+                "
+              >
+                Date of birth is required.
+              </div>
+            </div>
+          </div>
+
+          <div class="parent-wrapper">
+            <div class="input-wrapper">
+              <label>Profession</label>
+              <input
+                type="text"
+                formControlName="profession"
+                placeholder="Enter Profession"
+              />
+              <div
+                class="error"
+                *ngIf="
+                  signupForm.get('profession')?.invalid &&
+                  signupForm.get('profession')?.touched
+                "
+              >
+                Profession is required.
+              </div>
+            </div>
+
+            <div class="input-wrapper">
+              <label>Password</label>
+              <input
+                type="password"
+                formControlName="password"
+                placeholder="Enter Password"
+              />
+              <div
+                class="error"
+                *ngIf="
+                  signupForm.get('password')?.invalid &&
+                  signupForm.get('password')?.touched
+                "
+              >
+                Password must be 6-20 characters long.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <button class="submit" type="submit" [disabled]="signupForm.invalid">
+          Sign Up
+        </button>
+        <!-- </form> -->
+      </div>
+    </form>
+
+    <div class="signup-line">
+      <p>Already have an account? <span (click)="openLogin()">Login</span></p>
+    </div>
+  </div>
+</div>
+
+<!-- <div class="modal-overlay" (click)="closeModal()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="signup-header">
+      <h2>Sign Up</h2>
+      <button class="close-btn" (click)="closeModal()">&times;</button>
+    </div>
+
+    <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
+      <label>First Name</label>
+      <input
+        type="text"
+        formControlName="fName"
+        placeholder="Enter First Name"
+      />
+      <div
+        class="error"
+        *ngIf="
+          signupForm.get('fName')?.invalid && signupForm.get('fName')?.touched
+        "
+      >
+        First name is required (2-50 characters).
+      </div>
+
+      <label>Last Name</label>
+      <input
+        type="text"
+        formControlName="lName"
+        placeholder="Enter Last Name"
+      />
+      <div
+        class="error"
+        *ngIf="
+          signupForm.get('lName')?.invalid && signupForm.get('lName')?.touched
+        "
+      >
+        Last name is required (2-50 characters).
+      </div>
+
+      <label>Email</label>
+      <input type="email" formControlName="email" placeholder="Enter Email" />
+      <div
+        class="error"
+        *ngIf="
+          signupForm.get('email')?.invalid && signupForm.get('email')?.touched
+        "
+      >
+        Valid email is required.
+      </div>
+
+      <label>Select Your Avatar</label>
+      <div class="avatar-selection">
+        <img
+          *ngFor="let avatar of avatars"
+          [src]="avatar"
+          class="avatar"
+          [class.selected]="avatar === selectedAvatar"
+          (click)="selectAvatar(avatar)"
+        />
+      </div>
+      <div
+        class="error"
+        *ngIf="
+          signupForm.get('image')?.invalid && signupForm.get('image')?.touched
+        "
+      >
+        Please select an avatar.
+      </div>
+
+      <label>Date of Birth</label>
+      <input type="date" formControlName="dob" />
+      <div
+        class="error"
+        *ngIf="signupForm.get('dob')?.invalid && signupForm.get('dob')?.touched"
+      >
+        Date of birth is required.
+      </div>
+
+      <label>Profession</label>
+      <input
+        type="text"
+        formControlName="profession"
+        placeholder="Enter Profession"
+      />
+      <div
+        class="error"
+        *ngIf="
+          signupForm.get('profession')?.invalid &&
+          signupForm.get('profession')?.touched
+        "
+      >
+        Profession is required.
+      </div>
+
+      <label>Password</label>
+      <input
+        type="password"
+        formControlName="password"
+        placeholder="Enter Password"
+      />
+      <div
+        class="error"
+        *ngIf="
+          signupForm.get('password')?.invalid &&
+          signupForm.get('password')?.touched
+        "
+      >
+        Password must be 6-20 characters long.
+      </div>
+
+      <button class="submit" type="submit" [disabled]="signupForm.invalid">
+        Sign Up
+      </button>
+    </form>
+
+    <div class="signup-line">
+      <p>
+        Already have an account? <span (click)="openLogin()">Login here</span>
+      </p>
+    </div>
+  </div>
+</div> -->

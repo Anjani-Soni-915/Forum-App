@@ -12,3 +12,17 @@ export const CREATE_TOPIC_LIKE = gql`
     }
   }
 `;
+
+export const CREATE_REPLY_LIKE = gql`
+  mutation createReplyLike($input: CreateReplyLikesInput!) {
+    createReplyLikes(input: $input) {
+      message
+      replyLikes {
+        id
+        userId
+        replyId
+        status
+      }
+    }
+  }
+`;

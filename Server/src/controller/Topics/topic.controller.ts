@@ -1,4 +1,5 @@
 import { Reply } from "../../models/reply.model";
+import { ReplyLikes } from "../../models/replyLikes.model";
 import { Subscription } from "../../models/subscription.model";
 import { TopicLikes } from "../../models/topicLikes.model";
 import { Topic } from "../../models/topics.model";
@@ -34,24 +35,39 @@ const topicController = {
         where: { id: id, status: true },
         include: [
           { model: User, as: "userData" },
-          { model: Reply, as: "replyData" },
-          { model: TopicLikes, as: "topicLikesData" },
           {
-            model: Subscription,
-            as: "subscriptionData",
+            model: Reply,
+            as: "replyData",
+            include: [
+              {
+                model: User,
+                as: "userData",
+              },
+              {
+                model: ReplyLikes,
+                as: "replyLikesData",
+              },
+            ],
+
+            separate: true,
+            order: [["createdAt", "DESC"]],
           },
+          { model: TopicLikes, as: "topicLikesData" },
+          { model: Subscription, as: "subscriptionData" },
         ],
-        order: [["createdAt", "DESC"]],
       });
+
       if (!data) {
         throw new Error("data not found");
       }
+
       return data;
     } catch (error: any) {
       console.error("Error in getdataById:", error.message);
       throw new Error(error.message);
     }
   },
+
   getTopics: async (page: number = 1, pageSize: number = 10) => {
     try {
       const validPage = page > 0 ? page : 1;

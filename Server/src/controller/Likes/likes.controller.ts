@@ -14,6 +14,7 @@ import { Reply } from "../../models/reply.model";
 const topicLikesController = {
   createTopicLikes: async (userId: number, input: CreateTopicLikesInput) => {
     try {
+      // console.log("userId--------------->", userId);
       if (!userId) throw new Error("Authentication required");
 
       const { topicId } = input;

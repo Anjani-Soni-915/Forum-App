@@ -52,10 +52,9 @@ export class TestComponent implements OnInit {
       .split(',')
       .map((tag) => tag.trim())
       .filter((tag) => tag !== '');
-    console.log('data------------>', this.newTopic);
+
     this.topicService.createTopic(this.newTopic).subscribe({
       next: (response) => {
-        console.log('Created topic:', response);
         this.loadTopics();
         this.resetForm();
       },
