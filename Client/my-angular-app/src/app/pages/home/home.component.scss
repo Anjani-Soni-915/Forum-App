@@ -32,7 +32,7 @@
     color: white;
     padding: 9px 15px;
     border: none;
-    border-radius: 7px;
+    border-radius: 4px;
     font-size: 15px;
     font-weight: 500;
     cursor: pointer;
@@ -64,7 +64,7 @@
     background-color: var(--primary-color);
     box-sizing: border-box;
     // background-color: var(--grey-background);
-    border-radius: 0px;
+    border-radius: 4px;
 
     h1 {
       color: #ffffff;
@@ -110,7 +110,8 @@
     font-size: 20px;
     color: #ffffff;
     /* padding: 0px 40px; */
-    width: 270px;
+    // width: 270px;
+    width: 204px;
     justify-content: space-around;
     p {
       margin: 0;
@@ -144,15 +145,17 @@
   }
   .count-values {
     display: flex;
-    gap: 39px;
-    width: 270px;
-    padding-left: 15px;
-    padding-right: 12px;
+    // gap: 39px;
+    width: 193px;
+    // padding-left: 15px;
+    // padding-right: 12px;
     font-size: 18px;
     align-items: center;
     color: var(--input-color);
     font-weight: 500;
     justify-content: space-around;
+    margin-left: 144px;
+    gap: 29px;
   }
 
   .topic-card-wrapper {

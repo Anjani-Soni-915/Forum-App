@@ -10,21 +10,58 @@ import {
 import { User } from "../../models/user.model";
 import { Topic } from "../../models/topics.model";
 import { Reply } from "../../models/reply.model";
+import { io } from "../../app";
+import { isConstValueNode } from "graphql";
 
 const topicLikesController = {
+  // createTopicLikes: async (userId: number, input: CreateTopicLikesInput) => {
+  //   try {
+  //     // console.log("userId--------------->", userId);
+  //     if (!userId) throw new Error("Authentication required");
+
+  //     const { topicId } = input;
+  //     let topicLike = await TopicLikes.findOne({ where: { userId, topicId } });
+
+  //     const newStatus = topicLike ? !topicLike.status : true;
+  //     if (topicLike) await topicLike.update({ status: newStatus });
+  //     else
+  //       topicLike = await TopicLikes.create({ ...input, userId, status: true });
+
+  //     if (newStatus) {
+  //       await Topic.increment({ likes: 1 }, { where: { id: topicId } });
+  //     } else {
+  //       await Topic.decrement(
+  //         { likes: 1 },
+  //         { where: { id: topicId, likes: { [Op.gt]: 0 } } }
+  //       );
+  //     }
+
+  //     return {
+  //       message: newStatus ? "Topic liked" : "Topic unliked",
+  //       topicLikes: topicLike,
+  //     };
+  //   } catch (error: any) {
+  //     console.error("Error in createTopicLikes:", error.message);
+  //     throw new Error(error.message || "Failed to update topic like");
+  //   }
+  // },
+
   createTopicLikes: async (userId: number, input: CreateTopicLikesInput) => {
     try {
-      // console.log("userId--------------->", userId);
       if (!userId) throw new Error("Authentication required");
 
       const { topicId } = input;
       let topicLike = await TopicLikes.findOne({ where: { userId, topicId } });
 
       const newStatus = topicLike ? !topicLike.status : true;
-      if (topicLike) await topicLike.update({ status: newStatus });
-      else
-        topicLike = await TopicLikes.create({ ...input, userId, status: true });
 
+      if (topicLike) {
+        await topicLike.update({ status: newStatus });
+      } else {
+        topicLike = await TopicLikes.create({ ...input, userId, status: true });
+      }
+
+      // Increment or decrement the topic's like count
       if (newStatus) {
         await Topic.increment({ likes: 1 }, { where: { id: topicId } });
       } else {
@@ -32,6 +69,22 @@ const topicLikesController = {
           { likes: 1 },
           { where: { id: topicId, likes: { [Op.gt]: 0 } } }
         );
+      }
+
+      const topic = await Topic.findByPk(topicId);
+      if (!topic) throw new Error("Topic not found");
+
+      const user = await User.findByPk(userId);
+      if (!user) throw new Error("User not found");
+
+      // Emit a notification event when status is true
+      if (newStatus) {
+        io.emit(`notification:${topic.userId}`, {
+          message: `🔔  ${user.fName} ${user.lName} liked ${topic.title}`,
+          topicId,
+          topicName: topic.title,
+          // topicDescription: topic.description,
+        });
       }
 
       return {

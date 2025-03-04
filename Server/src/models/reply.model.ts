@@ -83,10 +83,18 @@ export default (sequelize: Sequelize) => {
       as: "replyLikesData",
       onDelete: "CASCADE",
     });
+    Reply.belongsTo(models.NotificationInfo, {
+      foreignKey: "replyId",
+      as: "replyData",
+      onDelete: "SET NULL",
+    });
   };
 
-  //   sequelize.sync({ force: true }).then(() => {
-  //     console.log("reply table created!");
-  //   });
+  // sequelize.sync({ force: false }).then(() => {
+  //   console.log(" table created!");
+  // });
+
+  // to add new columns
+  // sequelize.sync({ alter: true });
   return Reply;
 };

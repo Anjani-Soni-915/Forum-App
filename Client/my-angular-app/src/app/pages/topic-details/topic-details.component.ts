@@ -8,6 +8,8 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ReplyModalComponent } from '../../components/reply-modal/reply-modal.component';
 import { MessageService } from 'primeng/api';
+import { SocketService } from '../../shared/services/socket.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-topic-details',
@@ -30,55 +32,54 @@ export class TopicDetailsComponent implements OnInit {
   loading = false;
   error: string | null = null;
   userId = localStorage.getItem('userId') || 0;
+  notificationSubscription: Subscription | null = null;
 
   constructor(
     private route: ActivatedRoute,
     private topicService: TopicService,
     private likeTopicService: LikeTopicService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private socketService: SocketService
   ) {}
 
   ngOnInit() {
     const storedUserId = localStorage.getItem('userId');
 
     if (storedUserId) {
-      this.userId = +storedUserId;
+      this.userId = parseInt(storedUserId, 10);
     }
-    console.log('on in it');
+
+    console.log('onInit triggered');
     this.getTopicById();
+
+    if (this.userId) {
+      const firstName = localStorage.getItem('fName') || '';
+      const lastName = localStorage.getItem('lName') || '';
+      const id = Number(this.userId);
+
+      // this.listenForNotifications(id);
+    }
   }
 
-  // getTopicById() {
-  //   this.loading = true;
-  //   const topicId = this.route.snapshot.paramMap.get('id');
+  // // Listen for notifications
+  // listenForNotifications(userId: number) {
+  //   this.notificationSubscription = this.socketService
+  //     .listenForNotifications(userId)
+  //     .subscribe((data: any) => {
+  //       console.log('Socket notification received ✨', data);
+  //       // if (data?.message) {
+  //       //   this.messageService.add({
+  //       //     severity: 'info',
+  //       //     summary: 'New Like',
+  //       //     detail: `${data.message}`,
+  //       //     sticky: true,
+  //       //   });
+  //       // }
+  //     });
+  // }
 
-  //   if (!topicId || isNaN(+topicId)) {
-  //     this.error = 'Invalid topic ID';
-  //     this.loading = false;
-  //     return;
-  //   }
-
-  //   this.topicService.fetchTopicById(+topicId).subscribe({
-  //     next: (response: any) => {
-  //       this.topic = {
-  //         ...response,
-  //         replyData: response.replyData || [],
-  //       };
-  //       this.likesCount = response.likes || 0;
-
-  //       const userLike = response.topicLikesData?.find(
-  //         (like: any) => like.userId === this.userId
-  //       );
-
-  //       this.likeStatus = userLike ? userLike.status : false;
-
-  //       this.loading = false;
-  //     },
-  //     error: () => {
-  //       this.error = 'Failed to load topic details.';
-  //       this.loading = false;
-  //     },
-  //   });
+  // ngOnDestroy(): void {
+  //   this.notificationSubscription?.unsubscribe();
   // }
 
   getTopicById() {
@@ -100,7 +101,6 @@ export class TopicDetailsComponent implements OnInit {
             status: reply.status ?? false,
           })),
         };
-        console.log('data------------>', this.topic, response);
         this.likesCount = response.likes || 0;
 
         const userLike = response.topicLikesData?.find(
@@ -129,12 +129,11 @@ export class TopicDetailsComponent implements OnInit {
 
   toggleReplyLike(reply: ReplyData, replyIndex: number) {
     const userId = localStorage.getItem('userId') || 0;
-    console.log('id-------------->', userId);
     if (!userId) {
       this.messageService.add({
         severity: 'info',
         summary: 'Info',
-        detail: 'Login to like !',
+        detail: 'Login to like!',
       });
     }
     if (!this.topic?.replyData) return;
@@ -177,7 +176,7 @@ export class TopicDetailsComponent implements OnInit {
       this.messageService.add({
         severity: 'info',
         summary: 'Info',
-        detail: 'Login to like !',
+        detail: 'Login to like!',
       });
     }
     if (!this.topic) return;
@@ -218,125 +217,3 @@ export class TopicDetailsComponent implements OnInit {
     }
   }
 }
-
-// import { Component, OnInit } from '@angular/core';
-// import { ActivatedRoute } from '@angular/router';
-// import { Topic } from '../../shared/interface/topic.interface';
-// import { TopicService } from '../../shared/services/topic.service';
-// import { NavbarComponent } from '../../components/navbar/navbar.component';
-// import { CommonModule } from '@angular/common';
-// import { ReactiveFormsModule } from '@angular/forms';
-// import { LikeTopicService } from '../../shared/services/likeTopic.service';
-
-// @Component({
-//   selector: 'app-topic-details',
-//   standalone: true,
-//   imports: [NavbarComponent, CommonModule, ReactiveFormsModule],
-//   templateUrl: './topic-details.component.html',
-//   styleUrls: ['./topic-details.component.scss'],
-// })
-// export class TopicDetailsComponent implements OnInit {
-//   topic: Topic | null = null;
-//   loading = false;
-//   error: string | null = null;
-//   likeStatus: boolean | null = false;
-//   likesCount: number = 0;
-
-//   constructor(
-//     private route: ActivatedRoute,
-//     private topicService: TopicService,
-//     private likeTopicService: LikeTopicService
-//   ) {}
-
-//   ngOnInit() {
-//     this.getTopicById();
-//   }
-
-//   getTopicById() {
-//     console.log('getTopicById() is being called!');
-//     this.loading = true;
-//     const topicId = this.route.snapshot.paramMap.get('id');
-
-//     if (!topicId || isNaN(+topicId)) {
-//       console.log('Invalid ID:', topicId);
-//       this.error = 'Invalid topic ID';
-//       this.loading = false;
-//       return;
-//     }
-
-//     console.log('Fetching topic with ID:', topicId);
-
-//     this.topicService.fetchTopicById(+topicId).subscribe({
-//       next: (response) => {
-//         this.topic = response;
-//         this.loading = false;
-//         this.likesCount=response.likes;
-//         console.log('Topic Response:', this.topic);
-//       },
-//       error: (err) => {
-//         this.error = 'Failed to load topic details. Please try again.';
-//         this.loading = false;
-//         console.error('Error fetching topic:', err);
-//       },
-//     });
-//   }
-
-//   // toggleLike() {
-//   //   if (!this.topic) return;
-
-//   //   this.likeTopicService
-//   //     .createTopicLike({ topicId: this.topic.id })
-//   //     .subscribe({
-//   //       next: (response) => {
-//   //         if (!response || !response.topicLikes) {
-//   //           console.error('Invalid response:', response);
-//   //           return;
-//   //         }
-
-//   //         const { status } = response.topicLikes;
-//   //         this.likeStatus = status;
-//   //         this.topic!.likes += status ? 1 : -1;
-//   //         console.log('Like status updated:', this.likeStatus);
-//   //       },
-//   //       error: (err) => {
-//   //         console.error('Error updating like status:', err);
-//   //       },
-//   //     });
-//   // }
-//   toggleLike() {
-//     if (!this.topic) return;
-
-//     // Optimistically update UI first
-//     const newLikeStatus = !this.likeStatus;
-//     this.likeStatus = newLikeStatus;
-//     this.likesCount += newLikeStatus ? 1 : -1; // Increment or decrement likes count
-
-//     // Send request to API
-//     this.likeTopicService
-//       .createTopicLike({ topicId: this.topic.id })
-//       .subscribe({
-//         next: (response) => {
-//           if (!response || !response.topicLikes) {
-//             console.error('Invalid response:', response);
-//             return;
-//           }
-
-//           const { status } = response.topicLikes;
-//           this.likeStatus = status;
-//           this.likesCount = status ? this.likesCount : this.likesCount; // Keep count consistent
-//           console.log(
-//             'Like status updated:',
-//             this.likeStatus,
-//             'Likes:',
-//             this.likesCount
-//           );
-//         },
-//         error: (err) => {
-//           console.error('Error updating like status:', err);
-//           // Revert state if API call fails
-//           this.likeStatus = !newLikeStatus;
-//           this.likesCount -= newLikeStatus ? 1 : -1;
-//         },
-//       });
-//   }
-// }

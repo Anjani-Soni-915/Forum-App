@@ -35,10 +35,10 @@
           <span>{{ topic.repliesCount }}</span>
           <p>Replies</p>
         </div>
-        <div class="count-style">
+        <!-- <div class="count-style">
           <span>{{ topic.views }}</span>
           <p>Views</p>
-        </div>
+        </div> -->
       </div>
 
       <div class="divider"></div>
@@ -92,6 +92,7 @@
               alt="User Avatar"
               class="avatar"
             />
+
             <div class="reply-wrapper">
               <div class="user-info">
                 <p class="username">
@@ -101,8 +102,13 @@
                   {{ reply.createdAt | date : "medium" }}
                 </p>
               </div>
+
               <div class="user-replies-data">
-                <p class="reply-text">{{ reply.text }}</p>
+                <div class="user-reply">
+                  <div class="data-indicator"></div>
+                  <p class="reply-text">{{ reply.text }}</p>
+                </div>
+
                 <div class="edit-likes">
                   <div class="reply-actions">
                     <img

@@ -6,6 +6,9 @@ import replyModel from "./reply.model";
 import subscriptionModel from "./subscription.model";
 import topicLikesModel from "./topicLikes.model";
 import replyLikesModel from "./replyLikes.model";
+import notificationInfo from "./notificationInfo.model";
+import notificationType from "./notificationType.model";
+import notificationRecords from "./notificationRecords.model";
 
 interface DbInterface {
   Sequelize: typeof Sequelize; //The Sequelize class itself, used to configure and interact with the database.
@@ -16,6 +19,9 @@ interface DbInterface {
   Subscription: ModelStatic<Model<any, any>>;
   TopicLikes: ModelStatic<Model<any, any>>;
   ReplyLikes: ModelStatic<Model<any, any>>;
+  NotificationInfo: ModelStatic<Model<any, any>>;
+  NotificationType: ModelStatic<Model<any, any>>;
+  NotificationRecords: ModelStatic<Model<any, any>>;
 }
 
 const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
@@ -38,6 +44,9 @@ const db: DbInterface = {
   Subscription: subscriptionModel(sequelize),
   TopicLikes: topicLikesModel(sequelize),
   ReplyLikes: replyLikesModel(sequelize),
+  NotificationInfo: notificationInfo(sequelize),
+  NotificationType: notificationType(sequelize),
+  NotificationRecords: notificationRecords(sequelize),
 };
 
 // Initialize model associations

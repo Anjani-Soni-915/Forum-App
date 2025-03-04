@@ -66,11 +66,12 @@ export default (sequelize: Sequelize) => {
       as: "topicData",
       onDelete: "CASCADE",
     });
+    Subscription.belongsTo(models.NotificationInfo, {
+      foreignKey: "subscribedId",
+      as: "subscriptionData",
+      onDelete: "SET NULL",
+    });
   };
-
-  //   sequelize.sync({ force: true }).then(() => {
-  //     console.log("Subscriptions table created!");
-  //   });
 
   return Subscription;
 };

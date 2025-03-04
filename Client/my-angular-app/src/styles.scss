@@ -5,6 +5,7 @@
 
 body {
   font-family: "Inter", sans-serif;
+  background-color: var(--grey-background);
 }
 
 // @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap");
@@ -27,29 +28,13 @@ input::placeholder {
   --gradient-color: linear-gradient(90deg, rgb(29, 44, 175), #147ff1, #3e9bff);
   // --input-color: rgb(65, 65, 65);
   --input-color: #5a5a5a;
-  --grey-color: #808080;
-  --grey-background: rgb(197, 196, 196);
+  --grey-color: #5d5d5d;
+  --grey-background: #f5f4f4de;
   overflow: hidden;
 }
 
-// f1f1f1a3
-// toast style
-// :host ::ng-deep .p-toast-top-right {
-//   position: fixed;
-//   top: 63px;
-//   right: 20px;
-//   z-index: 1102;
-// }
-
-:host::ng-deep .p-toast {
-  width: var(--p-toast-width);
-  white-space: pre-line;
-  word-break: break-word;
-  top: 67px !important;
+.toast {
+  .p-toast {
+    top: 70px !important;
+  }
 }
-
-// :host ::ng-deep .p-toast.p-component.p-toast-top-right {
-//   top: 163px !important; /* Moves the toaster below the navbar */
-//   right: 20px !important; /* Ensures it stays on the right */
-//   z-index: 99999 !important; /* Ensures it's visible */
-// }

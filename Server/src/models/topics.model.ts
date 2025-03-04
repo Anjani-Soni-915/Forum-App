@@ -113,6 +113,11 @@ export default (sequelize: Sequelize) => {
       as: "topicLikesData",
       onDelete: "CASCADE",
     });
+    Topic.hasMany(models.NotificationInfo, {
+      foreignKey: "topicId",
+      as: "topicData",
+      onDelete: "SET NULL",
+    });
   };
 
   //   const forceSync = false;

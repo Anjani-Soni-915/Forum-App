@@ -10,7 +10,7 @@ export const authenticateJWT = (req: Request): CreateUserInput | null => {
   const authHeader = req.headers["authorization"];
 
   if (!authHeader) {
-    console.error("No Bearer token provided.");
+    // console.error("No Bearer token provided.");
     return null;
   }
 

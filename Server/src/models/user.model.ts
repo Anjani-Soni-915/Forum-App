@@ -58,8 +58,9 @@ export default (sequelize: Sequelize) => {
       email: {
         type: DataTypes.STRING,
         allowNull: false,
-        unique: true,
+        unique: "email_unique",
       },
+
       image: {
         type: DataTypes.STRING,
         allowNull: true,
@@ -116,6 +117,16 @@ export default (sequelize: Sequelize) => {
     User.hasMany(models.ReplyLikes, {
       foreignKey: "userId",
       as: "replyLikesData",
+      onDelete: "CASCADE",
+    });
+    User.hasMany(models.NotificationInfo, {
+      foreignKey: "receiverId",
+      as: "receiver",
+      onDelete: "CASCADE",
+    });
+    User.hasMany(models.NotificationRecords, {
+      foreignKey: "senderId",
+      as: "sender",
       onDelete: "CASCADE",
     });
   };

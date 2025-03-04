@@ -1,5 +1,7 @@
 import express from "express";
 import dotenv from "dotenv";
+import http from "http";
+import { Server } from "socket.io";
 import db from "./models/index.model";
 import typeDefs from "./graphql/index.graphql";
 import resolvers from "./graphql/resolvers/index.resolver";
@@ -14,31 +16,42 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Create HTTP Server
+const server = http.createServer(app);
+
+// Initialize Socket.io
+const io = new Server(server, {
+  cors: {
+    origin: "*",
+  },
+});
+
 // Sync the database
 db.sequelize
-  .sync()
-  .then(() => console.log("🚀 ~ Database is connected successfully....."))
+  .sync({ force: false, logging: false })
+  .then(() => console.log("🚀 ~ Database connected successfully....."))
   .catch((err: Error) => console.error("Failed to sync db: " + err.message));
 
-// Apollo server for graphql
-const server = new ApolloServer({
+// Apollo server for GraphQL
+const apolloServer = new ApolloServer({
   typeDefs,
   resolvers,
   cache: "bounded",
   context: ({ req }) => {
     const user = authenticateJWT(req);
-    return { user };
+    return { user, io }; // Pass socket.io instance to resolvers
   },
 });
 
 async function startServer() {
   try {
-    await server.start();
-    server.applyMiddleware({ app });
+    await apolloServer.start();
+    apolloServer.applyMiddleware({ app });
 
-    app.listen(PORT, () => {
+    // Start Express server with HTTP + WebSockets
+    server.listen(PORT, () => {
       console.log(
-        `~ Server running at http://localhost:${PORT}${server.graphqlPath}`
+        `🔔 ~ Server running at http://localhost:${PORT}${apolloServer.graphqlPath}`
       );
     });
   } catch (err) {
@@ -47,3 +60,5 @@ async function startServer() {
 }
 
 startServer();
+
+export { io };
