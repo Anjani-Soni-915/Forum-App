@@ -61,8 +61,7 @@ export class LoginComponent {
 
             this.messageService.add({
               severity: 'success',
-              summary: 'Success',
-              detail: 'Login successful!',
+              summary: 'Login successful!',
             });
 
             this.closeModal();
@@ -76,8 +75,7 @@ export class LoginComponent {
           console.error('Login Error:', error);
           this.messageService.add({
             severity: 'error',
-            summary: 'Error',
-            detail: 'Invalid credentials, please try again.',
+            summary: 'Invalid credentials, please try again.',
           });
         },
       });

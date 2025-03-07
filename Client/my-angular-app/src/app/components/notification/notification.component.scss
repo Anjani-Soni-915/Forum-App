@@ -1,0 +1,174 @@
+.notification-container {
+  display: flex;
+  flex-direction: column;
+  // gap: 10px;
+}
+
+.noti-header {
+  display: flex;
+  justify-content: space-between;
+  padding: 0px 17px;
+  border-bottom: 1px solid #ebebeb;
+  padding-bottom: 14px;
+
+  h1 {
+    margin: 0;
+    font-size: 19px;
+    font-weight: 500;
+    color: var(--input-color);
+  }
+
+  .btn-icon {
+    .mark-all {
+      border: none;
+      background-color: white;
+      font-size: 13px;
+      font-weight: 400;
+      color: var(--primary-color);
+      font-family: "Inter", sans-serif;
+      cursor: pointer;
+
+      &:hover {
+        text-decoration: underline;
+        text-decoration-color: var(--primary-color);
+      }
+    }
+
+    .read-icon-btn {
+      font-size: 10px;
+      color: var(--primary-color);
+    }
+  }
+}
+
+.status-icon {
+  display: flex;
+  align-items: flex-start;
+
+  .read-icon {
+    font-size: 12px;
+    color: grey; // Style for read notifications
+  }
+}
+
+.notification-card {
+  display: flex;
+  flex-direction: row;
+  gap: 30px;
+  height: 5rem;
+  padding: 10px 16px;
+  border-bottom: 1px solid #ebebeb;
+  justify-content: space-between;
+
+  &.read {
+    background-color: #efefef;
+    opacity: 0.9;
+    // pointer-events: none;
+  }
+
+  .content {
+    p {
+      font-size: 12px;
+      margin: 0;
+      margin-left: 47px;
+      margin-top: -8px;
+
+      color: var(--input-color);
+      text-align: start;
+      width: 303px;
+      // white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 500px;
+
+      display: -webkit-box;
+      -webkit-line-clamp: 2; /* Limits to 2 lines */
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+  }
+}
+
+.title {
+  display: flex;
+  gap: 14px;
+
+  .icon {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 5px 8px;
+    border-radius: 50%;
+    width: 33px;
+    height: 33px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  h4 {
+    margin: 0;
+    font-weight: 400;
+    font-size: 15px;
+    color: var(--input -color);
+  }
+}
+
+.info-space {
+  display: flex;
+  gap: 2px;
+  margin-top: 3px;
+
+  .time {
+    display: flex;
+    gap: 5px;
+
+    .clock-icon {
+      font-size: 11px;
+    }
+    p {
+      margin: 0;
+      width: 65px;
+      font-size: 10px;
+    }
+  }
+
+  .dot {
+    color: var(--grey-color);
+    cursor: pointer;
+    position: relative;
+
+    .dot-icon {
+      font-size: 12px;
+    }
+
+    .markRead {
+      position: absolute;
+      background: white;
+      border: 1px solid #ccc;
+      padding: 5px;
+      border-radius: 5px;
+      box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+      cursor: pointer;
+      width: 6rem;
+      height: 2rem;
+      // left: -90px;
+      top: 21px;
+      right: 3px;
+
+      p {
+        margin: 4px;
+        font-size: 10px;
+        text-align: center;
+      }
+    }
+  }
+
+  // Apply styles when notification is read
+  .read-notification {
+    background: grey;
+    color: white;
+    padding: 8px;
+    border-radius: 5px;
+    text-align: center;
+  }
+}

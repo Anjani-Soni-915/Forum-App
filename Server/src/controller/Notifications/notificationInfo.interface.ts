@@ -7,3 +7,8 @@ export interface CreateNotificationInfoInput {
   notificationRecordId: number;
   status?: boolean;
 }
+
+export interface UpdateNotificationInfoInput {
+  id: number;
+  isRead: boolean;
+}

@@ -161,7 +161,6 @@ export class HomeComponent implements OnInit {
           this.loadTopics();
           this.messageService.add({
             severity: 'success',
-            summary: 'Success',
             detail: 'Topic post successfully!',
           });
         } else {

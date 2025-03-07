@@ -18,16 +18,24 @@
     </div>
 
     <div class="nav-right">
+      <div class="icon">
+        <button (click)="notifPanel.toggle($event)" class="notification-btn">
+          <i class="pi pi-bell"></i>
+        </button>
+
+        <p-overlayPanel #notifPanel>
+          <app-notification></app-notification>
+        </p-overlayPanel>
+      </div>
+
       <button *ngIf="!isLoggedIn" class="login-btn" (click)="openLoginModal()">
         Login
       </button>
       <div *ngIf="isLoggedIn" class="user-dropdown">
-        <div class="user-profile">
+        <div class="user-profile" (click)="toggleDropdown()">
           <img [src]="image ? image : '/profile2.webp'" alt="Profile" />
 
-          <span class="user-name" (click)="toggleDropdown()">{{
-            userName
-          }}</span>
+          <span class="user-name">{{ userName }}</span>
         </div>
 
         <div class="dropdown-menu" [class.open]="isDropdownOpen">

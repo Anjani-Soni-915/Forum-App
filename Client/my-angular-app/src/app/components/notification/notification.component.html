@@ -1,0 +1,57 @@
+<div class="notification-container">
+  <div class="noti-header">
+    <h1>Noticications</h1>
+    <div class="btn-icon">
+      <button class="mark-all">Mark all read</button>
+      <i class="pi pi-check-square read-icon-btn"></i>
+    </div>
+  </div>
+
+  <div
+    class="notification-card"
+    *ngFor="let notification of notificationData"
+    [ngClass]="{ read: notification.isRead }"
+  >
+    <div class="content">
+      <div class="title">
+        <div class="icon">
+          <i class="pi pi-bell bell-icon"></i>
+        </div>
+        <h4 [innerHTML]="notification.notificationRecords?.content"></h4>
+      </div>
+
+      <p>
+        {{
+          notification.topicId
+            ? notification.topicData?.title
+            : notification.replyId
+            ? notification.replyData?.text
+            : "No content available"
+        }}
+      </p>
+    </div>
+
+    <div class="info-space">
+      <div class="time">
+        <i class="pi pi-clock clock-icon"></i>
+        <p>{{ notification.createdAt | timeAgo }}</p>
+      </div>
+
+      <!-- Show different icons based on read status -->
+      <div class="status-icon">
+        <i *ngIf="notification.isRead" class="pi pi-check-square read-icon"></i>
+
+        <div
+          *ngIf="!notification.isRead"
+          class="dot"
+          (click)="openBox(notification.id)"
+        >
+          <i class="pi pi-ellipsis-v dot-icon"></i>
+          <div *ngIf="isOpenState[notification.id]" class="markRead">
+            <p (click)="Update_isRead(notification)">Mark as Read</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

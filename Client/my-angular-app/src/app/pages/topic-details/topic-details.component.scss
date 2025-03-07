@@ -128,6 +128,8 @@
       display: flex;
       flex-direction: column;
       gap: 11px;
+      width: 134px;
+      max-width: 134px;
 
       .reply,
       .subscribe {

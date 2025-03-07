@@ -46,7 +46,10 @@
       <!-- btns  -->
       <div class="topic-btns">
         <button (click)="openReplyModal()" class="reply">Reply</button>
-        <button class="subscribe">Subscribe</button>
+        <app-subscription
+          [topicId]="topic.id"
+          [subsStatus]="getSubscriptionStatus(topic.subscriptionData)"
+        ></app-subscription>
       </div>
     </div>
   </div>
@@ -113,7 +116,7 @@
                   <div class="reply-actions">
                     <img
                       [src]="checkIsLiked(reply) ? '/like.png' : '/like1.png'"
-                      (click)="toggleReplyLike(reply, i)"
+                      (click)="toggleReplyLike(reply)"
                       alt="Like Reply"
                       class="like-icon"
                     />

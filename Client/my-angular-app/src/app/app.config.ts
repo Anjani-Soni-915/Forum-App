@@ -10,6 +10,7 @@ import { providePrimeNG } from 'primeng/config';
 import { MessageService } from 'primeng/api';
 import Aura from '@primeng/themes/aura';
 import { provideAnimations } from '@angular/platform-browser/animations';
+import { SocketService } from './shared/services/socket.service';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -19,6 +20,7 @@ export const appConfig: ApplicationConfig = {
     MessageService,
     provideAnimations(),
     provideHttpClient(),
+    SocketService,
     provideRouter(routes),
     provideApollo(() => {
       const httpLink = inject(HttpLink);

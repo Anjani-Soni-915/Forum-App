@@ -5,5 +5,10 @@ export default gql`
     createNotificationInfo(
       input: CreateNotificationInfoInput!
     ): NotificationInfoResponse
+
+    updateNotificationinfo(
+      id: Int!
+      input: UpdateNotificationInfoInput!
+    ): NotificationInfoResponse
   }
 `;

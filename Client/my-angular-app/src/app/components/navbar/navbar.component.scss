@@ -85,6 +85,16 @@
   gap: 15px;
   position: relative;
 
+  .icon {
+    display: flex;
+
+    .notification-btn {
+      border-radius: 50%;
+      padding: 6px 8px;
+      color: var(--primary-color);
+      border: none;
+    }
+  }
   .login-btn {
     background-color: #fff;
     color: var(--primary-color);
@@ -138,7 +148,7 @@
       border-radius: 5px;
       overflow: hidden;
       width: 100px;
-      display: none; // Hidden by default
+      display: none;
       z-index: 100;
 
       &.open {
@@ -181,4 +191,19 @@
       }
     }
   }
+}
+
+// .p-overlaypanel {
+//   left: 800px !important;
+// }
+
+// ::ng-deep .p-popover {
+//   margin-left: 19px !important;
+// }
+
+::ng-deep .p-popover-content {
+  width: 34rem;
+  max-height: 452px;
+  overflow: auto;
+  padding: 20px 0px !important;
 }

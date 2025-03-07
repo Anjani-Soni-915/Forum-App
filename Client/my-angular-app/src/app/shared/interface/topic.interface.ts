@@ -49,6 +49,7 @@ export interface Topic {
     topicId: number;
     status: boolean;
   }[];
+  subscriptionData: SubscriptionData[];
 }
 
 export interface PaginatedTopics {
@@ -56,6 +57,13 @@ export interface PaginatedTopics {
   totalPages: number;
   currentPage: number;
   topics: Topic[];
+}
+
+export interface SubscriptionData {
+  id: number;
+  userId: number;
+  topicId: number;
+  status: boolean;
 }
 
 export interface GetTopicsResponse {

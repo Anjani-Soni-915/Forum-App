@@ -71,6 +71,12 @@ export const GET_TOPIC_BY_ID = gql`
         topicId
         status
       }
+      subscriptionData {
+        id
+        userId
+        topicId
+        status
+      }
     }
   }
 `;

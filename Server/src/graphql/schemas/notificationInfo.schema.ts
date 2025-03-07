@@ -10,8 +10,13 @@ export default gql`
     receiverId: Int!
     notificationRecordId: Int!
     status: Boolean
+    isRead: Boolean
     createdAt: String!
     updatedAt: String!
+    notificationRecords: NotificationRecords
+    topicData: Topic
+    replyData: Reply
+    receiver: User
   }
 
   input CreateNotificationInfoInput {
@@ -22,6 +27,10 @@ export default gql`
     receiverId: Int
     notificationRecordId: Int!
     status: Boolean
+  }
+
+  input UpdateNotificationInfoInput {
+    isRead: Boolean
   }
 
   type NotificationInfoResponse {

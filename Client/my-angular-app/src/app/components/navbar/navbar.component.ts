@@ -3,13 +3,23 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { LoginComponent } from '../login/login.component';
 import { SignupComponent } from '../signup/signup.component';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { MessageService } from 'primeng/api';
+import { OverlayPanelModule } from 'primeng/overlaypanel';
+import { NotificationComponent } from '../notification/notification.component';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [LoginComponent, CommonModule, ReactiveFormsModule, SignupComponent],
+  imports: [
+    LoginComponent,
+    CommonModule,
+    ReactiveFormsModule,
+    SignupComponent,
+    OverlayPanelModule,
+    RouterModule,
+    NotificationComponent,
+  ],
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.scss'],
 })
@@ -48,8 +58,7 @@ export class NavbarComponent implements OnInit {
 
     this.messageService.add({
       severity: 'success',
-      summary: 'Success',
-      detail: 'Login successful!',
+      summary: 'Logout successful!',
     });
   }
 

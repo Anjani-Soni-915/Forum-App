@@ -96,8 +96,8 @@ export class ReplyModalComponent implements OnInit {
           this.close.emit();
           this.messageService.add({
             severity: 'success',
-            summary: 'Success',
             detail: 'Topic post successfully!',
+            // sticky: true,
           });
         }
       },
