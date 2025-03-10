@@ -37,4 +37,9 @@ export default gql`
     message: String!
     notificationInfo: NotificationInfo
   }
+
+  type UpdateNotificationInfoResponse {
+    message: String!
+    notificationInfo: [NotificationInfo!]!
+  }
 `;

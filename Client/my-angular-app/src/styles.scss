@@ -83,3 +83,6 @@ input::placeholder {
 .p-popover {
   margin-left: 34px;
 }
+body .p-overlaypanel:before {
+  left: 50px !important;
+}

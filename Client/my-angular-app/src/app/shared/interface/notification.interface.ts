@@ -44,6 +44,6 @@ export interface UpdateNotificationInfoInput {
 export interface UpdateNotificationInfoResponse {
   updateNotificationinfo: {
     message: string;
-    updateNotificationinfo: NotificationInfo;
+    notificationInfo: NotificationInfo[];
   };
 }

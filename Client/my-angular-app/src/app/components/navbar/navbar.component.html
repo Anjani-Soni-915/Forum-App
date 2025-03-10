@@ -23,8 +23,12 @@
           <i class="pi pi-bell"></i>
         </button>
 
-        <p-overlayPanel #notifPanel>
-          <app-notification></app-notification>
+        <p-overlayPanel
+          #notifPanel
+          (onShow)="onNotificationPanelShow()"
+          appendTo="body"
+        >
+          <app-notification #notificationComp></app-notification>
         </p-overlayPanel>
       </div>
 

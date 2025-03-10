@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { LoginComponent } from '../login/login.component';
@@ -24,6 +24,7 @@ import { NotificationComponent } from '../notification/notification.component';
   styleUrls: ['./navbar.component.scss'],
 })
 export class NavbarComponent implements OnInit {
+  @ViewChild('notificationComp') notificationComponent!: NotificationComponent;
   isLoginModalOpen = false;
   isSignupModalOpen = false;
   isDropdownOpen = false;
@@ -35,7 +36,11 @@ export class NavbarComponent implements OnInit {
   ngOnInit() {
     this.checkUserLoginStatus();
   }
-
+  onNotificationPanelShow() {
+    if (this.notificationComponent) {
+      this.notificationComponent.getNotification();
+    }
+  }
   checkUserLoginStatus() {
     const token = localStorage.getItem('accessToken');
 

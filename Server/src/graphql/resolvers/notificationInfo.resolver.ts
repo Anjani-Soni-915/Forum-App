@@ -51,15 +51,27 @@ export default {
         throw new Error(error.message || "Failed to create notification info");
       }
     },
+    // updateNotificationinfo: async (
+    //   _: any,
+    //   { id, input }: { id: number; input: UpdateNotificationInfoInput }
+    // ) => {
+    //   try {
+    //     return await NotificationInfoController.updateNotification(id, input);
+    //   } catch (error: any) {
+    //     console.error(error);
+    //     throw new Error(`Error updating topic: ${error.message}`);
+    //   }
+    // },
+
     updateNotificationinfo: async (
       _: any,
-      { id, input }: { id: number; input: UpdateNotificationInfoInput }
+      { ids, input }: { ids: number[]; input: UpdateNotificationInfoInput }
     ) => {
       try {
-        return await NotificationInfoController.updateNotification(id, input);
+        return await NotificationInfoController.updateNotification(ids, input);
       } catch (error: any) {
         console.error(error);
-        throw new Error(`Error updating topic: ${error.message}`);
+        throw new Error(`Error updating notifications: ${error.message}`);
       }
     },
   },

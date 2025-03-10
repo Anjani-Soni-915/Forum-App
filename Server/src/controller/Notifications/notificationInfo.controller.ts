@@ -57,25 +57,54 @@ const NotificationInfoController = {
     }
   },
 
+  // updateNotification: async (
+  //   id: number,
+  //   input: UpdateNotificationInfoInput
+  // ) => {
+  //   try {
+  //     console.log("sahgaahjhajsk----------");
+  //     const data = await NotificationInfo.findByPk(id);
+  //     if (!data) {
+  //       throw new Error("data not found");
+  //     }
+
+  //     const updatedData = await data.update(input);
+
+  //     return {
+  //       message: "data updated successfully",
+  //       notificationInfo: updatedData,
+  //     };
+  //   } catch (error: any) {
+  //     console.error("Error in updatedata:", error.message);
+  //     throw new Error(error.message);
+  //   }
+  // },
+
   updateNotification: async (
-    id: number,
+    ids: number[],
     input: UpdateNotificationInfoInput
   ) => {
     try {
-      console.log("sahgaahjhajsk----------");
-      const data = await NotificationInfo.findByPk(id);
-      if (!data) {
-        throw new Error("data not found");
+      const notifications = await NotificationInfo.findAll({
+        where: { id: ids },
+      });
+
+      if (notifications.length === 0) {
+        throw new Error("No notifications found for the given IDs.");
       }
 
-      const updatedData = await data.update(input);
+      const updatePromises = notifications.map((notification) =>
+        notification.update(input)
+      );
+
+      const updatedNotifications = await Promise.all(updatePromises);
 
       return {
-        message: "data updated successfully",
-        notificationInfo: updatedData,
+        message: `${updatedNotifications.length} notifications updated successfully`,
+        notificationInfo: updatedNotifications,
       };
     } catch (error: any) {
-      console.error("Error in updatedata:", error.message);
+      console.error("Error updating notifications:", error.message);
       throw new Error(error.message);
     }
   },

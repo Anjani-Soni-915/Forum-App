@@ -31,13 +31,13 @@ export class NotificationService {
   }
 
   UpdateReadstatus(
-    id: number,
+    ids: number[],
     input: UpdateNotificationInfoInput
   ): Observable<UpdateNotificationInfoResponse['updateNotificationinfo']> {
     return this.apollo
       .mutate<UpdateNotificationInfoResponse>({
         mutation: UPDATE_IS_READ,
-        variables: { id, input },
+        variables: { ids, input },
       })
       .pipe(map(({ data }) => data!.updateNotificationinfo));
   }

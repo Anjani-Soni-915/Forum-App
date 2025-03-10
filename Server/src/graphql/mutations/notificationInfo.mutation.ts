@@ -7,8 +7,8 @@ export default gql`
     ): NotificationInfoResponse
 
     updateNotificationinfo(
-      id: Int!
+      ids: [Int!]!
       input: UpdateNotificationInfoInput!
-    ): NotificationInfoResponse
+    ): UpdateNotificationInfoResponse
   }
 `;

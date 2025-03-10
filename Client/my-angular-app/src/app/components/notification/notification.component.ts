@@ -51,15 +51,70 @@ export class NotificationComponent implements OnInit {
     const input: UpdateNotificationInfoInput = { isRead: true };
 
     this.notificationService
-      .UpdateReadstatus(notification.id, input)
+      .UpdateReadstatus([notification.id], input)
       .subscribe({
         next: (response) => {
           console.log('Notification updated successfully:', response);
-          notification.isRead = true;
+          if (response) {
+            notification.isRead = true;
+          }
         },
         error: (err) => {
           console.error('Error updating notification:', err);
         },
       });
+  }
+
+  // MarkAllAsRead() {
+  //   if (!this.notificationData || this.notificationData.length === 0) {
+  //     return;
+  //   }
+
+  //   const ids = this.notificationData.map((n) => n.id);
+  //   const input: UpdateNotificationInfoInput = { isRead: true };
+
+  //   this.notificationService.UpdateReadstatus(ids, input).subscribe({
+  //     next: (response) => {
+  //       console.log('All notifications marked as read:', response);
+  //       if (response) {
+  //         this.notificationData.forEach((n) => (n.isRead = true));
+  //       }
+  //     },
+  //     error: (err) => {
+  //       console.error('Error marking all notifications as read:', err);
+  //     },
+  //   });
+  // }
+
+  MarkAllAsRead() {
+    if (!this.notificationData || this.notificationData.length === 0) {
+      return;
+    }
+
+    const unreadIds = this.notificationData
+      .filter((n) => !n.isRead)
+      .map((n) => n.id);
+
+    if (unreadIds.length === 0) {
+      return;
+    }
+
+    const input: UpdateNotificationInfoInput = { isRead: true };
+
+    this.notificationService.UpdateReadstatus(unreadIds, input).subscribe({
+      next: (response) => {
+        console.log('Unread notifications marked as read:', response);
+        if (response) {
+          this.notificationData.forEach((n) => {
+            if (unreadIds.includes(n.id)) {
+              n.isRead = true;
+            }
+          });
+        }
+      },
+      error: (err) => {
+        console.error('Error marking unread notifications as read:', err);
+      },
+    });
   }
 }

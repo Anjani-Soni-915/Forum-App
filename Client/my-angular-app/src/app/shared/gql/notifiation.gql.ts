@@ -37,10 +37,10 @@ export const GET_NOTIFICATION = gql`
 
 export const UPDATE_IS_READ = gql`
   mutation UpdateNotificationInfo(
-    $id: Int!
+    $ids: [Int!]!
     $input: UpdateNotificationInfoInput!
   ) {
-    updateNotificationinfo(id: $id, input: $input) {
+    updateNotificationinfo(ids: $ids, input: $input) {
       message
       notificationInfo {
         isRead

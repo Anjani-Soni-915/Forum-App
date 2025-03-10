@@ -1,54 +1,60 @@
 <div class="notification-container">
   <div class="noti-header">
-    <h1>Noticications</h1>
+    <h1>Notifications</h1>
     <div class="btn-icon">
-      <button class="mark-all">Mark all read</button>
+      <button class="mark-all" (click)="MarkAllAsRead()">
+        Mark All as Read
+      </button>
       <i class="pi pi-check-square read-icon-btn"></i>
     </div>
   </div>
 
-  <div
-    class="notification-card"
-    *ngFor="let notification of notificationData"
-    [ngClass]="{ read: notification.isRead }"
-  >
-    <div class="content">
-      <div class="title">
-        <div class="icon">
-          <i class="pi pi-bell bell-icon"></i>
+  <div class="card-main-box">
+    <div
+      class="notification-card"
+      *ngFor="let notification of notificationData"
+      [ngClass]="{ read: notification.isRead }"
+    >
+      <div class="content">
+        <div class="title">
+          <div class="icon">
+            <i class="pi pi-bell bell-icon"></i>
+          </div>
+          <h4 [innerHTML]="notification.notificationRecords?.content"></h4>
         </div>
-        <h4 [innerHTML]="notification.notificationRecords?.content"></h4>
+
+        <p>
+          {{
+            notification.topicId
+              ? notification.topicData?.title
+              : notification.replyId
+              ? notification.replyData?.text
+              : "No content available"
+          }}
+        </p>
       </div>
 
-      <p>
-        {{
-          notification.topicId
-            ? notification.topicData?.title
-            : notification.replyId
-            ? notification.replyData?.text
-            : "No content available"
-        }}
-      </p>
-    </div>
+      <div class="info-space">
+        <div class="time">
+          <i class="pi pi-clock clock-icon"></i>
+          <p>{{ notification.createdAt | timeAgo }}</p>
+        </div>
 
-    <div class="info-space">
-      <div class="time">
-        <i class="pi pi-clock clock-icon"></i>
-        <p>{{ notification.createdAt | timeAgo }}</p>
-      </div>
+        <div class="status-icon">
+          <i
+            *ngIf="notification.isRead"
+            class="pi pi-check-square read-icon"
+          ></i>
 
-      <!-- Show different icons based on read status -->
-      <div class="status-icon">
-        <i *ngIf="notification.isRead" class="pi pi-check-square read-icon"></i>
-
-        <div
-          *ngIf="!notification.isRead"
-          class="dot"
-          (click)="openBox(notification.id)"
-        >
-          <i class="pi pi-ellipsis-v dot-icon"></i>
-          <div *ngIf="isOpenState[notification.id]" class="markRead">
-            <p (click)="Update_isRead(notification)">Mark as Read</p>
+          <div
+            *ngIf="!notification.isRead"
+            class="dot"
+            (click)="openBox(notification.id)"
+          >
+            <i class="pi pi-ellipsis-v dot-icon"></i>
+            <div *ngIf="isOpenState[notification.id]" class="markRead">
+              <p (click)="Update_isRead(notification)">Mark as Read</p>
+            </div>
           </div>
         </div>
       </div>
