@@ -1,0 +1,266 @@
+<div class="digi-forum-wrapper">
+  <!-- Forum Title and Start Discussion Button -->
+  <div class="digi-forum-header">
+    <p>Add a new thread</p>
+    <button class="ask-btn" (click)="openModal()">
+      <i class="pi pi-plus"></i>
+    </button>
+  </div>
+
+  <div class="topic-data">
+    <!-- Topics Header -->
+    <!-- <div class="topic-header">
+      <h1>Topics</h1>
+      <div class="counts-data">
+        <p>Replies</p>
+        <p>Likes</p>
+      </div>
+    </div> -->
+
+    <div
+      class="topic-card-wrapper"
+      [class.loading]="loading"
+      (scroll)="onScroll($event)"
+    >
+      <!-- Show skeleton loaders when loading is true -->
+      <div *ngIf="loading">
+        <div *ngFor="let i of [1, 2, 3, 4, 5]" class="topic-card">
+          <div class="main-topic-cont">
+            <p-skeleton
+              shape="circle"
+              size="90px"
+              styleClass="mr-2"
+            ></p-skeleton>
+            <div class="topic-content">
+              <p-skeleton
+                width="80px"
+                height="20px"
+                class="heading"
+              ></p-skeleton>
+              <p-skeleton
+                width="160px"
+                height="16px"
+                class="description"
+              ></p-skeleton>
+              <div class="user-data">
+                <p-skeleton
+                  width="80px"
+                  height="20px"
+                  class="heading"
+                ></p-skeleton>
+                <p-skeleton
+                  width="80px"
+                  height="20px"
+                  class="heading"
+                ></p-skeleton>
+              </div>
+            </div>
+          </div>
+
+          <div class="count-values">
+            <div class="count-design">
+              <p-skeleton></p-skeleton>
+            </div>
+            <div class="count-design">
+              <p-skeleton></p-skeleton>
+            </div>
+            <div class="count-design">
+              <p-skeleton></p-skeleton>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Show actual topics when loading is false -->
+      <div *ngIf="!loading" class="topics-wrapper">
+        <!-- <div
+          *ngFor="let topic of topics"
+          class="topic-card"
+          (click)="goToTopicDetail(topic.id)"
+        >
+          <div class="main-topic-cont">
+            <img
+              [src]="topic.userData.image || '/profile2.webp'"
+              alt="Profile"
+              class="profile-img"
+            />
+            <div class="topic-content">
+              <h2>{{ topic.title }}</h2>
+              <h3>{{ topic.description }}</h3>
+              <div class="user-data">
+                <p>{{ topic.userData.fName }} {{ topic.userData.lName }}</p>
+                <p>{{ topic.createdAt | date : "mediumDate" }}</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="count-values">
+            <div class="count-design">
+              <p>Replies</p>
+              <h4>{{ topic.repliesCount }}</h4>
+            </div>
+
+            <div class="count-design">
+              <p>Likes</p>
+              <h4>{{ topic.likes }}</h4>
+            </div>
+          </div>
+        </div> -->
+
+        <div
+          *ngFor="let topic of topics"
+          class="topic-card"
+          (click)="goToTopicDetail(topic.id)"
+        >
+          <div class="main-topic-cont">
+            <div class="topic-title">
+              <h2>{{ topic.title }}</h2>
+            </div>
+            <div class="author-detail">
+              <div class="image-container">
+                <img
+                  [src]="topic.userData.image || '/profile2.webp'"
+                  alt="Profile"
+                  class="profile-img"
+                />
+              </div>
+              <div class="author">
+                <p class="user-name">
+                  {{ topic.userData.fName }} {{ topic.userData.lName }}
+                </p>
+                <p class="creation">
+                  {{ topic.createdAt | date : "mediumDate" }}
+                </p>
+              </div>
+            </div>
+            <div class="topic-content">
+              <h3>{{ topic.description }}</h3>
+            </div>
+            <div class="like-comment-container">
+              <div class="like-comment">
+                <img src="/thumbs-up-solid.svg" />
+              </div>
+              <div class="like-comment">
+                <img src="/comment-solid.svg" />
+              </div>
+            </div>
+          </div>
+
+          <!-- <div class="count-values">
+            <div class="count-design">
+              <p>Replies</p>
+              <h4>{{ topic.repliesCount }}</h4>
+            </div> -->
+          <!-- <div class="count-design">
+            <p>Views</p>
+            <h4>{{ topic.views }}</h4>
+          </div> -->
+          <!-- <div class="count-design">
+              <p>Likes</p>
+              <h4>{{ topic.likes }}</h4>
+            </div>
+          </div> -->
+        </div>
+
+        <!-- Show loader when fetching more topics -->
+        <div *ngIf="isFetchingMore" class="loading-spinner">
+          <p-progress-spinner
+            strokeWidth="3"
+            fill="transparent"
+            animationDuration=".5s"
+            [style]="{ width: '40px', height: '40px' }"
+          />
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal for Creating a Discussion -->
+    <div class="backdrop" *ngIf="isModalOpen"></div>
+    <div class="modal" *ngIf="isModalOpen">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>Start a Discussion</h2>
+          <button class="close-btn" (click)="closeModal()">&times;</button>
+        </div>
+
+        <form
+          [formGroup]="topicForm"
+          (ngSubmit)="postTopic()"
+          class="modal-form"
+        >
+          <div class="modal-inputs">
+            <div class="input-wrapper">
+              <label for="title">Title <span>*</span></label>
+              <input
+                id="title"
+                type="text"
+                formControlName="title"
+                placeholder="Enter Title"
+                required
+                maxlength="101"
+              />
+
+              <!-- Validation Error Messages -->
+              <div
+                class="error-mgs"
+                *ngIf="
+                  topicForm.get('title')?.invalid &&
+                  (topicForm.get('title')?.touched ||
+                    topicForm.get('title')?.dirty)
+                "
+              >
+                <span *ngIf="topicForm.get('title')?.errors?.['required']">
+                  Title is required.
+                </span>
+                <span *ngIf="topicForm.get('title')?.errors?.['minlength']">
+                  Title must be at least 5 characters.
+                </span>
+                <span *ngIf="topicForm.get('title')?.errors?.['maxlength']">
+                  Title must be at most 30 characters.
+                </span>
+              </div>
+            </div>
+
+            <div class="input-wrapper">
+              <label for="description">Description <span>*</span></label>
+              <textarea
+                id="description"
+                formControlName="description"
+                placeholder="Enter Description"
+                required
+              ></textarea>
+              <div
+                class="error-mgs"
+                *ngIf="
+                  topicForm.get('description')?.invalid &&
+                  (topicForm.get('description')?.touched ||
+                    topicForm.get('description')?.dirty)
+                "
+              >
+                <span
+                  *ngIf="topicForm.get('description')?.errors?.['required']"
+                >
+                  Description is required.
+                </span>
+              </div>
+            </div>
+
+            <div class="input-wrapper">
+              <label for="tagsInput">Tags</label>
+              <input
+                id="tagsInput"
+                type="text"
+                formControlName="tagsInput"
+                placeholder="Enter Tags (comma-separated)"
+              />
+            </div>
+          </div>
+
+          <button class="submit" type="submit" [disabled]="topicForm.invalid">
+            Post Topic
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

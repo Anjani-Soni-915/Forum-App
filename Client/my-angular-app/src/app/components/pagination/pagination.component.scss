@@ -1,0 +1,82 @@
+// :host ::ng-deep .p-paginator {
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+//   padding: 12px;
+//   background: #ffffff;
+//   border-radius: 8px;
+//   box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
+//   gap: 90px;
+// }
+
+// [_nghost-ng-c2907296625] .p-paginator {
+//   display: flex;
+//   justify-content: center;
+//   margin-top: 20px;
+//   gap: 14px;
+// }
+
+// :host ::ng-deep .p-paginator .p-paginator-pages {
+//   display: flex;
+//   gap: 10px;
+// }
+// p-select-dropdown {
+//   display: flex;
+//   align-items: center;
+//   justify-content: center;
+//   flex-shrink: 0;
+//   background: transparent;
+//   color: var(--p-select-dropdown-color);
+//   width: var(--p-select-dropdown-width);
+//   border-start-end-radius: var(--p-select-border-radius);
+//   border-end-end-radius: var(--p-select-border-radius);
+//   display: none;
+// }
+// :host ::ng-deep .p-paginator .p-paginator-pages .p-paginator-page {
+//   width: 40px;
+//   height: 40px;
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+//   border-radius: 6px;
+//   border: 1px solid #007bff;
+//   color: #007bff;
+//   font-weight: bold;
+//   cursor: pointer;
+//   transition: all 0.3s ease-in-out;
+// }
+
+// :host ::ng-deep .p-paginator .p-paginator-pages .p-paginator-page.p-highlight {
+//   background: #007bff;
+//   color: white;
+//   border-color: #007bff;
+// }
+
+// :host ::ng-deep .p-paginator .p-paginator-pages .p-paginator-page:hover {
+//   background: #007bff;
+//   color: white;
+// }
+
+// :host ::ng-deep .p-paginator .p-paginator-prev,
+// :host ::ng-deep .p-paginator .p-paginator-next,
+// :host ::ng-deep .p-paginator .p-paginator-first,
+// :host ::ng-deep .p-paginator .p-paginator-last {
+//   width: 40px;
+//   height: 40px;
+//   border-radius: 6px;
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+//   background: #007bff;
+//   color: white;
+//   cursor: pointer;
+//   transition: all 0.3s ease-in-out;
+//   border: none;
+// }
+
+// :host ::ng-deep .p-paginator .p-paginator-prev:hover,
+// :host ::ng-deep .p-paginator .p-paginator-next:hover,
+// :host ::ng-deep .p-paginator .p-paginator-first:hover,
+// :host ::ng-deep .p-paginator .p-paginator-last:hover {
+//   background: #0056b3;
+// }

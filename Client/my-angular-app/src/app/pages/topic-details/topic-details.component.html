@@ -1,0 +1,150 @@
+<app-navbar></app-navbar>
+
+<!-- Main container  -->
+<div class="topic-id-container">
+  <!-- Title-box  -->
+  <div *ngIf="topic" class="title-div">
+    <!-- title and user name  -->
+    <div class="title-header">
+      <div class="image-wrapper">
+        <!-- <img src="hashtag.png" /> -->
+        <h1>{{ topic.title }}</h1>
+      </div>
+
+      <!-- shred by and date  -->
+      <div class="title-user-header">
+        <p>
+          Shared by
+          <span>{{ topic.userData.fName }} {{ topic.userData.lName }},</span>
+        </p>
+        <p class="date">{{ topic.createdAt | date : "mediumDate" }}</p>
+      </div>
+      <!-- tags  -->
+      <div class="tags">
+        <span *ngFor="let tag of topic.tags" class="tag-box">
+          <img src="/tag3.png" alt="Tag Icon" />
+          <p>{{ tag }}</p>
+        </span>
+      </div>
+    </div>
+    <!--counts, btns  -->
+    <div class="topic-header-data">
+      <!-- counts  -->
+      <div class="topic-counts-data">
+        <div class="count-style">
+          <span>{{ topic.repliesCount }}</span>
+          <p>Replies</p>
+        </div>
+        <!-- <div class="count-style">
+          <span>{{ topic.views }}</span>
+          <p>Views</p>
+        </div> -->
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- btns  -->
+      <div class="topic-btns">
+        <button (click)="openReplyModal()" class="reply">Reply</button>
+        <app-subscription
+          [topicId]="topic.id"
+          [subsStatus]="getSubscriptionStatus(topic.subscriptionData)"
+        ></app-subscription>
+      </div>
+    </div>
+  </div>
+
+  <!-- description-box  -->
+  <div *ngIf="topic" class="data-container">
+    <div class="data-indicator"></div>
+    <div class="desc-count-box">
+      <div class="description-box">
+        <!-- <span>{{ topic.title }}</span> -->
+        <pre>{{ topic.description }}</pre>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="like-count">
+        <img
+          [src]="likeStatus ? '/like.png' : '/like1.png'"
+          alt="Like Icon"
+          (click)="toggleLike()"
+          style="cursor: pointer"
+        />
+        <p>{{ likesCount }}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Reply-box  -->
+  <div class="reply-container">
+    <div class="reply-box">
+      <div class="reply-heading">
+        <p>Replies</p>
+      </div>
+
+      <div class="reply-loop" *ngIf="topic?.replyData?.length; else noReplies">
+        <div
+          class="reply-card"
+          *ngFor="let reply of topic?.replyData; index as i"
+        >
+          <div class="reply-header">
+            <img
+              [src]="reply.userData.image"
+              alt="User Avatar"
+              class="avatar"
+            />
+
+            <div class="reply-wrapper">
+              <div class="user-info">
+                <p class="username">
+                  {{ reply?.userData?.fName }} {{ reply?.userData?.lName }}
+                </p>
+                <p class="reply-date">
+                  {{ reply.createdAt | date : "medium" }}
+                </p>
+              </div>
+
+              <div class="user-replies-data">
+                <div class="user-reply">
+                  <div class="data-indicator"></div>
+                  <p class="reply-text">{{ reply.text }}</p>
+                </div>
+
+                <div class="edit-likes">
+                  <div class="reply-actions">
+                    <img
+                      [src]="checkIsLiked(reply) ? '/like.png' : '/like1.png'"
+                      (click)="toggleReplyLike(reply)"
+                      alt="Like Reply"
+                      class="like-icon"
+                    />
+                    <span>{{ reply.likes }}</span>
+                  </div>
+
+                  <!-- <div>
+                    <i class="pi pi-pencil edit-icon"></i>
+                  </div> -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <ng-template #noReplies>
+        <div class="no-reply-box">
+          <p class="no-replies">No replies yet. Be the first to reply!</p>
+          <button (click)="openReplyModal()" class="reply">Reply</button>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+</div>
+<app-reply-modal
+  *ngIf="showReplyModal && topic?.id"
+  [topicId]="topic?.id!"
+  (replyPosted)="onReplyPosted($event)"
+  (close)="showReplyModal = false"
+></app-reply-modal>

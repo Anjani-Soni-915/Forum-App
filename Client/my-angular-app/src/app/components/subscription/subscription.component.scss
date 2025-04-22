@@ -1,0 +1,27 @@
+.subscribe {
+  display: flex;
+  gap: 5px;
+  padding: 6px 25px;
+  border-radius: 4px;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  box-shadow: 3px 3px 10px rgba(8, 8, 8, 0.14);
+  width: 134px;
+  max-width: 134px;
+
+  transition: background-color 0.3s ease;
+  justify-content: center;
+
+  &.unsubscribed {
+    background-color: white;
+    color: var(--primary-color);
+    border: 1px solid var(--primary-color);
+  }
+
+  &.subscribed {
+    background-color: rgb(180, 177, 177);
+    color: white;
+    border: 1px solid rgb(180, 177, 177);
+  }
+}

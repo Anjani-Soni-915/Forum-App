@@ -1,0 +1,24 @@
+<!-- <p-toast class="toast" position="top-right"></p-toast> -->
+ <div class="main-component"></div>
+   <router-outlet></router-outlet>
+ 
+
+<p-toast class="custom-design">
+  <ng-template let-message pTemplate="message">
+    <div
+      [ngClass]="{
+        'custom-toast': message.severity === 'info',
+        'default-toast': message.severity !== 'info'
+      }"
+    >
+      <div class="icon" *ngIf="message.severity === 'info'">
+        <i class="pi pi-bell bell-icon"></i>
+      </div>
+
+      <div class="toast-content">
+        <h4 [innerHTML]="message.summary"></h4>
+        <p [innerHTML]="message.detail"></p>
+      </div>
+    </div>
+  </ng-template>
+</p-toast>

@@ -1,0 +1,22 @@
+# Ignore node_modules (for both server and client)
+# node_modules/
+# Server/node_modules/
+# Client/my-angular-app/node_modules/
+
+# client 
+# Client/my-angular-app/dist
+Client/my-angular-app/tmp
+Client/my-angular-app/out-tsc
+Client/my-angular-app/bazel-out
+
+Client/my-angular-app/node_modules
+Client/my-angular-app/npm-debug.log
+Client/my-angular-app/yarn-error.log
+
+#server
+Server/node_modules/
+
+# Ignore environment files
+.env
+Server/.env
+Client/.env

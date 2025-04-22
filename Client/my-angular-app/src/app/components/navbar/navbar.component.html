@@ -1,0 +1,69 @@
+<nav class="navbar">
+  <div class="logo">
+    <img src="/logo.svg" alt="Logo" />
+  </div>
+
+  <div class="right-section">
+    <div class="nav-links">
+      <a routerLink="/">Home</a>
+      <a routerLink="/about">About</a>
+      <a routerLink="/contact">Contact</a>
+    </div>
+
+    <div class="search-bar">
+      <input type="text" placeholder="Type to search" />
+      <button class="search-btn">
+        <!-- <img src="/search.png" alt="Search" /> -->
+         <i class="pi pi-search"></i>
+      </button>
+    </div>
+
+    <div class="nav-right">
+      <div class="icon">
+        <button (click)="notifPanel.toggle($event)" class="notification-btn">
+          <i class="pi pi-bell"></i>
+        </button>
+
+        <p-overlayPanel
+          #notifPanel
+          (onShow)="onNotificationPanelShow()"
+          appendTo="body"
+        >
+          <app-notification #notificationComp></app-notification>
+        </p-overlayPanel>
+      </div>
+
+      <button *ngIf="!isLoggedIn" class="login-btn" (click)="openLoginModal()">
+        Login
+      </button>
+      <div *ngIf="isLoggedIn" class="user-dropdown">
+        <div class="user-profile" (click)="toggleDropdown()">
+          <img [src]="image ? image : '/profile2.webp'" alt="Profile" />
+
+          <span class="user-name">{{ userName }}</span>
+        </div>
+
+        <div class="dropdown-menu" [class.open]="isDropdownOpen">
+          <ul>
+            <li>Subscribed</li>
+            <li class="logout-btn" (click)="logout()">Logout</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- Include the Login Modal Component -->
+<app-login
+  *ngIf="isLoginModalOpen"
+  (opensignup)="signupOpen()"
+  (close)="closeLoginModal()"
+></app-login>
+<!-- <app-signup *ngIf="isSignupModalOpen" (close)="signupClose()"></app-signup> -->
+<app-signup
+  *ngIf="isSignupModalOpen"
+  (close)="signupClose()"
+  (isopenLogin)="openLoginModal()"
+>
+</app-signup>

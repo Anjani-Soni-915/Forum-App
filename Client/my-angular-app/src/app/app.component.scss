@@ -1,0 +1,121 @@
+.main-component {
+  background: #f5f9fc80;
+  // margin: 0 32px;
+  position: absolute;
+  z-index: -1;
+  width: 100svw;
+  height: 100svh;
+  filter: blur(90px);
+}
+
+.custom-design {
+  color: red;
+  ::ng-deep {
+    .p-toast {
+      .p-toast-message-success {
+        background-color: #e6f6f1;
+        color: #155724;
+
+        .toast-content p {
+          font-size: 16px;
+          margin: 4px 0 0;
+          color: #246521;
+          text-align: start;
+        }
+        .p-toast .p-toast-message {
+          display: flex;
+          align-items: flex-start;
+          gap: var(--p-toast-content-gap);
+          /* height: 79px; */
+          align-items: center;
+          width: 283px !important;
+        }
+      }
+      .p-toast-message-content {
+        gap: 0px;
+      }
+      .p-toast-message {
+        display: flex;
+        align-items: flex-start;
+        // padding: 15px;
+        gap: var(--p-toast-content-gap);
+
+        align-items: center;
+      }
+
+      .p-toast-message-info {
+        background: #ffffff;
+        color: rgb(95, 93, 93);
+      }
+
+      .p-toast-message-error {
+        background-color: #f8d7da;
+        color: #721c24;
+      }
+    }
+
+    .custom-toast {
+      display: flex;
+      flex-direction: row;
+      align-items: start;
+      gap: 16px;
+      // padding: 12px;
+      background: white;
+      width: 320px;
+    }
+
+    .default-toast {
+      padding: 12px;
+      // background: #ffffff;
+      width: 320px;
+      color: black;
+    }
+    .icon {
+      display: flex;
+
+      .bell-icon {
+        font-size: 15px;
+        color: #ffffff;
+        background-color: var(--primary-color);
+        padding: 7px;
+        border-radius: 20px;
+        margin-top: 2px;
+      }
+    }
+
+    .toast-content {
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .toast-content h4 {
+      font-size: 14px;
+      margin: 0;
+      font-weight: 400;
+      text-align: start;
+      color: var(--input-color);
+    }
+
+    .toast-content p {
+      font-size: 12px;
+      margin: 4px 0 0;
+      color: var(--input-color);
+      text-align: start;
+      width: 285px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 500px;
+    }
+
+    /* Close button color */
+    .p-icon {
+      width: 12px;
+    }
+    .p-toast-close-button {
+      color: var(--input-color);
+      font-size: 10px;
+    }
+  }
+}
