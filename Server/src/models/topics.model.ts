@@ -10,6 +10,8 @@ interface TopicAttributes {
   views: number;
   repliesCount: number;
   tags: object;
+  feedType: "post" | "feedback" | "poll";
+  isAnonymous: boolean;
   status?: boolean;
 }
 
@@ -29,6 +31,8 @@ export class Topic
   public views!: number;
   public repliesCount!: number;
   public tags!: object;
+  public feedType!: "post" | "feedback" | "poll";
+  public isAnonymous!: boolean;
   public status!: boolean;
 
   public readonly createdAt!: Date;
@@ -78,6 +82,17 @@ export default (sequelize: Sequelize) => {
         allowNull: true,
         defaultValue: JSON.stringify([]),
       },
+      feedType: {
+        type: DataTypes.ENUM("post", "feedback", "poll"),
+        allowNull: false,
+        defaultValue: "post",
+      },
+
+      isAnonymous: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: false,
+      },
       status: {
         type: DataTypes.BOOLEAN,
         allowNull: false,
@@ -116,6 +131,17 @@ export default (sequelize: Sequelize) => {
     Topic.hasMany(models.NotificationInfo, {
       foreignKey: "topicId",
       as: "topicData",
+      onDelete: "SET NULL",
+    });
+    Topic.hasMany(models.PollVote, {
+      foreignKey: "topicId",
+      as: "pollVoteData",
+      onDelete: "SET NULL",
+    });
+
+    Topic.hasMany(models.Poll, {
+      foreignKey: "topicId",
+      as: "pollData",
       onDelete: "SET NULL",
     });
   };

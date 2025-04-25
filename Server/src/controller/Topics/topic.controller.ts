@@ -1,9 +1,11 @@
+import { Order } from "sequelize";
 import { Reply } from "../../models/reply.model";
 import { ReplyLikes } from "../../models/replyLikes.model";
 import { Subscription } from "../../models/subscription.model";
 import { TopicLikes } from "../../models/topicLikes.model";
 import { Topic } from "../../models/topics.model";
 import { User } from "../../models/user.model";
+import searchTopicsCondition from "./search.function";
 import { CreateTopicInput, UpdateTopicInput } from "./topic.interface";
 import { number } from "joi";
 
@@ -68,18 +70,76 @@ const topicController = {
     }
   },
 
-  getTopics: async (page: number = 1, pageSize: number = 10) => {
+  // getTopics: async (page: number = 1, pageSize: number = 10) => {
+  //   try {
+  //     const validPage = page > 0 ? page : 1;
+  //     const validPageSize = pageSize > 0 ? pageSize : 10;
+  //     const offset = (validPage - 1) * validPageSize;
+
+  //     console.log(
+  //       `Fetching topics - Page: ${validPage}, PageSize: ${validPageSize}`
+  //     );
+
+  //     const { count, rows } = await Topic.findAndCountAll({
+  //       where: { status: true },
+  //       distinct: true,
+  //       include: [
+  //         { model: User, as: "userData" },
+  //         { model: Reply, as: "replyData" },
+  //         { model: TopicLikes, as: "topicLikesData" },
+  //         { model: Subscription, as: "subscriptionData" },
+  //       ],
+  //       order: [["createdAt", "DESC"]],
+  //       limit: validPageSize,
+  //       offset: offset,
+  //     });
+
+  //     console.log(`Total Topics: ${count}, Fetched: ${rows.length}`);
+
+  //     return {
+  //       totalItems: count,
+  //       totalPages: Math.ceil(count / validPageSize),
+  //       currentPage: validPage,
+  //       topics: rows,
+  //     };
+  //   } catch (error: any) {
+  //     console.error("Error in getTopics:", error.message);
+  //     throw new Error(error.message || "Failed to fetch topics");
+  //   }
+  // },
+
+  getTopics: async (
+    page: number = 1,
+    pageSize: number = 10,
+    searchQuery: string = "",
+    sortFieldBy: string = "createdAt",
+    sortOrderBy: "asc" | "desc" = "desc"
+  ) => {
     try {
       const validPage = page > 0 ? page : 1;
       const validPageSize = pageSize > 0 ? pageSize : 10;
+      const validSearchQuery = searchQuery?.trim() || "";
+      let validSortFieldBy =
+        sortFieldBy && sortFieldBy.trim() ? sortFieldBy : "createdAt";
+      const validSortOrderBy: "asc" | "desc" =
+        sortOrderBy === "asc" || sortOrderBy === "desc" ? sortOrderBy : "desc";
+
+      const validSortFields = ["createdAt", "likes", "repliesCount"];
+      if (!validSortFields.includes(validSortFieldBy)) {
+        validSortFieldBy = "createdAt";
+      }
+
       const offset = (validPage - 1) * validPageSize;
 
-      console.log(
-        `Fetching topics - Page: ${validPage}, PageSize: ${validPageSize}`
-      );
+      const where = {
+        status: true,
+        ...searchTopicsCondition(validSearchQuery),
+      };
+
+      const order: Order = [[validSortFieldBy, validSortOrderBy]];
 
       const { count, rows } = await Topic.findAndCountAll({
-        where: { status: true },
+        where,
         distinct: true,
         include: [
           { model: User, as: "userData" },
@@ -87,12 +147,10 @@ const topicController = {
           { model: TopicLikes, as: "topicLikesData" },
           { model: Subscription, as: "subscriptionData" },
         ],
-        order: [["createdAt", "DESC"]],
+        order,
         limit: validPageSize,
-        offset: offset,
+        offset,
       });
-
-      console.log(`Total Topics: ${count}, Fetched: ${rows.length}`);
 
       return {
         totalItems: count,
@@ -106,30 +164,6 @@ const topicController = {
     }
   },
 
-  // getTopics: async () => {
-  //   try {
-  //     const datas = await Topic.findAll({
-  //       where: { status: true },
-  //       include: [
-  //         { model: User, as: "userData" },
-  //         { model: Reply, as: "replyData" },
-  //         { model: TopicLikes, as: "topicLikesData" },
-  //         {
-  //           model: Subscription,
-  //           as: "subscriptionData",
-  //         },
-  //       ],
-  //       order: [["createdAt", "DESC"]],
-  //     });
-  //     if (datas.length === 0) {
-  //       throw new Error("No data found");
-  //     }
-  //     return datas;
-  //   } catch (error: any) {
-  //     console.error("Error in getAlldata:", error.message);
-  //     throw new Error(error.message);
-  //   }
-  // },
   updateTopic: async (id: number, input: UpdateTopicInput) => {
     try {
       const data = await Topic.findByPk(id);

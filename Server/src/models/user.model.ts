@@ -12,7 +12,7 @@ interface UserAttributes {
   status?: boolean;
   image?: string;
   dob?: string;
-  profession?: string;
+  interest?: string;
 }
 
 interface UserCreationAttributes
@@ -29,7 +29,7 @@ export class User
   public email!: string;
   public image!: string;
   public dob!: string;
-  public profession!: string;
+  public interest!: string;
   public password!: string;
   public status!: boolean;
 
@@ -69,8 +69,8 @@ export default (sequelize: Sequelize) => {
         type: DataTypes.STRING,
         allowNull: true,
       },
-      profession: {
-        type: DataTypes.STRING,
+      interest: {
+        type: DataTypes.JSON,
         allowNull: true,
       },
       password: {
@@ -127,6 +127,11 @@ export default (sequelize: Sequelize) => {
     User.hasMany(models.NotificationRecords, {
       foreignKey: "senderId",
       as: "sender",
+      onDelete: "CASCADE",
+    });
+    User.hasMany(models.PollVote, {
+      foreignKey: "userId",
+      as: "pollVoteData",
       onDelete: "CASCADE",
     });
   };
