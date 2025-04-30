@@ -4,7 +4,7 @@ export interface CreateUserInput {
   email: string;
   image: string;
   dob: string;
-  profession: string;
+  interest: object;
   password: string;
   status: boolean;
 }
@@ -15,7 +15,7 @@ export interface UpdateUserInput {
   email?: string;
   image?: string;
   dob?: string;
-  profession?: string;
+  // interest: object;
   password?: string;
   status?: boolean;
 }

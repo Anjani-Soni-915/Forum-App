@@ -8,14 +8,76 @@ import { User } from "../../models/user.model";
 import searchTopicsCondition from "./search.function";
 import { CreateTopicInput, UpdateTopicInput } from "./topic.interface";
 import { number } from "joi";
+import { Poll } from "../../models/poll.model";
+import { PollOption } from "../../models/pollOptions.model";
 
 const topicController = {
+  // createTopic: async (userId: number, input: CreateTopicInput) => {
+  //   try {
+  //     if (!userId) {
+  //       throw new Error("Authentication required");
+  //     }
+
+  //     const topic = await Topic.create({
+  //       ...input,
+  //       userId,
+  //     });
+
+  //     return {
+  //       message: "Topic created successfully",
+  //       topic,
+  //     };
+  //   } catch (error: any) {
+  //     console.error("Error in createTopic:", error.message);
+  //     throw new Error(error.message || "Failed to create topic");
+  //   }
+  // },
+
   createTopic: async (userId: number, input: CreateTopicInput) => {
     try {
       if (!userId) {
         throw new Error("Authentication required");
       }
 
+      // Handle Poll topic
+      if (input.feedType === "poll") {
+        const { pollData } = input;
+
+        if (!pollData || !pollData.options?.length) {
+          throw new Error("Poll data with options is required for poll topics");
+        }
+
+        const topic = await Topic.create({
+          ...input,
+          userId,
+        });
+
+        const poll = await Poll.create({
+          topicId: topic.id,
+          isMultipleChoice: input.pollData?.isMultipleChoice ?? false,
+          expiresAt: input.pollData?.expiresAt
+            ? new Date(input.pollData.expiresAt)
+            : null,
+        });
+
+        const pollOptions = await Promise.all(
+          pollData.options.map((optionText: string) =>
+            PollOption.create({
+              pollId: poll.id,
+              optionText,
+            })
+          )
+        );
+
+        return {
+          message: "Poll topic created successfully",
+          topic,
+          poll,
+          pollOptions,
+        };
+      }
+
+      // Non-poll topic
       const topic = await Topic.create({
         ...input,
         userId,
@@ -146,12 +208,22 @@ const topicController = {
           { model: Reply, as: "replyData" },
           { model: TopicLikes, as: "topicLikesData" },
           { model: Subscription, as: "subscriptionData" },
+          {
+            model: Poll,
+            as: "pollData",
+            include: [
+              {
+                model: PollOption,
+                as: "options",
+              },
+            ],
+          },
         ],
         order,
         limit: validPageSize,
         offset,
       });
-
+      console.log("HIHIHIHIHIHI", JSON.stringify(rows, null, 2));
       return {
         totalItems: count,
         totalPages: Math.ceil(count / validPageSize),

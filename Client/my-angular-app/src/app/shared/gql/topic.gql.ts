@@ -44,7 +44,6 @@ export const GET_TOPIC_BY_ID = gql`
         lName
         fName
         image
-        profession
       }
       replyData {
         id
