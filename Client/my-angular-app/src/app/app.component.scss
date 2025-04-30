@@ -8,6 +8,10 @@
   filter: blur(90px);
 }
 
+.inner-wrapper {
+  display: flex;
+}
+
 .custom-design {
   color: red;
   ::ng-deep {

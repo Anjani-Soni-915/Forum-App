@@ -24,6 +24,12 @@ export const GET_TOPICS = gql`
           lName
           image
         }
+        topicLikesData {
+        id
+        userId
+        topicId
+        status
+      }
       }
     }
   }
@@ -44,7 +50,6 @@ export const GET_TOPIC_BY_ID = gql`
         lName
         fName
         image
-        profession
       }
       replyData {
         id

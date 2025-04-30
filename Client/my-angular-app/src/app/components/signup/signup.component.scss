@@ -18,6 +18,8 @@
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   position: relative;
   text-align: center;
+  max-height: 90vh;
+  overflow: auto;
 }
 
 .signup-header {
@@ -26,10 +28,10 @@
   justify-content: space-between;
 
   h2 {
-    color: var(--primary-color);
+    color: var(--primary-text-color);
     margin: 0;
     font-weight: 500;
-    font-size: 23px;
+    font-size: 24px;
   }
   .close-btn {
     font-size: 29px;
@@ -53,6 +55,11 @@ form {
 .parent-wrapper {
   display: flex;
   justify-content: space-between;
+  gap: 12px;
+  .input-wrapper {
+    flex: 0 0 50%;
+    max-width: 50%;
+  }
 }
 label {
   margin: 2px 0 5px;
@@ -64,17 +71,20 @@ label {
 }
 
 input {
-  padding: 10px;
-  border: 1px solid rgb(180, 179, 179);
-  border-radius: 5px;
-  color: var(--input-color);
+  padding: 12px;
+  border: 1px none rgb(180, 179, 179);
+  border-radius: 8px;
+  color: var(--primary-text-color);
+  background-color: var(--input-background-color);
   outline: none;
   width: 100%;
-  min-width: 249px;
+  // min-width: 249px;
+  font-size: 14px;
+  font-family: "Poppins", sans-serif;
 }
 .input-wrapper input[type="date"] {
-  font-family: "Inter", sans-serif; /* Apply Inter font */
-  font-size: 12px;
+  font-family: "Poppins", sans-serif; /* Apply Inter font */
+  font-size: 14px;
 }
 
 .error {
@@ -93,6 +103,7 @@ input {
   cursor: pointer;
   margin-top: 22px;
   font-size: 16px;
+  font-family: "Poppins", sans-serif;
 }
 
 button:disabled {
@@ -104,7 +115,7 @@ button:disabled {
 .signup-line {
   font-size: 14px;
   font-weight: 400;
-  margin-top: 30px;
+  margin-top: 24px;
   color: var(--input-color);
 
   span {

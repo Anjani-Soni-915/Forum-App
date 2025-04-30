@@ -23,49 +23,57 @@
       (scroll)="onScroll($event)"
     >
       <!-- Show skeleton loaders when loading is true -->
-      <div *ngIf="loading">
+      <div *ngIf="loading" class="topics-wrapper">
         <div *ngFor="let i of [1, 2, 3, 4, 5]" class="topic-card">
           <div class="main-topic-cont">
-            <p-skeleton
-              shape="circle"
-              size="90px"
-              styleClass="mr-2"
-            ></p-skeleton>
-            <div class="topic-content">
+            <div class="topic-title">
               <p-skeleton
-                width="80px"
-                height="20px"
-                class="heading"
+                width="500px"
+                height="35px"
+                styleClass="mr-2"
+              ></p-skeleton>
+            </div>
+            <div class="tags-container" style="margin-top: 4px">
+              <p-skeleton
+                width="50px"
+                height="24px"
+                styleClass="mr-2"
               ></p-skeleton>
               <p-skeleton
-                width="160px"
-                height="16px"
-                class="description"
+                width="50px"
+                height="24px"
+                styleClass="mr-2"
               ></p-skeleton>
-              <div class="user-data">
+            </div>
+            <div class="author-detail">
+              <p-skeleton
+                size="60px"
+                styleClass="mr-2"
+                class="image-container"
+              ></p-skeleton>
+              <div class="author">
                 <p-skeleton
                   width="80px"
-                  height="20px"
+                  height="16px"
                   class="heading"
                 ></p-skeleton>
                 <p-skeleton
-                  width="80px"
-                  height="20px"
-                  class="heading"
+                  width="160px"
+                  height="16px"
+                  class="description"
                 ></p-skeleton>
               </div>
             </div>
-          </div>
-
-          <div class="count-values">
-            <div class="count-design">
-              <p-skeleton></p-skeleton>
+            <div class="topic-content">
+              <p-skeleton
+                width="80%"
+                height="14px"
+                styleClass="mr-2"
+              ></p-skeleton>
             </div>
-            <div class="count-design">
-              <p-skeleton></p-skeleton>
-            </div>
-            <div class="count-design">
-              <p-skeleton></p-skeleton>
+            <div class="like-comment-container">
+              <p-skeleton width="40px" height="40px"></p-skeleton>
+              <p-skeleton width="40px" height="40px"></p-skeleton>
             </div>
           </div>
         </div>
@@ -116,6 +124,11 @@
             <div class="topic-title">
               <h2>{{ topic.title }}</h2>
             </div>
+            <div *ngIf="topic.tags && topic.tags.length" class="tags-container">
+              <div class="tag-wrapper" *ngFor="let tag of topic.tags">
+                <div class="tags">{{ tag }}</div>
+              </div>
+            </div>
             <div class="author-detail">
               <div class="image-container">
                 <img
@@ -134,14 +147,28 @@
               </div>
             </div>
             <div class="topic-content">
-              <h3>{{ topic.description }}</h3>
+              <h3 [innerHTML]="topic.description"></h3>
             </div>
             <div class="like-comment-container">
-              <div class="like-comment">
-                <img src="/thumbs-up-solid.svg" />
+              <div class="like-count-wrapper">
+                <div
+                  class="like-comment"
+                  [ngClass]="
+                    isPostLiked(topic.topicLikesData) ? 'liked-post' : ''
+                  "
+                  (click)="toggleLike($event, topic)"
+                >
+                  <i class="fa-solid fa-thumbs-up"></i>
+                </div>
+                <span *ngIf="topic.likes">{{ topic?.likes }}</span>
               </div>
-              <div class="like-comment">
-                <img src="/comment-solid.svg" />
+              <div class="like-count-wrapper">
+                <div class="like-comment">
+                  <i class="fa-solid fa-comment"></i>
+                </div>
+                <span *ngIf="topic.repliesCount">{{
+                  topic?.repliesCount
+                }}</span>
               </div>
             </div>
           </div>
@@ -257,7 +284,7 @@
           </div>
 
           <button class="submit" type="submit" [disabled]="topicForm.invalid">
-            Post Topic
+            Post
           </button>
         </form>
       </div>

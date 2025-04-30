@@ -1,7 +1,12 @@
 <!-- <p-toast class="toast" position="top-right"></p-toast> -->
- <div class="main-component"></div>
-   <router-outlet></router-outlet>
- 
+<div class="main-component"></div>
+
+<app-navbar></app-navbar>
+
+<div class="inner-wrapper">
+  <app-sidebar></app-sidebar>
+  <router-outlet></router-outlet>
+</div>
 
 <p-toast class="custom-design">
   <ng-template let-message pTemplate="message">

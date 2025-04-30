@@ -1,6 +1,15 @@
 import { Component, HostListener, OnInit } from '@angular/core';
-import { CreateTopicInput, PaginatedTopics, Topic } from '../../shared/interface/topic.interface';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  CreateTopicInput,
+  PaginatedTopics,
+  Topic,
+} from '../../shared/interface/topic.interface';
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { TopicService } from '../../shared/services/topic.service';
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
@@ -8,18 +17,23 @@ import { MessageService } from 'primeng/api';
 import { CommonModule } from '@angular/common';
 import { SkeletonModule } from 'primeng/skeleton';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { LikeTopicService } from '../../shared/services/likeTopic.service';
+import { SelectModule } from 'primeng/select';
 
 @Component({
   selector: 'app-feeds',
-  imports: [CommonModule,
-      ReactiveFormsModule,
-      SkeletonModule,
-      ProgressSpinnerModule,],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    SkeletonModule,
+    ProgressSpinnerModule,
+    SelectModule,
+  ],
   templateUrl: './feeds.component.html',
-  styleUrls: ['./feeds.component.scss', "../home/home.component.scss"]
+  styleUrls: ['./feeds.component.scss', '../home/home.component.scss'],
 })
 export class FeedsComponent implements OnInit {
-topics: Topic[] = [];
+  topics: Topic[] = [];
   loading = true;
   isFetchingMore = false;
   error: string | null = null;
@@ -34,7 +48,8 @@ topics: Topic[] = [];
     private topicService: TopicService,
     private fb: FormBuilder,
     private router: Router,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private likeTopicService: LikeTopicService
   ) {
     this.topicForm = this.fb.group({
       title: [
@@ -73,6 +88,44 @@ topics: Topic[] = [];
 
   goToTopicDetail(topicId: number) {
     this.router.navigate(['/topic', topicId]);
+  }
+
+  isPostLiked(topicLikes: any) {
+    const userId = localStorage.getItem('userId');
+    return topicLikes.some(
+      (like: any) => like.userId?.toString() === userId && like?.status
+    );
+  }
+
+  toggleLike(event: any, topic: Topic) {
+    event.stopPropagation();
+    console.log('toggle like', event);
+
+    const userId = localStorage.getItem('userId') || 0;
+    if (!userId) {
+      this.messageService.add({
+        severity: 'info',
+        summary: 'Info',
+        detail: 'Login to like!',
+      });
+    }
+    let likesCount = topic.likes;
+    let likeStatus = topic.topicLikesData?.some(
+      (like: any) => like.userId?.toString() === userId
+    );
+    const prevLikes = likesCount || 0;
+    const prevStatus = likeStatus;
+
+    this.likeTopicService.createTopicLike({ topicId: topic?.id }).subscribe({
+      next: (response) => {
+        likeStatus = response.topicLikes.status;
+        likesCount = likeStatus ? prevLikes + 1 : prevLikes - 1;
+      },
+      error: () => {
+        likeStatus = prevStatus;
+        likesCount = prevLikes;
+      },
+    });
   }
 
   @HostListener('window:scroll', [])

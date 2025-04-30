@@ -1,4 +1,5 @@
 @import "primeicons/primeicons.css";
+@import "@fortawesome/fontawesome-free/css/all.css";
 // @import "ngx-toastr/toastr.scss";
 
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap");
@@ -26,9 +27,12 @@ input::placeholder {
   color: #989898;
 }
 :root {
-  --primary-color: #0865b3;
+  --primary-color: #543fdd;
   --primary-text-color: #040837;
+  --secondary-text-color: #64636a;
+  --secondary-icon-color: #bbc3c3;
   --secondary-color: #2291f1;
+  --input-background-color: #f5f5f5;
   --accent-color: #ffffff;
   --background-color: #ffffff;
   --error-color: #ce3e3e;
@@ -39,6 +43,10 @@ input::placeholder {
   --grey-color: #5d5d5d;
   --grey-background: #f5f4f4de;
   overflow: hidden;
+}
+
+.p-skeleton {
+  background: #e9eff7 !important;
 }
 
 .toast {

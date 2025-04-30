@@ -3,4 +3,52 @@
   height: 100%;
   width: 270px;
   border-right: 2px solid #e2e3e8;
+  padding: 36px 20px 36px 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  .sidebar-item-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 10px;
+    cursor: pointer;
+    .item-icon {
+      background: #fff;
+      border-radius: 8px;
+      padding: 6px 6px;
+      line-height: 0;
+      height: 28px;
+      width: 28px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      i {
+        color: var(--secondary-icon-color);
+        font-size: 14px;
+      }
+      .fa-square-poll-horizontal {
+        font-size: 16px;
+      }
+    }
+    .item-label {
+      color: var(--primary-text-color);
+      font-size: 14px;
+      user-select: none;
+    }
+  }
+
+  .active-item {
+    background-color: #fff;
+    border-radius: 12px;
+    .item-icon {
+      background-color: #eef0f6;
+      .fa {
+        color: var(--primary-color);
+      }
+    }
+    .item-label {
+      color: var(--primary-color);
+    }
+  }
 }

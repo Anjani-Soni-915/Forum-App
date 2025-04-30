@@ -1,144 +1,244 @@
-<app-navbar></app-navbar>
-
 <!-- Main container  -->
-<div class="topic-id-container">
-  <!-- Title-box  -->
-  <div *ngIf="topic" class="title-div">
-    <!-- title and user name  -->
-    <div class="title-header">
-      <div class="image-wrapper">
-        <!-- <img src="hashtag.png" /> -->
-        <h1>{{ topic.title }}</h1>
-      </div>
+<div class="topic-detail-wrapper">
+  <div class="back-btn" (click)="handleBackClick()">
+    <i class="fa-solid fa-chevron-left"></i>
+    <span>Back</span>
+  </div>
+  <div *ngIf="loading" class="topic-id-container">
+    <div class="title-div">
+      <div class="title-header">
+        <div class="image-wrapper">
+          <p-skeleton
+            width="600px"
+            height="35px"
+            styleClass="mr-2"
+          ></p-skeleton>
+        </div>
+        <div class="tags">
+          <p-skeleton width="50px" height="24px" styleClass="mr-2"></p-skeleton>
+          <p-skeleton width="50px" height="24px" styleClass="mr-2"></p-skeleton>
+        </div>
+        <div class="author-reply-wrapper">
+          <div class="author-detail">
+            <div class="image-container">
+              <p-skeleton width="60px" height="60px"></p-skeleton>
+            </div>
+            <div class="author">
+              <p class="user-name">
+                <p-skeleton width="60px" height="16px"></p-skeleton>
+              </p>
+              <p class="creation">
+                <p-skeleton width="100px" height="16px"></p-skeleton>
+              </p>
+            </div>
+          </div>
+          <div class="topic-header-data">
+            <div class="topic-counts-data">
+              <div class="count-style count-skeleton">
+                <p-skeleton width="20px" height="30px"></p-skeleton>
+                <p-skeleton width="40px" height="14px"></p-skeleton>
+              </div>
+            </div>
 
-      <!-- shred by and date  -->
-      <div class="title-user-header">
-        <p>
-          Shared by
-          <span>{{ topic.userData.fName }} {{ topic.userData.lName }},</span>
-        </p>
-        <p class="date">{{ topic.createdAt | date : "mediumDate" }}</p>
-      </div>
-      <!-- tags  -->
-      <div class="tags">
-        <span *ngFor="let tag of topic.tags" class="tag-box">
-          <img src="/tag3.png" alt="Tag Icon" />
-          <p>{{ tag }}</p>
-        </span>
+            <div class="divider"></div>
+
+            <!-- btns  -->
+            <div class="topic-btns">
+              <p-skeleton width="134px" height="29px"></p-skeleton>
+              <p-skeleton width="134px" height="29px"></p-skeleton>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-    <!--counts, btns  -->
-    <div class="topic-header-data">
-      <!-- counts  -->
-      <div class="topic-counts-data">
-        <div class="count-style">
-          <span>{{ topic.repliesCount }}</span>
+    <div class="data-container">
+      <p-skeleton width="8px" height="200px"></p-skeleton>
+      <div class="desc-count-box">
+        <div class="description-box skeleton-description-box">
+          <!-- <span>{{ topic.title }}</span> -->
+          <p-skeleton width="100%" height="13px"></p-skeleton>
+          <p-skeleton width="100%" height="13px"></p-skeleton>
+          <p-skeleton width="100%" height="13px"></p-skeleton>
+          <p-skeleton width="40%" height="13px"></p-skeleton>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="like-count">
+          <p-skeleton width="20px" height="20px"></p-skeleton>
+          <p-skeleton width="10px" height="16px"></p-skeleton>
+        </div>
+      </div>
+    </div>
+    <div class="reply-container">
+      <div class="reply-box">
+        <div class="reply-heading">
+          <p-skeleton width="100px" height="30px"></p-skeleton>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="!loading" class="topic-id-container">
+    <!-- Title-box  -->
+
+    <div *ngIf="topic" class="title-div">
+      <!-- title and user name  -->
+
+      <div class="title-header">
+        <div class="image-wrapper">
+          <!-- <img src="hashtag.png" /> -->
+          <h1>{{ topic.title }}</h1>
+        </div>
+
+        <div class="tags">
+          <span *ngFor="let tag of topic.tags" class="tag-box">
+            <p class="tag">{{ tag }}</p>
+          </span>
+        </div>
+        <!-- shred by and date  -->
+        <div class="author-reply-wrapper">
+          <div class="author-detail">
+            <div class="image-container">
+              <img
+                [src]="topic.userData.image || '/profile2.webp'"
+                alt="Profile"
+                class="profile-img"
+              />
+            </div>
+            <div class="author">
+              <p class="user-name">
+                {{ topic.userData.fName }} {{ topic.userData.lName }}
+              </p>
+              <p class="creation">
+                {{ topic.createdAt | date : "mediumDate" }}
+              </p>
+            </div>
+          </div>
+          <div class="topic-header-data">
+            <!-- counts  -->
+            <div class="topic-counts-data">
+              <div class="count-style">
+                <span>{{ topic.repliesCount }}</span>
+                <p>Replies</p>
+              </div>
+              <!-- <div class="count-style">
+              <span>{{ topic.views }}</span>
+              <p>Views</p>
+            </div> -->
+            </div>
+
+            <div class="divider"></div>
+
+            <!-- btns  -->
+            <div class="topic-btns">
+              <button (click)="openReplyModal()" class="reply">Reply</button>
+              <app-subscription
+                [topicId]="topic.id"
+                [subsStatus]="getSubscriptionStatus(topic.subscriptionData)"
+              ></app-subscription>
+            </div>
+          </div>
+        </div>
+        <!-- <div class="title-user-header">
+          <p>
+            Shared by
+            <span>{{ topic.userData.fName }} {{ topic.userData.lName }},</span>
+          </p>
+          <p class="date">{{ topic.createdAt | date : "mediumDate" }}</p>
+        </div> -->
+        <!-- tags  -->
+      </div>
+      <!--counts, btns  -->
+    </div>
+
+    <!-- description-box  -->
+    <div *ngIf="topic" class="data-container">
+      <div class="data-indicator"></div>
+      <div class="desc-count-box">
+        <div class="description-box">
+          <!-- <span>{{ topic.title }}</span> -->
+          <pre>{{ topic.description }}</pre>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="like-count">
+          <i
+            class="fa-solid fa-thumbs-up"
+            [ngClass]="likeStatus ? 'active-like' : ''"
+            (click)="toggleLike()"
+            style="cursor: pointer"
+          ></i>
+          <p>{{ likesCount }}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Reply-box  -->
+    <div class="reply-container">
+      <div class="reply-box">
+        <div class="reply-heading">
           <p>Replies</p>
         </div>
-        <!-- <div class="count-style">
-          <span>{{ topic.views }}</span>
-          <p>Views</p>
-        </div> -->
-      </div>
-
-      <div class="divider"></div>
-
-      <!-- btns  -->
-      <div class="topic-btns">
-        <button (click)="openReplyModal()" class="reply">Reply</button>
-        <app-subscription
-          [topicId]="topic.id"
-          [subsStatus]="getSubscriptionStatus(topic.subscriptionData)"
-        ></app-subscription>
-      </div>
-    </div>
-  </div>
-
-  <!-- description-box  -->
-  <div *ngIf="topic" class="data-container">
-    <div class="data-indicator"></div>
-    <div class="desc-count-box">
-      <div class="description-box">
-        <!-- <span>{{ topic.title }}</span> -->
-        <pre>{{ topic.description }}</pre>
-      </div>
-
-      <div class="divider"></div>
-
-      <div class="like-count">
-        <img
-          [src]="likeStatus ? '/like.png' : '/like1.png'"
-          alt="Like Icon"
-          (click)="toggleLike()"
-          style="cursor: pointer"
-        />
-        <p>{{ likesCount }}</p>
-      </div>
-    </div>
-  </div>
-
-  <!-- Reply-box  -->
-  <div class="reply-container">
-    <div class="reply-box">
-      <div class="reply-heading">
-        <p>Replies</p>
-      </div>
-
-      <div class="reply-loop" *ngIf="topic?.replyData?.length; else noReplies">
         <div
-          class="reply-card"
-          *ngFor="let reply of topic?.replyData; index as i"
+          class="reply-loop"
+          *ngIf="topic?.replyData?.length; else noReplies"
         >
-          <div class="reply-header">
-            <img
-              [src]="reply.userData.image"
-              alt="User Avatar"
-              class="avatar"
-            />
+          <div
+            class="reply-card"
+            *ngFor="let reply of topic?.replyData; index as i"
+          >
+            <div class="reply-header">
+              <img
+                [src]="reply.userData.image"
+                alt="User Avatar"
+                class="avatar"
+              />
 
-            <div class="reply-wrapper">
-              <div class="user-info">
-                <p class="username">
-                  {{ reply?.userData?.fName }} {{ reply?.userData?.lName }}
-                </p>
-                <p class="reply-date">
-                  {{ reply.createdAt | date : "medium" }}
-                </p>
-              </div>
-
-              <div class="user-replies-data">
-                <div class="user-reply">
-                  <div class="data-indicator"></div>
-                  <p class="reply-text">{{ reply.text }}</p>
+              <div class="reply-wrapper">
+                <div class="user-info">
+                  <p class="username">
+                    {{ reply?.userData?.fName }} {{ reply?.userData?.lName }}
+                  </p>
+                  <p class="reply-date">
+                    {{ reply.createdAt | date : "medium" }}
+                  </p>
                 </div>
 
-                <div class="edit-likes">
-                  <div class="reply-actions">
-                    <img
-                      [src]="checkIsLiked(reply) ? '/like.png' : '/like1.png'"
-                      (click)="toggleReplyLike(reply)"
-                      alt="Like Reply"
-                      class="like-icon"
-                    />
-                    <span>{{ reply.likes }}</span>
+                <div class="user-replies-data">
+                  <div class="user-reply">
+                    <p class="reply-text">{{ reply.text }}</p>
                   </div>
 
-                  <!-- <div>
+                  <div class="edit-likes">
+                    <div class="reply-actions">
+                      <i
+                        class="fa-solid fa-thumbs-up"
+                        [ngClass]="checkIsLiked(reply) ? 'liked-reply' : ''"
+                        (click)="toggleReplyLike(reply)"
+                      ></i>
+                      <span>{{ reply.likes }}</span>
+                    </div>
+
+                    <!-- <div>
                     <i class="pi pi-pencil edit-icon"></i>
                   </div> -->
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <ng-template #noReplies>
-        <div class="no-reply-box">
-          <p class="no-replies">No replies yet. Be the first to reply!</p>
-          <button (click)="openReplyModal()" class="reply">Reply</button>
-        </div>
-      </ng-template>
+        <ng-template #noReplies>
+          <div class="no-reply-box">
+            <img src="/no-replies-illustration.png" />
+            <p class="no-replies">No replies yet. Be the first to reply!</p>
+            <button (click)="openReplyModal()" class="reply">Reply</button>
+          </div>
+        </ng-template>
+      </div>
     </div>
   </div>
 </div>

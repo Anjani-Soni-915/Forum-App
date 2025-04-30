@@ -6,7 +6,7 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SkeletonModule } from 'primeng/skeleton';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
-import { Router } from '@angular/router';
+import { Router, RouterModule, RouterOutlet } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import {
   CreateTopicInput,
@@ -23,7 +23,8 @@ import { FeedsComponent } from '../feeds/feeds.component';
   imports: [
     NavbarComponent,
     SidebarComponent,
-    FeedsComponent
+    FeedsComponent,
+    RouterOutlet, RouterModule,
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ReplyData, Topic } from '../../shared/interface/topic.interface';
 import { TopicService } from '../../shared/services/topic.service';
 import { LikeTopicService } from '../../shared/services/likeTopic.service';
@@ -12,6 +12,7 @@ import { SocketService } from '../../shared/services/socket.service';
 import { Subscription } from 'rxjs';
 import { SubscriptionComponent } from '../../components/subscription/subscription.component';
 import { ChangeDetectorRef } from '@angular/core';
+import { Skeleton } from 'primeng/skeleton';
 
 @Component({
   selector: 'app-topic-details',
@@ -22,6 +23,7 @@ import { ChangeDetectorRef } from '@angular/core';
     ReactiveFormsModule,
     ReplyModalComponent,
     SubscriptionComponent,
+    Skeleton
   ],
   templateUrl: './topic-details.component.html',
   styleUrls: ['./topic-details.component.scss'],
@@ -42,7 +44,8 @@ export class TopicDetailsComponent implements OnInit {
     private likeTopicService: LikeTopicService,
     private messageService: MessageService,
     private socketService: SocketService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private router : Router
   ) {}
 
   ngOnInit() {
@@ -113,6 +116,10 @@ export class TopicDetailsComponent implements OnInit {
     if (!this.topic?.replyData) return;
 
     this.topic.replyData.unshift(reply);
+  }
+
+  handleBackClick(){
+    this.router.navigateByUrl('/');
   }
 
   // checkIsLiked(reply: ReplyData) {
