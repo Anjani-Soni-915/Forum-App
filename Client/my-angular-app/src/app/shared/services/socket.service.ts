@@ -10,7 +10,7 @@ export class SocketService {
   private socket: Socket;
 
   constructor(private messageService: MessageService) {
-    this.socket = io('http://10.81.0.211:7000', {
+    this.socket = io('http://localhost:7000', {
       path: '/socket.io/',
       transports: ['websocket'],
     });

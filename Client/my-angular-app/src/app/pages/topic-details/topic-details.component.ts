@@ -23,7 +23,7 @@ import { Skeleton } from 'primeng/skeleton';
     ReactiveFormsModule,
     ReplyModalComponent,
     SubscriptionComponent,
-    Skeleton
+    Skeleton,
   ],
   templateUrl: './topic-details.component.html',
   styleUrls: ['./topic-details.component.scss'],
@@ -45,7 +45,7 @@ export class TopicDetailsComponent implements OnInit {
     private messageService: MessageService,
     private socketService: SocketService,
     private cdr: ChangeDetectorRef,
-    private router : Router
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -118,7 +118,7 @@ export class TopicDetailsComponent implements OnInit {
     this.topic.replyData.unshift(reply);
   }
 
-  handleBackClick(){
+  handleBackClick() {
     this.router.navigateByUrl('/');
   }
 

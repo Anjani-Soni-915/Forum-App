@@ -5,6 +5,8 @@ export interface CreateTopicInput {
   views: number;
   repliesCount: number;
   tags: object;
+  feedType: "post" | "feedback" | "poll";
+  isAnonymous: boolean;
   status?: boolean;
 }
 
@@ -15,5 +17,7 @@ export interface UpdateTopicInput {
   views?: number;
   repliesCount?: number;
   tags?: object;
+  feedType?: "post" | "feedback" | "poll";
+  isAnonymous?: boolean;
   status?: boolean;
 }

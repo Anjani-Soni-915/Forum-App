@@ -25,11 +25,11 @@ export const GET_TOPICS = gql`
           image
         }
         topicLikesData {
-        id
-        userId
-        topicId
-        status
-      }
+          id
+          userId
+          topicId
+          status
+        }
       }
     }
   }

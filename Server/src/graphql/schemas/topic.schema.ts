@@ -10,6 +10,8 @@ export default gql`
     views: Int!
     repliesCount: Int!
     tags: [String]!
+    feedType: String!
+    isAnonymous: Boolean!
     status: Boolean!
     createdAt: String!
     updatedAt: String!

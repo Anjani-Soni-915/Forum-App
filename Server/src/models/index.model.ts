@@ -9,6 +9,9 @@ import replyLikesModel from "./replyLikes.model";
 import notificationInfo from "./notificationInfo.model";
 import notificationType from "./notificationType.model";
 import notificationRecords from "./notificationRecords.model";
+import poll from "./poll.model";
+import pollOption from "./pollOptions.model";
+import pollVote from "./pollVote.mode";
 
 interface DbInterface {
   Sequelize: typeof Sequelize; //The Sequelize class itself, used to configure and interact with the database.
@@ -22,6 +25,9 @@ interface DbInterface {
   NotificationInfo: ModelStatic<Model<any, any>>;
   NotificationType: ModelStatic<Model<any, any>>;
   NotificationRecords: ModelStatic<Model<any, any>>;
+  Poll: ModelStatic<Model<any, any>>;
+  PollOption: ModelStatic<Model<any, any>>;
+  PollVote: ModelStatic<Model<any, any>>;
 }
 
 const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
@@ -47,6 +53,9 @@ const db: DbInterface = {
   NotificationInfo: notificationInfo(sequelize),
   NotificationType: notificationType(sequelize),
   NotificationRecords: notificationRecords(sequelize),
+  Poll: poll(sequelize),
+  PollOption: pollOption(sequelize),
+  PollVote: pollVote(sequelize),
 };
 
 // Initialize model associations

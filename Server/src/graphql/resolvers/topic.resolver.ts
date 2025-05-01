@@ -7,20 +7,34 @@ import {
 
 export default {
   Query: {
-    // getTopics: async (_: any, __: any) => {
+    // getTopics: async (_: any, args: { page?: number; pageSize?: number }) => {
     //   try {
-    //     return await topicController.getTopics();
+    //     return await topicController.getTopics(
+    //       args.page ?? 1,
+    //       args.pageSize ?? 10
+    //     );
     //   } catch (error: any) {
-    //     console.error("Error in fetch :", error.message);
+    //     console.error("Error in fetch:", error.message);
     //     throw new Error(error.message || "Failed to fetch topics");
     //   }
     // },
-
-    getTopics: async (_: any, args: { page?: number; pageSize?: number }) => {
+    getTopics: async (
+      _: any,
+      args: {
+        page?: number;
+        pageSize?: number;
+        searchQuery?: string;
+        sortFieldBy?: string;
+        sortOrderBy?: "asc" | "desc";
+      }
+    ) => {
       try {
         return await topicController.getTopics(
           args.page ?? 1,
-          args.pageSize ?? 10
+          args.pageSize ?? 10,
+          args.searchQuery ?? "",
+          args.sortFieldBy ?? "createdAt",
+          args.sortOrderBy ?? "desc"
         );
       } catch (error: any) {
         console.error("Error in fetch:", error.message);
