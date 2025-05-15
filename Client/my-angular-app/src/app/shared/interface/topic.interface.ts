@@ -16,7 +16,7 @@ export interface ReplyData {
     lName: string;
     email: string;
     image: string;
-    profession: string;
+    // profession: string;
   };
 }
 
@@ -40,7 +40,7 @@ export interface Topic {
     fName: string;
     lName: string;
     image?: string;
-    profession?: string;
+    // profession?: string;
   };
   replyData: ReplyData[];
   topicLikesData: {

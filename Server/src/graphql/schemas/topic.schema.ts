@@ -19,6 +19,23 @@ export default gql`
     subscriptionData: [Subscription]
     replyData: [Reply]
     topicLikesData: [TopicLikes]
+    pollData: Poll
+  }
+  type Poll {
+    id: Int!
+    topicId: Int
+    isMultipleChoice: Boolean
+    expiresAt: String
+    options: [PollOption]
+    topicData: Topic
+  }
+
+  type PollOption {
+    id: Int!
+    pollId: Int!
+    text: String!
+    votes: Int!
+    poll: Poll
   }
 
   type PaginatedTopics {
@@ -27,7 +44,11 @@ export default gql`
     currentPage: Int!
     topics: [Topic]!
   }
-
+  input CreatePollInput {
+    isMultipleChoice: Boolean!
+    expiresAt: String
+    options: [String!]!
+  }
   input CreateTopicInput {
     title: String!
     description: String!
@@ -37,6 +58,7 @@ export default gql`
     tags: [String]!
     feedType: String!
     isAnonymous: Boolean!
+    pollData: CreatePollInput
   }
 
   input UpdateTopicInput {

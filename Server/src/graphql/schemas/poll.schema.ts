@@ -13,21 +13,28 @@ export default gql`
   type PollOption {
     id: Int!
     pollId: Int!
-    text: String!
-    votes: Int!
+    optionText: String!
+    voteCount: Int!
     poll: Poll
   }
 
+  # Input for creating each PollOption
+  input PollOptionInput {
+    optionText: String!
+  }
+
+  # Input for creating the Poll and its options
   input CreatePollInput {
     topicId: Int!
     isMultipleChoice: Boolean!
     expiresAt: String
-    options: [String!]!
+    options: [PollOptionInput!]!
   }
 
+  # CreatePoll Mutation response
   type PollResponse {
     message: String!
     poll: Poll!
-    pollOption: PollOption!
+    options: [PollOption!]!
   }
 `;

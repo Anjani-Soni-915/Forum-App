@@ -48,7 +48,7 @@ export class SignupComponent {
       ],
       email: ['', [Validators.required, Validators.email]],
       dob: ['', [Validators.required]],
-      profession: ['', [Validators.required]],
+      // profession: ['', [Validators.required]],
       password: [
         '',
         [
