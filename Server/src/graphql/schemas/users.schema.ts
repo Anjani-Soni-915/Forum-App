@@ -8,7 +8,7 @@ export default gql`
     email: String!
     image: String!
     dob: String!
-    interest: String!
+    interest: [String]!
     password: String!
     status: Boolean!
     topicData: [Topic]
@@ -24,7 +24,7 @@ export default gql`
     email: String!
     image: String
     dob: String
-    interest: String
+    interest: [String]!
     password: String!
   }
 
@@ -39,7 +39,6 @@ export default gql`
     email: String
     image: String
     dob: String
-    interest: String
     password: String
   }
   type TokenResponse {

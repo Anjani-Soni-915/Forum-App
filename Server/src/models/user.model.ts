@@ -12,7 +12,7 @@ interface UserAttributes {
   status?: boolean;
   image?: string;
   dob?: string;
-  interest?: string;
+  interest?: object;
 }
 
 interface UserCreationAttributes
@@ -29,7 +29,7 @@ export class User
   public email!: string;
   public image!: string;
   public dob!: string;
-  public interest!: string;
+  public interest!: object;
   public password!: string;
   public status!: boolean;
 
@@ -72,6 +72,7 @@ export default (sequelize: Sequelize) => {
       interest: {
         type: DataTypes.JSON,
         allowNull: true,
+        defaultValue: {},
       },
       password: {
         type: DataTypes.STRING,

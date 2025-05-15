@@ -6,8 +6,10 @@ import {
 } from '../../shared/interface/topic.interface';
 import {
   FormBuilder,
+  FormControl,
   FormGroup,
   ReactiveFormsModule,
+  UntypedFormArray,
   Validators,
 } from '@angular/forms';
 import { TopicService } from '../../shared/services/topic.service';
@@ -19,6 +21,7 @@ import { SkeletonModule } from 'primeng/skeleton';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { LikeTopicService } from '../../shared/services/likeTopic.service';
 import { SelectModule } from 'primeng/select';
+import { ToggleSwitchModule } from 'primeng/toggleswitch';
 
 @Component({
   selector: 'app-feeds',
@@ -28,6 +31,7 @@ import { SelectModule } from 'primeng/select';
     SkeletonModule,
     ProgressSpinnerModule,
     SelectModule,
+    ToggleSwitchModule,
   ],
   templateUrl: './feeds.component.html',
   styleUrls: ['./feeds.component.scss', '../home/home.component.scss'],
@@ -44,6 +48,12 @@ export class FeedsComponent implements OnInit {
   totalPages = 1;
   pageSize = 10;
 
+  postTypeOptions: any = [
+    { label: 'Post', value: 'post' },
+    { label: 'Poll', value: 'poll' },
+    { label: 'Feedback', value: 'feedback' },
+  ];
+
   constructor(
     private topicService: TopicService,
     private fb: FormBuilder,
@@ -52,6 +62,7 @@ export class FeedsComponent implements OnInit {
     private likeTopicService: LikeTopicService
   ) {
     this.topicForm = this.fb.group({
+      feedType: ['', [Validators.required]],
       title: [
         '',
         [
@@ -63,11 +74,33 @@ export class FeedsComponent implements OnInit {
 
       description: ['', Validators.required],
       tagsInput: [''],
+      isMultiple: [false],
     });
+  }
+
+  getOptionValidator(index: number) {
+    return (control: FormControl) => {
+      if (index < 2) {
+        return { required: true };
+      }
+      return null;
+    };
   }
 
   ngOnInit() {
     this.loadTopics();
+    this.topicForm.get('feedType')?.valueChanges?.subscribe((value) => {
+      console.log('value', value);
+      if (value === 'poll') {
+        this.topicForm.addControl(
+          'options',
+          this.fb.array([
+            this.fb.group({ option: ['', [Validators.required]] }),
+            this.fb.group({ option: ['', [Validators.required]] }),
+          ])
+        );
+      }
+    });
   }
 
   loadTopics() {
@@ -90,6 +123,21 @@ export class FeedsComponent implements OnInit {
     this.router.navigate(['/topic', topicId]);
   }
 
+  getOptions() {
+    return this?.topicForm?.get('options') as UntypedFormArray;
+  }
+
+  addOption() {
+    const index = this.topicForm.get('options')?.value?.length;
+    (this.topicForm.get('options') as UntypedFormArray)?.push(
+      this.fb.group({ option: ['', this.getOptionValidator(index)] })
+    );
+  }
+
+  removeOption(index: number, opt: any) {
+    (this.topicForm.get('options') as UntypedFormArray)?.removeAt(index);
+  }
+
   isPostLiked(topicLikes: any) {
     const userId = localStorage.getItem('userId');
     return topicLikes.some(
@@ -99,8 +147,6 @@ export class FeedsComponent implements OnInit {
 
   toggleLike(event: any, topic: Topic) {
     event.stopPropagation();
-    console.log('toggle like', event);
-
     const userId = localStorage.getItem('userId') || 0;
     if (!userId) {
       this.messageService.add({

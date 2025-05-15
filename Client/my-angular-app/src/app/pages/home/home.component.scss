@@ -48,21 +48,7 @@
   left: 50%;
   transform: translate(-50%, -50%);
   background: white;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-  width: 40%;
-  max-width: 500px;
-  z-index: 1001;
-}
-
-.modal {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: white;
-  padding: 24px;
+  padding: 24px 0px 24px 24px;
   border-radius: 10px;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
   width: 40%;
@@ -82,6 +68,7 @@
     flex-direction: row;
     width: 100%;
     justify-content: space-between;
+    padding-right: 24px;
 
     h2 {
       margin: 0;
@@ -112,7 +99,10 @@
     width: 100%;
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 12px;
+    max-height: calc(90vh - 160px);
+    overflow: auto;
+    padding-right: 24px;
 
     label {
       font-size: 14px;
@@ -170,6 +160,110 @@
     }
   }
 
+  .poll-label-container {
+    display: flex;
+    justify-content: space-between;
+    .multiselect-switch-container {
+      display: flex;
+      gap: 8px;
+      .multiselect-switch {
+        ::ng-deep {
+          .p-toggleswitch {
+            width: 30px;
+            height: 16px;
+            .p-toggleswitch-slider {
+              .p-toggleswitch-handle {
+                height: 12px;
+                width: 12px;
+                top: 12px;
+              }
+            }
+          }
+          .p-toggleswitch.p-toggleswitch-checked .p-toggleswitch-slider {
+            background: var(--primary-color);
+          }
+          .p-toggleswitch.p-toggleswitch-checked .p-toggleswitch-handle {
+            inset-inline-start: 15px;
+          }
+        }
+      }
+    }
+  }
+
+  .options-container {
+    padding: 14px 0px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    .option-wrapper {
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+      i {
+        color: var(--input-color);
+        cursor: pointer;
+      }
+      .input-wrapper {
+        width: 100%;
+      }
+    }
+  }
+
+  .add-option {
+    .add-option-btn {
+      background-color: transparent;
+      border-radius: 8px;
+      padding: 7px 8px;
+      border: 1px solid #989898;
+      cursor: pointer;
+      margin-bottom: 6px;
+      i {
+        color: var(--input-color);
+        font-size: 14px;
+      }
+    }
+  }
+
+  .post-type-wrapper {
+    display: flex;
+    flex-direction: column;
+    label {
+      margin-bottom: 2px;
+    }
+    .type-dropdown {
+      border: 1px none #ddd;
+      border-radius: 8px;
+      font-size: 14px;
+      font-family: "Poppins", sans-serif;
+      box-sizing: border-box;
+      outline: none;
+      color: var(--primary-text-color);
+      background-color: var(--input-background-color);
+      box-shadow: none;
+      ::ng-deep {
+        .p-select-label {
+          padding: 12px !important;
+          color: var(--primary-text-color);
+          // color: #989898;
+        }
+        .p-select-label.p-placeholder {
+          color: #989898;
+        }
+        .p-select-list-container {
+          .p-select-option.p-select-option-selected {
+            background-color: #f0eaff;
+            color: #7357d8;
+          }
+        }
+      }
+    }
+  }
+
+  .modal-footer {
+    width: 100%;
+    padding-right: 24px;
+  }
+
   .submit {
     background: var(--primary-color);
     color: white;
@@ -180,6 +274,7 @@
     cursor: pointer;
     font-size: 16px;
     width: 100%;
+    margin-right: 24px;
 
     &:disabled {
       background: rgb(214, 210, 210);

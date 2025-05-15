@@ -35,6 +35,8 @@ export default gql`
     views: Int!
     repliesCount: Int!
     tags: [String]!
+    feedType: String!
+    isAnonymous: Boolean!
   }
 
   input UpdateTopicInput {

@@ -216,6 +216,30 @@
           class="modal-form"
         >
           <div class="modal-inputs">
+            <div class="input-wrapper post-type-wrapper">
+              <label for="type">Type <span>*</span></label>
+              <p-select
+                id="type"
+                class="type-dropdown"
+                [options]="postTypeOptions"
+                placeholder="Select Type"
+                formControlName="feedType"
+                [optionLabel]="'label'"
+                [optionValue]="'value'"
+              ></p-select>
+              <div
+                class="error-mgs"
+                *ngIf="
+                  topicForm.get('feedType')?.invalid &&
+                  (topicForm.get('feedType')?.touched ||
+                    topicForm.get('feedType')?.dirty)
+                "
+              >
+                <span *ngIf="topicForm.get('feedType')?.errors?.['required']">
+                  Type is required.
+                </span>
+              </div>
+            </div>
             <div class="input-wrapper">
               <label for="title">Title <span>*</span></label>
               <input
@@ -254,7 +278,6 @@
                 id="description"
                 formControlName="description"
                 placeholder="Enter Description"
-                required
               ></textarea>
               <div
                 class="error-mgs"
@@ -281,11 +304,60 @@
                 placeholder="Enter Tags (comma-separated)"
               />
             </div>
-          </div>
+            <div *ngIf="topicForm.get('feedType')?.value === 'poll'">
+              <div class="poll-label-container">
+                <label>Add options</label>
+                <div class="multiselect-switch-container">
+                  <label>Multiple Choice</label>
+                  <p-toggleswitch
+                    formControlName="isMultiple"
+                    class="multiselect-switch"
+                  />
+                </div>
+              </div>
 
-          <button class="submit" type="submit" [disabled]="topicForm.invalid">
-            Post
-          </button>
+              <div formArrayName="options" class="options-container">
+                <div
+                  *ngFor="let opt of getOptions().controls; let i = index"
+                  class="option-wrapper"
+                >
+                  <ng-container [formGroupName]="i">
+                    <i class="fa-solid fa-bars"></i>
+                    <div class="input-wrapper">
+                      <input
+                        type="text"
+                        formControlName="option"
+                        placeholder="Option {{ i + 1 }}"
+                      />
+                      <div
+                        class="error-mgs"
+                        *ngIf="
+                          opt?.get('option')?.invalid &&
+                          (opt?.get('option')?.touched ||
+                            opt?.get('option')?.dirty)
+                        "
+                      >
+                        <span *ngIf="opt?.get('option')?.errors?.['required']">
+                          Option is required.
+                        </span>
+                      </div>
+                    </div>
+                    <i class="pi pi-trash" (click)="removeOption(i, opt)"></i>
+                  </ng-container>
+                </div>
+              </div>
+              <div class="add-option">
+                <button class="add-option-btn" (click)="addOption()">
+                  <i class="pi pi-plus"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button class="submit" type="submit" [disabled]="topicForm.invalid">
+              Post
+            </button>
+          </div>
         </form>
       </div>
     </div>
