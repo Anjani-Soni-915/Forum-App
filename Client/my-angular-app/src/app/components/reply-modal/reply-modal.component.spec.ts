@@ -1,0 +1,28 @@
+// /* tslint:disable:no-unused-variable */
+// import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+// import { By } from '@angular/platform-browser';
+// import { DebugElement } from '@angular/core';
+
+// import { ReplyModalComponent } from './reply-modal.component';
+
+// describe('ReplyModalComponent', () => {
+//   let component: ReplyModalComponent;
+//   let fixture: ComponentFixture<ReplyModalComponent>;
+
+//   beforeEach(async(() => {
+//     TestBed.configureTestingModule({
+//       declarations: [ ReplyModalComponent ]
+//     })
+//     .compileComponents();
+//   }));
+
+//   beforeEach(() => {
+//     fixture = TestBed.createComponent(ReplyModalComponent);
+//     component = fixture.componentInstance;
+//     fixture.detectChanges();
+//   });
+
+//   it('should create', () => {
+//     expect(component).toBeTruthy();
+//   });
+// });

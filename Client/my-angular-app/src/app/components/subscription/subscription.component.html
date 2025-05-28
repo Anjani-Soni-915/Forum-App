@@ -1,0 +1,12 @@
+<button
+  (click)="toggleSubscription()"
+  class="subscribe"
+  [ngClass]="{ subscribed: isSubscribed, unsubscribed: !isSubscribed }"
+>
+  <i
+    [ngClass]="
+      isSubscribed ? 'pi pi-bell-slash bell-icon' : 'pi pi-bell bell-icon'
+    "
+  ></i>
+  {{ isSubscribed ? "Unsubscribe" : "Subscribe" }}
+</button>

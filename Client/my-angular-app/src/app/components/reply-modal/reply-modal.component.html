@@ -1,0 +1,27 @@
+<div class="modal-overlay" (click)="closeModal()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="reply-modal-heading">
+      <h2>Post a Reply</h2>
+      <button class="close-btn" (click)="closeModal()">×</button>
+    </div>
+
+    <form [formGroup]="replyForm" (ngSubmit)="postReply()">
+      <textarea
+        formControlName="text"
+        placeholder="Write your reply..."
+      ></textarea>
+      <div
+        class="error-message"
+        *ngIf="
+          replyForm.controls['text'].invalid &&
+          replyForm.controls['text'].touched
+        "
+      >
+        Reply cannot be empty.
+      </div>
+      <button type="submit" [disabled]="replyForm.invalid || loading">
+        {{ loading ? "Posting..." : "Post Reply" }}
+      </button>
+    </form>
+  </div>
+</div>

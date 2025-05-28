@@ -1,0 +1,59 @@
+<div class="modal-overlay" (click)="closeModal()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="login-header">
+      <h2>Login</h2>
+      <button class="close-btn" (click)="closeModal()">&times;</button>
+    </div>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
+      <div class="form-wrapper">
+        <div class="input-wrapper">
+          <label>Email</label>
+          <input
+            type="email"
+            formControlName="email"
+            placeholder="Enter Email"
+          />
+          <div
+            class="error"
+            *ngIf="
+              loginForm.get('email')?.invalid && loginForm.get('email')?.touched
+            "
+          >
+            Valid email is required.
+          </div>
+        </div>
+        <div class="input-wrapper">
+          <label>Password</label>
+          <input
+            type="password"
+            formControlName="password"
+            placeholder="Enter Password"
+          />
+          <div
+            class="error"
+            *ngIf="
+              loginForm.get('password')?.invalid &&
+              loginForm.get('password')?.touched
+            "
+          >
+            Password must be at least 6 characters long.
+          </div>
+        </div>
+
+        <button class="submit" type="submit" [disabled]="loginForm.invalid">
+          Login
+        </button>
+      </div>
+    </form>
+    <div class="signup-line">
+      <p>Create an Account? <span (click)="openSignupModal()">Signup</span></p>
+    </div>
+
+    <!-- Show Signup Modal when triggered -->
+    <!-- <app-signup
+      *ngIf="isSignupModalOpen"
+      (close)="closeSignupModal()"
+    ></app-signup> -->
+  </div>
+</div>
