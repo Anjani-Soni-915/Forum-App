@@ -11,7 +11,7 @@ export default gql`
     repliesCount: Int!
     tags: [String]!
     feedType: String!
-    isAnonymous: Boolean!
+    isAnonymous: Boolean
     status: Boolean!
     createdAt: String!
     updatedAt: String!
@@ -22,7 +22,7 @@ export default gql`
     pollData: Poll
   }
   type Poll {
-    id: Int!
+    id: Int
     topicId: Int
     isMultipleChoice: Boolean
     expiresAt: String

@@ -59,7 +59,7 @@
 .modal-content {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  // align-items: center;
   gap: 10px;
   width: 100%;
 
@@ -91,7 +91,6 @@
     width: 100%;
     display: flex;
     flex-direction: column;
-    align-items: center;
     gap: 24px;
   }
 
@@ -149,8 +148,11 @@
     //   font-size: 14px;
     //   color: var(--grey-color);
     // }
+ 
   }
-
+   .anonymous-checkbox{
+      color: black;
+    }
   .input-wrapper {
     .error-mgs {
       span {

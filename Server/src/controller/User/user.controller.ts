@@ -82,7 +82,6 @@ const UserController = {
         ...input,
         password: hashedPassword,
       });
-
       const accessToken = jwt.sign(
         { id: user.id, email: user.email },
         process.env.JWT_SECRET as string,
@@ -121,7 +120,6 @@ const UserController = {
       const passwordMatch = await bcrypt.compare(input.password, user.password);
 
       if (!passwordMatch) {
-        console.log("");
         throw new Error("Invalid credentials");
       }
 

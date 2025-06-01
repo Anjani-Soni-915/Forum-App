@@ -35,12 +35,14 @@ export interface Topic {
   likes: number;
   views: number;
   createdAt: string;
+  isAnonymous:boolean;
+  pollData: Poll;
   userData: {
     id: number;
     fName: string;
     lName: string;
     image?: string;
-    // profession?: string;
+    anonymous_id ?: string
   };
   replyData: ReplyData[];
   topicLikesData: {
@@ -51,7 +53,22 @@ export interface Topic {
   }[];
   subscriptionData: SubscriptionData[];
 }
+export interface Poll {
+    id: number
+    topicId: number
+    isMultipleChoice: Boolean
+    expiresAt: String
+    options: [PollOption]
+    topicData: Topic
+  }
 
+export interface PollOption {
+    id: number
+    pollId: number
+    text: String
+    votes: number
+    poll: Poll
+  }
 export interface PaginatedTopics {
   totalItems: number;
   totalPages: number;
@@ -76,6 +93,9 @@ export interface CreateTopicInput {
   likes: number;
   views: number;
   repliesCount: number;
+  isAnonymous ?: boolean;
+  feedType?:string;
+  pollData?:any;
   tags?: string[];
 }
 

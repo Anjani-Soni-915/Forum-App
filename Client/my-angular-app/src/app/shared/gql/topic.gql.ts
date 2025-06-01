@@ -18,11 +18,17 @@ export const GET_TOPICS = gql`
         status
         createdAt
         updatedAt
+        isAnonymous
+        feedType
+        pollData {
+          topicId
+        }
         userData {
           id
           fName
           lName
           image
+          anonymous_id
         }
         topicLikesData {
           id

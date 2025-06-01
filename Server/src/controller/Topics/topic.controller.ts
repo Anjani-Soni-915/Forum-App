@@ -10,6 +10,7 @@ import { CreateTopicInput, UpdateTopicInput } from "./topic.interface";
 import { number } from "joi";
 import { Poll } from "../../models/poll.model";
 import { PollOption } from "../../models/pollOptions.model";
+import getOrCreateAnonymousId from "../../utils/getOrCreateAnonymousid";
 
 const topicController = {
   // createTopic: async (userId: number, input: CreateTopicInput) => {
@@ -39,6 +40,16 @@ const topicController = {
         throw new Error("Authentication required");
       }
 
+      //if post is done anonymously
+      let anonymousName = "";
+      if (input.isAnonymous) {
+        try {
+          anonymousName = await getOrCreateAnonymousId(userId);
+        } catch (error) {
+          console.error("Error in generating anonymous user name", error);
+        }
+      }
+
       // Handle Poll topic
       if (input.feedType === "poll") {
         const { pollData } = input;
@@ -59,14 +70,14 @@ const topicController = {
             ? new Date(input.pollData.expiresAt)
             : null,
         });
-
+        
         const pollOptions = await Promise.all(
-          pollData.options.map((optionText: string) =>
+          pollData.options.map((optionText: any) => {
             PollOption.create({
               pollId: poll.id,
               optionText,
-            })
-          )
+            });
+          })
         );
 
         return {
@@ -78,11 +89,11 @@ const topicController = {
       }
 
       // Non-poll topic
-      const topic = await Topic.create({
+      const topic: any = await Topic.create({
         ...input,
         userId,
       });
-
+      topic["anonymousName"] = anonymousName;
       return {
         message: "Topic created successfully",
         topic,

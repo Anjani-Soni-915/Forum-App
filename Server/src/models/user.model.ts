@@ -13,6 +13,7 @@ interface UserAttributes {
   image?: string;
   dob?: string;
   interest?: object;
+  anonymous_id?: string;
 }
 
 interface UserCreationAttributes
@@ -32,6 +33,7 @@ export class User
   public interest!: object;
   public password!: string;
   public status!: boolean;
+  public anonymous_id!: string;
 
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
@@ -60,7 +62,6 @@ export default (sequelize: Sequelize) => {
         allowNull: false,
         unique: "email_unique",
       },
-
       image: {
         type: DataTypes.STRING,
         allowNull: true,
@@ -82,6 +83,11 @@ export default (sequelize: Sequelize) => {
         type: DataTypes.BOOLEAN,
         allowNull: false,
         defaultValue: true,
+      },
+      anonymous_id: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: "",
       },
     },
     {

@@ -138,8 +138,11 @@
                 />
               </div>
               <div class="author">
-                <p class="user-name">
+                <p *ngIf = "!topic.isAnonymous" class="user-name">
                   {{ topic.userData.fName }} {{ topic.userData.lName }}
+                </p>
+                <p *ngIf = "topic.isAnonymous" class="user-name">
+                  {{ topic.userData.anonymous_id }}
                 </p>
                 <p class="creation">
                   {{ topic.createdAt | date : "mediumDate" }}
@@ -353,6 +356,13 @@
               </div>
             </div>
           </div>
+          <div class="input-wrapper anonymous-checkbox">
+            <input type="checkbox" formControlName="isAnonymous" />
+            <label>
+              Post anonymously
+            </label>
+          </div>
+
           <div class="modal-footer">
             <button class="submit" type="submit" [disabled]="topicForm.invalid">
               Post

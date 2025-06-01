@@ -8,9 +8,10 @@ export default gql`
     email: String!
     image: String!
     dob: String!
-    interest: [String]!
+    interest: [String]
     password: String!
     status: Boolean!
+    anonymous_id: String
     topicData: [Topic]
     replyData: [Reply]
     subscriptionData: [Subscription]
@@ -24,7 +25,7 @@ export default gql`
     email: String!
     image: String
     dob: String
-    interest: [String]!
+    interest: [String]
     password: String!
   }
 

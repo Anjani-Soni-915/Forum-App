@@ -10,7 +10,6 @@ export default gql`
       sortFieldBy: String
       sortOrderBy: String
     ): PaginatedTopics!
-    getTopicss: [Topic]
   }
 `;
 
