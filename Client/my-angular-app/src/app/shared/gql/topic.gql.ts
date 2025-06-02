@@ -21,7 +21,20 @@ export const GET_TOPICS = gql`
         isAnonymous
         feedType
         pollData {
+          id
           topicId
+          isMultipleChoice
+          expiresAt
+          createdAt
+          updatedAt
+          options {
+            id
+            pollId
+            optionText
+            voteCount
+            createdAt
+            updatedAt
+          }
         }
         userData {
           id

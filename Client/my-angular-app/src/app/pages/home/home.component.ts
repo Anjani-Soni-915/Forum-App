@@ -21,8 +21,8 @@ import { FeedsComponent } from '../feeds/feeds.component';
   selector: 'app-home',
   standalone: true,
   imports: [
-    NavbarComponent,
-    SidebarComponent,
+    // NavbarComponent,
+    // SidebarComponent,
     FeedsComponent,
     RouterOutlet,
     RouterModule,

@@ -75,7 +75,7 @@ export class FeedsComponent implements OnInit {
       description: ['', Validators.required],
       tagsInput: [''],
       isMultiple: [false],
-      isAnonymous: [false]
+      isAnonymous: [false],
     });
   }
 
@@ -222,16 +222,17 @@ export class FeedsComponent implements OnInit {
   postTopic() {
     if (this.topicForm.invalid) return;
 
-    let { title, description, tagsInput, isAnonymous, feedType , options } = this.topicForm.value;
-    console.log('Topic Form Value', this.topicForm.value)
-    if(isAnonymous){
-      isAnonymous = false
+    let { title, description, tagsInput, isAnonymous, feedType, options } =
+      this.topicForm.value;
+    console.log('Topic Form Value', this.topicForm.value);
+    if (!isAnonymous) {
+      isAnonymous = false;
     }
-    let pollData :any = {}; 
-    if(feedType == 'poll'){
-      pollData.options =options.map((opt: any) => opt.option),
-     pollData.isMultipleChoice = false
-     pollData.expiresAt = new Date().toString()
+    let pollData: any = {};
+    if (feedType == 'poll') {
+      (pollData.options = options.map((opt: any) => opt.option)),
+        (pollData.isMultipleChoice = false);
+      pollData.expiresAt = new Date().toString();
     }
     const newTopic: CreateTopicInput = {
       title,

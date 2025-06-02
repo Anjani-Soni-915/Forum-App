@@ -10,7 +10,7 @@ import { CreateTopicInput, UpdateTopicInput } from "./topic.interface";
 import { number } from "joi";
 import { Poll } from "../../models/poll.model";
 import { PollOption } from "../../models/pollOptions.model";
-import getOrCreateAnonymousId from "../../utils/getOrCreateAnonymousid";
+import getOrCreateAnonymousId from "../../utils/getOrCreateAnonymousId";
 
 const topicController = {
   // createTopic: async (userId: number, input: CreateTopicInput) => {
@@ -70,7 +70,7 @@ const topicController = {
             ? new Date(input.pollData.expiresAt)
             : null,
         });
-        
+
         const pollOptions = await Promise.all(
           pollData.options.map((optionText: any) => {
             PollOption.create({

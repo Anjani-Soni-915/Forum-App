@@ -3,7 +3,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ReplyData, Topic } from '../../shared/interface/topic.interface';
 import { TopicService } from '../../shared/services/topic.service';
 import { LikeTopicService } from '../../shared/services/likeTopic.service';
-import { NavbarComponent } from '../../components/navbar/navbar.component';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ReplyModalComponent } from '../../components/reply-modal/reply-modal.component';
@@ -18,7 +17,6 @@ import { Skeleton } from 'primeng/skeleton';
   selector: 'app-topic-details',
   standalone: true,
   imports: [
-    NavbarComponent,
     CommonModule,
     ReactiveFormsModule,
     ReplyModalComponent,

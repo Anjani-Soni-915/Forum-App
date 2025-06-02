@@ -19,13 +19,16 @@ export default gql`
     subscriptionData: [Subscription]
     replyData: [Reply]
     topicLikesData: [TopicLikes]
-    pollData: Poll
+    pollData: [Poll]
   }
   type Poll {
     id: Int
     topicId: Int
     isMultipleChoice: Boolean
     expiresAt: String
+    updatedAt: String
+    createdAt: String
+
     options: [PollOption]
     topicData: Topic
   }
@@ -33,9 +36,10 @@ export default gql`
   type PollOption {
     id: Int!
     pollId: Int!
-    text: String!
-    votes: Int!
-    poll: Poll
+    optionText: String!
+    voteCount: Int!
+    createdAt: String
+    updatedAt: String
   }
 
   type PaginatedTopics {
@@ -45,9 +49,9 @@ export default gql`
     topics: [Topic]!
   }
   input CreatePollInput {
-    isMultipleChoice: Boolean!
+    isMultipleChoice: Boolean
     expiresAt: String
-    options: [String!]!
+    options: [String!]
   }
   input CreateTopicInput {
     title: String!
