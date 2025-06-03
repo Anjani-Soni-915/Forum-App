@@ -22,6 +22,7 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { LikeTopicService } from '../../shared/services/likeTopic.service';
 import { SelectModule } from 'primeng/select';
 import { ToggleSwitchModule } from 'primeng/toggleswitch';
+// import { ClickStopPropagationDirective } from '../../shared/directives/stopPropogation.directive';
 
 @Component({
   selector: 'app-feeds',
@@ -32,6 +33,7 @@ import { ToggleSwitchModule } from 'primeng/toggleswitch';
     ProgressSpinnerModule,
     SelectModule,
     ToggleSwitchModule,
+    // ClickStopPropagationDirective
   ],
   templateUrl: './feeds.component.html',
   styleUrls: ['./feeds.component.scss', '../home/home.component.scss'],
@@ -294,5 +296,10 @@ export class FeedsComponent implements OnInit {
   closeModal() {
     this.isModalOpen = false;
     this.topicForm.reset();
+  }
+
+  onPollOptionClicked(event:Event,pollOptionId : number , userId :number){
+        event.stopPropagation()
+        console.log(pollOptionId , userId)
   }
 }

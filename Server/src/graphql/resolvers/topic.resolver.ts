@@ -1,4 +1,3 @@
-import { number } from "joi";
 import topicController from "../../controller/Topics/topic.controller";
 import {
   CreateTopicInput,

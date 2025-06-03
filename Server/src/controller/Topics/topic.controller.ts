@@ -143,43 +143,6 @@ const topicController = {
     }
   },
 
-  // getTopics: async (page: number = 1, pageSize: number = 10) => {
-  //   try {
-  //     const validPage = page > 0 ? page : 1;
-  //     const validPageSize = pageSize > 0 ? pageSize : 10;
-  //     const offset = (validPage - 1) * validPageSize;
-
-  //     console.log(
-  //       `Fetching topics - Page: ${validPage}, PageSize: ${validPageSize}`
-  //     );
-
-  //     const { count, rows } = await Topic.findAndCountAll({
-  //       where: { status: true },
-  //       distinct: true,
-  //       include: [
-  //         { model: User, as: "userData" },
-  //         { model: Reply, as: "replyData" },
-  //         { model: TopicLikes, as: "topicLikesData" },
-  //         { model: Subscription, as: "subscriptionData" },
-  //       ],
-  //       order: [["createdAt", "DESC"]],
-  //       limit: validPageSize,
-  //       offset: offset,
-  //     });
-
-  //     console.log(`Total Topics: ${count}, Fetched: ${rows.length}`);
-
-  //     return {
-  //       totalItems: count,
-  //       totalPages: Math.ceil(count / validPageSize),
-  //       currentPage: validPage,
-  //       topics: rows,
-  //     };
-  //   } catch (error: any) {
-  //     console.error("Error in getTopics:", error.message);
-  //     throw new Error(error.message || "Failed to fetch topics");
-  //   }
-  // },
 
   getTopics: async (
     page: number = 1,

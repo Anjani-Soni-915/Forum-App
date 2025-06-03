@@ -36,7 +36,8 @@ export interface Topic {
   views: number;
   createdAt: string;
   isAnonymous:boolean;
-  pollData: Poll;
+  pollData: [Poll];
+  feedType : String;
   userData: {
     id: number;
     fName: string;
@@ -65,8 +66,8 @@ export interface Poll {
 export interface PollOption {
     id: number
     pollId: number
-    text: String
-    votes: number
+    optionText: String
+    voteCount: number
     poll: Poll
   }
 export interface PaginatedTopics {

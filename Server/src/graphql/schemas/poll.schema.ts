@@ -24,17 +24,14 @@ export default gql`
   }
 
   # Input for creating the Poll and its options
-  input CreatePollInput {
+  input PollVoteInput {
     topicId: Int!
-    isMultipleChoice: Boolean
-    expiresAt: String
-    options: [PollOptionInput!]
+    pollOptionId :Int!
+    userId : Int!
   }
 
   # CreatePoll Mutation response
-  type PollResponse {
+  type PollVoteResponse {
     message: String!
-    poll: Poll!
-    options: [PollOption!]!
   }
 `;

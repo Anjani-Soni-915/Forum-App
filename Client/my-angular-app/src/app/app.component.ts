@@ -9,7 +9,7 @@ import { CommonModule } from '@angular/common';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
-
+import { ClickStopPropagationDirective } from './shared/directives/stopPropogation.directive';
 @Component({
   selector: 'app-root',
   standalone: true,
