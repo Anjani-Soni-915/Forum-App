@@ -17,27 +17,59 @@
       </div>
     </div> -->
 
-    <div class="topic-card-wrapper" [class.loading]="loading" (scroll)="onScroll($event)">
+    <div
+      class="topic-card-wrapper"
+      [class.loading]="loading"
+      (scroll)="onScroll($event)"
+    >
       <!-- Show skeleton loaders when loading is true -->
       <div *ngIf="loading" class="topics-wrapper">
         <div *ngFor="let i of [1, 2, 3, 4, 5]" class="topic-card">
           <div class="main-topic-cont">
             <div class="topic-title">
-              <p-skeleton width="500px" height="35px" styleClass="mr-2"></p-skeleton>
+              <p-skeleton
+                width="500px"
+                height="35px"
+                styleClass="mr-2"
+              ></p-skeleton>
             </div>
             <div class="tags-container" style="margin-top: 4px">
-              <p-skeleton width="50px" height="24px" styleClass="mr-2"></p-skeleton>
-              <p-skeleton width="50px" height="24px" styleClass="mr-2"></p-skeleton>
+              <p-skeleton
+                width="50px"
+                height="24px"
+                styleClass="mr-2"
+              ></p-skeleton>
+              <p-skeleton
+                width="50px"
+                height="24px"
+                styleClass="mr-2"
+              ></p-skeleton>
             </div>
             <div class="author-detail">
-              <p-skeleton size="60px" styleClass="mr-2" class="image-container"></p-skeleton>
+              <p-skeleton
+                size="60px"
+                styleClass="mr-2"
+                class="image-container"
+              ></p-skeleton>
               <div class="author">
-                <p-skeleton width="80px" height="16px" class="heading"></p-skeleton>
-                <p-skeleton width="160px" height="16px" class="description"></p-skeleton>
+                <p-skeleton
+                  width="80px"
+                  height="16px"
+                  class="heading"
+                ></p-skeleton>
+                <p-skeleton
+                  width="160px"
+                  height="16px"
+                  class="description"
+                ></p-skeleton>
               </div>
             </div>
             <div class="topic-content">
-              <p-skeleton width="80%" height="14px" styleClass="mr-2"></p-skeleton>
+              <p-skeleton
+                width="80%"
+                height="14px"
+                styleClass="mr-2"
+              ></p-skeleton>
             </div>
             <div class="like-comment-container">
               <p-skeleton width="40px" height="40px"></p-skeleton>
@@ -83,7 +115,11 @@
           </div>
         </div> -->
 
-        <div *ngFor="let topic of topics" class="topic-card" (click)="goToTopicDetail(topic.id)">
+        <div
+          *ngFor="let topic of topics"
+          class="topic-card"
+          (click)="goToTopicDetail(topic.id)"
+        >
           <div class="main-topic-cont">
             <div class="topic-title">
               <h2>{{ topic.title }}</h2>
@@ -95,7 +131,11 @@
             </div>
             <div class="author-detail">
               <div class="image-container">
-                <img [src]="topic.userData.image || '/profile2.webp'" alt="Profile" class="profile-img" />
+                <img
+                  [src]="topic.userData.image || '/profile2.webp'"
+                  alt="Profile"
+                  class="profile-img"
+                />
               </div>
               <div class="author">
                 <p *ngIf="!topic.isAnonymous" class="user-name">
@@ -111,19 +151,39 @@
             </div>
             <div class="topic-content">
               <h3 [innerHTML]="topic.description"></h3>
-              <div *ngIf="topic.feedType == 'poll'" style="color: black;">
+              <div *ngIf="topic.feedType == 'poll'" style="color: black">
                 <div *ngFor="let option of topic.pollData[0].options">
-                  <p style="color: black; width: 100px; height: 100px; border: 2px solid red;" click-stop-propagation
-                    (click)="onPollOptionClicked($event,option.id , topic.userData.id)">
-                    {{option.optionText}}</p>
+                  <p
+                    style="
+                      color: black;
+                      width: 100px;
+                      height: 100px;
+                      border: 2px solid red;
+                    "
+                    click-stop-propagation
+                    (click)="
+                      onPollOptionClicked(
+                        $event,
+                        option.id,
+                        topic.userData.id,
+                        topic.id
+                      )
+                    "
+                  >
+                    {{ option.optionText }}
+                  </p>
                 </div>
               </div>
             </div>
             <div class="like-comment-container">
               <div class="like-count-wrapper">
-                <div class="like-comment" [ngClass]="
+                <div
+                  class="like-comment"
+                  [ngClass]="
                     isPostLiked(topic.topicLikesData) ? 'liked-post' : ''
-                  " (click)="toggleLike($event, topic)">
+                  "
+                  (click)="toggleLike($event, topic)"
+                >
                   <i class="fa-solid fa-thumbs-up"></i>
                 </div>
                 <span *ngIf="topic.likes">{{ topic?.likes }}</span>
@@ -134,7 +194,7 @@
                 </div>
                 <span *ngIf="topic.repliesCount">{{
                   topic?.repliesCount
-                  }}</span>
+                }}</span>
               </div>
             </div>
           </div>
@@ -157,8 +217,12 @@
 
         <!-- Show loader when fetching more topics -->
         <div *ngIf="isFetchingMore" class="loading-spinner">
-          <p-progress-spinner strokeWidth="3" fill="transparent" animationDuration=".5s"
-            [style]="{ width: '40px', height: '40px' }" />
+          <p-progress-spinner
+            strokeWidth="3"
+            fill="transparent"
+            animationDuration=".5s"
+            [style]="{ width: '40px', height: '40px' }"
+          />
         </div>
       </div>
     </div>
@@ -172,17 +236,31 @@
           <button class="close-btn" (click)="closeModal()">&times;</button>
         </div>
 
-        <form [formGroup]="topicForm" (ngSubmit)="postTopic()" class="modal-form">
+        <form
+          [formGroup]="topicForm"
+          (ngSubmit)="postTopic()"
+          class="modal-form"
+        >
           <div class="modal-inputs">
             <div class="input-wrapper post-type-wrapper">
               <label for="type">Type <span>*</span></label>
-              <p-select id="type" class="type-dropdown" [options]="postTypeOptions" placeholder="Select Type"
-                formControlName="feedType" [optionLabel]="'label'" [optionValue]="'value'"></p-select>
-              <div class="error-mgs" *ngIf="
+              <p-select
+                id="type"
+                class="type-dropdown"
+                [options]="postTypeOptions"
+                placeholder="Select Type"
+                formControlName="feedType"
+                [optionLabel]="'label'"
+                [optionValue]="'value'"
+              ></p-select>
+              <div
+                class="error-mgs"
+                *ngIf="
                   topicForm.get('feedType')?.invalid &&
                   (topicForm.get('feedType')?.touched ||
                     topicForm.get('feedType')?.dirty)
-                ">
+                "
+              >
                 <span *ngIf="topicForm.get('feedType')?.errors?.['required']">
                   Type is required.
                 </span>
@@ -190,15 +268,24 @@
             </div>
             <div class="input-wrapper">
               <label for="title">Title <span>*</span></label>
-              <input id="title" type="text" formControlName="title" placeholder="Enter Title" required
-                maxlength="101" />
+              <input
+                id="title"
+                type="text"
+                formControlName="title"
+                placeholder="Enter Title"
+                required
+                maxlength="101"
+              />
 
               <!-- Validation Error Messages -->
-              <div class="error-mgs" *ngIf="
+              <div
+                class="error-mgs"
+                *ngIf="
                   topicForm.get('title')?.invalid &&
                   (topicForm.get('title')?.touched ||
                     topicForm.get('title')?.dirty)
-                ">
+                "
+              >
                 <span *ngIf="topicForm.get('title')?.errors?.['required']">
                   Title is required.
                 </span>
@@ -213,13 +300,22 @@
 
             <div class="input-wrapper">
               <label for="description">Description <span>*</span></label>
-              <textarea id="description" formControlName="description" placeholder="Enter Description"></textarea>
-              <div class="error-mgs" *ngIf="
+              <textarea
+                id="description"
+                formControlName="description"
+                placeholder="Enter Description"
+              ></textarea>
+              <div
+                class="error-mgs"
+                *ngIf="
                   topicForm.get('description')?.invalid &&
                   (topicForm.get('description')?.touched ||
                     topicForm.get('description')?.dirty)
-                ">
-                <span *ngIf="topicForm.get('description')?.errors?.['required']">
+                "
+              >
+                <span
+                  *ngIf="topicForm.get('description')?.errors?.['required']"
+                >
                   Description is required.
                 </span>
               </div>
@@ -227,29 +323,46 @@
 
             <div class="input-wrapper">
               <label for="tagsInput">Tags</label>
-              <input id="tagsInput" type="text" formControlName="tagsInput"
-                placeholder="Enter Tags (comma-separated)" />
+              <input
+                id="tagsInput"
+                type="text"
+                formControlName="tagsInput"
+                placeholder="Enter Tags (comma-separated)"
+              />
             </div>
             <div *ngIf="topicForm.get('feedType')?.value === 'poll'">
               <div class="poll-label-container">
                 <label>Add options</label>
                 <div class="multiselect-switch-container">
                   <label>Multiple Choice</label>
-                  <p-toggleswitch formControlName="isMultiple" class="multiselect-switch" />
+                  <p-toggleswitch
+                    formControlName="isMultiple"
+                    class="multiselect-switch"
+                  />
                 </div>
               </div>
 
               <div formArrayName="options" class="options-container">
-                <div *ngFor="let opt of getOptions().controls; let i = index" class="option-wrapper">
+                <div
+                  *ngFor="let opt of getOptions().controls; let i = index"
+                  class="option-wrapper"
+                >
                   <ng-container [formGroupName]="i">
                     <i class="fa-solid fa-bars"></i>
                     <div class="input-wrapper">
-                      <input type="text" formControlName="option" placeholder="Option {{ i + 1 }}" />
-                      <div class="error-mgs" *ngIf="
+                      <input
+                        type="text"
+                        formControlName="option"
+                        placeholder="Option {{ i + 1 }}"
+                      />
+                      <div
+                        class="error-mgs"
+                        *ngIf="
                           opt?.get('option')?.invalid &&
                           (opt?.get('option')?.touched ||
                             opt?.get('option')?.dirty)
-                        ">
+                        "
+                      >
                         <span *ngIf="opt?.get('option')?.errors?.['required']">
                           Option is required.
                         </span>
@@ -268,9 +381,7 @@
           </div>
           <div class="input-wrapper anonymous-checkbox">
             <input type="checkbox" formControlName="isAnonymous" />
-            <label>
-              Post anonymously
-            </label>
+            <label> Post anonymously </label>
           </div>
 
           <div class="modal-footer">

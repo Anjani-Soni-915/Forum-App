@@ -2,27 +2,20 @@ import { Injectable } from '@angular/core';
 import { Apollo } from 'apollo-angular';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { GET_TOPICS, CREATE_TOPIC, GET_TOPIC_BY_ID } from '../gql/topic.gql';
-import {
-  CreateTopicInput,
-  CreateTopicResponse,
-  GetTopicsResponse,
-  PaginatedTopics,
-  Topic,
-} from '../interface/topic.interface';
+import { PollVoteInput } from '../interface/poll.interface';
+import { ADD_POLL_VOTE } from '../gql/poll.gql';
 
 @Injectable({
   providedIn: 'root',
 })
-export class TopicService {
+export class PollService {
   constructor(private apollo: Apollo) {}
 
- addPoleVote(
-    input: CreateTopicInput
-  ): Observable<CreateTopicResponse['createTopic']> {
+  addPollVote(input: PollVoteInput): Observable<any> {
+    console.log('Adding poll vote with input:', input);
     return this.apollo
-      .mutate<CreateTopicResponse>({
-        mutation: CREATE_TOPIC,
+      .mutate<any>({
+        mutation: ADD_POLL_VOTE,
         variables: { input },
         context: {},
       })

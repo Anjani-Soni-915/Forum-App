@@ -26,8 +26,8 @@ export default gql`
   # Input for creating the Poll and its options
   input PollVoteInput {
     topicId: Int!
-    pollOptionId :Int!
-    userId : Int!
+    pollOptionId: Int!
+    userId: Int!
   }
 
   # CreatePoll Mutation response

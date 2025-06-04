@@ -15,7 +15,7 @@ export interface DbConfig {
 const dbConfig: DbConfig = {
   HOST: "localhost",
   USER: "root",
-  PASSWORD: "Prakhar@123",
+  PASSWORD: "Admin12345#",
   DB: "Digi-Forum",
   dialect: "mysql",
   pool: {

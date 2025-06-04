@@ -22,6 +22,8 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { LikeTopicService } from '../../shared/services/likeTopic.service';
 import { SelectModule } from 'primeng/select';
 import { ToggleSwitchModule } from 'primeng/toggleswitch';
+import { PollService } from '../../shared/services/poll.service';
+import { PollVoteInput } from '../../shared/interface/poll.interface';
 // import { ClickStopPropagationDirective } from '../../shared/directives/stopPropogation.directive';
 
 @Component({
@@ -58,6 +60,7 @@ export class FeedsComponent implements OnInit {
 
   constructor(
     private topicService: TopicService,
+    private pollService: PollService,
     private fb: FormBuilder,
     private router: Router,
     private messageService: MessageService,
@@ -298,8 +301,29 @@ export class FeedsComponent implements OnInit {
     this.topicForm.reset();
   }
 
-  onPollOptionClicked(event:Event,pollOptionId : number , userId :number){
-        event.stopPropagation()
-        console.log(pollOptionId , userId)
+  onPollOptionClicked(
+    event: Event,
+    pollOptionId: number,
+    userId: number,
+    topicId: number
+  ) {
+    event.stopPropagation();
+    console.log(pollOptionId, userId);
+
+    const newTopic: PollVoteInput = {
+      pollOptionId,
+      topicId,
+      userId,
+    };
+
+    this.pollService.addPollVote(newTopic).subscribe({
+      next: (response) => {
+        console.log('Poll vote response:', response);
+      },
+      error: (err) => {
+        this.error = 'Failed to cast vote. Please try again.';
+        console.error('Error posting cast:', err);
+      },
+    });
   }
 }

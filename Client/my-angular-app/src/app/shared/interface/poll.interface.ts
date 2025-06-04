@@ -1,5 +1,5 @@
- export interface PollVoteInput {
-    topicId: number
-    pollOptionId :number
-    userId : number
-  }
+export interface PollVoteInput {
+  topicId: number;
+  pollOptionId: number;
+  userId: number;
+}

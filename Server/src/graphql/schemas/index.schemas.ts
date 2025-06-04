@@ -7,6 +7,7 @@ import likesSchema from "./likes.schema";
 import notificationTypeSchema from "./notificationType.schema";
 import notificationInfoSchema from "./notificationInfo.schema";
 import notificationRecordsSchema from "./notificationRecords.schema";
+import pollSchema from "./poll.schema";
 
 export default gql`
   ${userSchema}
@@ -17,4 +18,5 @@ export default gql`
   ${notificationTypeSchema}
   ${notificationInfoSchema}
   ${notificationRecordsSchema}
+  ${pollSchema}
 `;

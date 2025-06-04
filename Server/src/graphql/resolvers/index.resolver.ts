@@ -6,6 +6,7 @@ import likesResolver from "./likes.resolver";
 import notificationTypeResolver from "./notificationType.resolver";
 import notificationInfoResolver from "./notificationInfo.resolver";
 import notificationRecordsResolver from "./notificationRecords.resolver";
+import pollResolver from "./poll.resolver";
 
 export default {
   Query: {
@@ -27,5 +28,6 @@ export default {
     ...notificationTypeResolver.Mutation,
     ...notificationInfoResolver.Mutation,
     ...notificationRecordsResolver.Mutation,
+    ...pollResolver.Mutation,
   },
 };
