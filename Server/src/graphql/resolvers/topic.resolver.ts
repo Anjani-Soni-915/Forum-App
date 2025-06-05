@@ -1,3 +1,4 @@
+import { Json } from "sequelize/lib/utils";
 import topicController from "../../controller/Topics/topic.controller";
 import {
   CreateTopicInput,
@@ -28,13 +29,24 @@ export default {
       }
     ) => {
       try {
-        return await topicController.getTopics(
+        const topicResponse  =  await topicController.getTopics(
           args.page ?? 1,
           args.pageSize ?? 10,
           args.searchQuery ?? "",
           args.sortFieldBy ?? "createdAt",
           args.sortOrderBy ?? "desc"
         );
+
+      const processed = topicResponse.topics.map((item )=>{
+          return {
+            ...item.dataValues,
+            tags: typeof item.dataValues.tags === 'string' ? JSON.parse(item.dataValues.tags) : item.dataValues.tags
+          }
+      })
+      return{
+        ...topicResponse,
+        topics:  processed 
+      }
       } catch (error: any) {
         console.error("Error in fetch:", error.message);
         throw new Error(error.message || "Failed to fetch topics");

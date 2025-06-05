@@ -43,6 +43,12 @@ export const GET_TOPICS = gql`
           image
           anonymous_id
         }
+        pollVoteData {
+          id
+          userId
+          pollOptionId
+          topicId
+        }
         topicLikesData {
           id
           userId

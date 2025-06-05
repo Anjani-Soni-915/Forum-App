@@ -11,6 +11,8 @@ import { number } from "joi";
 import { Poll } from "../../models/poll.model";
 import { PollOption } from "../../models/pollOptions.model";
 import getOrCreateAnonymousId from "../../utils/getOrCreateAnonymousId";
+import { it } from "node:test";
+import { PollVote } from "../../models/pollVote.mode";
 
 const topicController = {
   // createTopic: async (userId: number, input: CreateTopicInput) => {
@@ -143,7 +145,6 @@ const topicController = {
     }
   },
 
-
   getTopics: async (
     page: number = 1,
     pageSize: number = 10,
@@ -191,6 +192,10 @@ const topicController = {
                 as: "options",
               },
             ],
+          },
+          {
+            model: PollVote,
+            as: "pollVoteData",
           },
         ],
         order,

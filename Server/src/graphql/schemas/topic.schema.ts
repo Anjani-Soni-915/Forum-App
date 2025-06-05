@@ -20,6 +20,13 @@ export default gql`
     replyData: [Reply]
     topicLikesData: [TopicLikes]
     pollData: [Poll]
+    pollVoteData: [PollVoteData]
+  }
+  type PollVoteData{
+    id : Int
+    userId: Int,
+    pollOptionId: Int,
+    topicId: Int,
   }
   type Poll {
     id: Int

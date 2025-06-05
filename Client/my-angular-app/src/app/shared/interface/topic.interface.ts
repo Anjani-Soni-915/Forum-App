@@ -45,6 +45,7 @@ export interface Topic {
     image?: string;
     anonymous_id ?: string
   };
+  pollVoteData : [PollVoteData]
   replyData: ReplyData[];
   topicLikesData: {
     id: number;
@@ -53,6 +54,13 @@ export interface Topic {
     status: boolean;
   }[];
   subscriptionData: SubscriptionData[];
+}
+
+export interface PollVoteData {
+  id : number
+  userId: number
+  pollOptionId: number
+  topicId: number
 }
 export interface Poll {
     id: number
