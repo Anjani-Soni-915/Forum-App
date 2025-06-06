@@ -35,8 +35,8 @@ import { PollComponent } from '../../components/poll/poll.component';
     ProgressSpinnerModule,
     SelectModule,
     ToggleSwitchModule,
-    PollComponent
-],
+    PollComponent,
+  ],
   templateUrl: './feeds.component.html',
   styleUrls: ['./feeds.component.scss', '../home/home.component.scss'],
 })
@@ -113,6 +113,12 @@ export class FeedsComponent implements OnInit {
     this.topicService.fetchTopics(this.currentPage, this.pageSize).subscribe({
       next: (response: PaginatedTopics) => {
         this.topics = response.topics;
+              // Move topic with id 16 to the front (only once)
+      const topic16Index = this.topics.findIndex(topic => topic.id === 16);
+      if (topic16Index > 0) {
+        const [topic16] = this.topics.splice(topic16Index, 1);
+        this.topics.unshift(topic16);
+      }
         this.totalPages = response.totalPages;
         this.loading = false;
       },
@@ -198,30 +204,40 @@ export class FeedsComponent implements OnInit {
     }
   }
 
-  loadMoreTopics() {
-    if (this.isFetchingMore || this.currentPage >= this.totalPages) return;
+loadMoreTopics() {
+  if (this.isFetchingMore || this.currentPage >= this.totalPages) return;
 
-    this.isFetchingMore = true;
-    this.currentPage++;
+  this.isFetchingMore = true;
+  this.currentPage++;
 
-    this.topicService.fetchTopics(this.currentPage, this.pageSize).subscribe({
-      next: (response: PaginatedTopics) => {
-        if (response.topics.length === 0) {
-          console.warn('No more topics found!');
-          this.isFetchingMore = false;
-          return;
-        }
-        this.topics = [...this.topics, ...response.topics];
-        this.totalPages = response.totalPages;
-
+  this.topicService.fetchTopics(this.currentPage, this.pageSize).subscribe({
+    next: (response: PaginatedTopics) => {
+      if (response.topics.length === 0) {
+        console.warn('No more topics found!');
         this.isFetchingMore = false;
-      },
-      error: (err) => {
-        console.error('Error loading more topics:', err);
-        this.isFetchingMore = false;
-      },
-    });
-  }
+        return;
+      }
+
+      // Append new topics
+      this.topics = [...this.topics, ...response.topics];
+
+      // Move topic with id 16 to the front (only once)
+      const topic16Index = this.topics.findIndex(topic => topic.id === 16);
+      if (topic16Index > 0) {
+        const [topic16] = this.topics.splice(topic16Index, 1);
+        this.topics.unshift(topic16);
+      }
+
+      this.totalPages = response.totalPages;
+      this.isFetchingMore = false;
+    },
+    error: (err) => {
+      console.error('Error loading more topics:', err);
+      this.isFetchingMore = false;
+    },
+  });
+}
+
 
   postTopic() {
     if (this.topicForm.invalid) return;
@@ -298,5 +314,5 @@ export class FeedsComponent implements OnInit {
   closeModal() {
     this.isModalOpen = false;
     this.topicForm.reset();
-  }  
+  }
 }
