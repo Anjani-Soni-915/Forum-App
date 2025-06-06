@@ -152,244 +152,230 @@
             <div class="topic-content">
               <h3 [innerHTML]="topic.description"></h3>
               <div *ngIf="topic.feedType == 'poll'" style="color: black">
-                <div *ngFor="let option of topic.pollData[0].options">
-                  <p
-                    style="
-                      color: black;
-                      width: 100px;
-                      height: 100px;
-                      border: 2px solid red;
+                <app-poll [PollDataTopic] = "topic" ></app-poll>
+              </div>
+              <div class="like-comment-container">
+                <div class="like-count-wrapper">
+                  <div
+                    class="like-comment"
+                    [ngClass]="
+                      isPostLiked(topic.topicLikesData) ? 'liked-post' : ''
                     "
-                    click-stop-propagation
-                    (click)="
-                      onPollOptionClicked(
-                        $event,
-                        option.id,
-                        topic.userData.id,
-                        topic.id
-                      )
-                    "
+                    (click)="toggleLike($event, topic)"
                   >
-                    {{ option.optionText }}
-                  </p>
+                    <i class="fa-solid fa-thumbs-up"></i>
+                  </div>
+                  <span *ngIf="topic.likes">{{ topic?.likes }}</span>
+                </div>
+                <div class="like-count-wrapper">
+                  <div class="like-comment">
+                    <i class="fa-solid fa-comment"></i>
+                  </div>
+                  <span *ngIf="topic.repliesCount">{{
+                    topic?.repliesCount
+                  }}</span>
                 </div>
               </div>
             </div>
-            <div class="like-comment-container">
-              <div class="like-count-wrapper">
-                <div
-                  class="like-comment"
-                  [ngClass]="
-                    isPostLiked(topic.topicLikesData) ? 'liked-post' : ''
-                  "
-                  (click)="toggleLike($event, topic)"
-                >
-                  <i class="fa-solid fa-thumbs-up"></i>
-                </div>
-                <span *ngIf="topic.likes">{{ topic?.likes }}</span>
-              </div>
-              <div class="like-count-wrapper">
-                <div class="like-comment">
-                  <i class="fa-solid fa-comment"></i>
-                </div>
-                <span *ngIf="topic.repliesCount">{{
-                  topic?.repliesCount
-                }}</span>
-              </div>
-            </div>
-          </div>
 
-          <!-- <div class="count-values">
+            <!-- <div class="count-values">
             <div class="count-design">
               <p>Replies</p>
               <h4>{{ topic.repliesCount }}</h4>
             </div> -->
-          <!-- <div class="count-design">
+            <!-- <div class="count-design">
             <p>Views</p>
             <h4>{{ topic.views }}</h4>
           </div> -->
-          <!-- <div class="count-design">
+            <!-- <div class="count-design">
               <p>Likes</p>
               <h4>{{ topic.likes }}</h4>
             </div>
           </div> -->
-        </div>
+          </div>
 
-        <!-- Show loader when fetching more topics -->
-        <div *ngIf="isFetchingMore" class="loading-spinner">
-          <p-progress-spinner
-            strokeWidth="3"
-            fill="transparent"
-            animationDuration=".5s"
-            [style]="{ width: '40px', height: '40px' }"
-          />
+          <!-- Show loader when fetching more topics -->
+          <div *ngIf="isFetchingMore" class="loading-spinner">
+            <p-progress-spinner
+              strokeWidth="3"
+              fill="transparent"
+              animationDuration=".5s"
+              [style]="{ width: '40px', height: '40px' }"
+            />
+          </div>
         </div>
       </div>
-    </div>
 
-    <!-- Modal for Creating a Discussion -->
-    <div class="backdrop" *ngIf="isModalOpen"></div>
-    <div class="modal" *ngIf="isModalOpen">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h2>Start a Discussion</h2>
-          <button class="close-btn" (click)="closeModal()">&times;</button>
-        </div>
+      <!-- Modal for Creating a Discussion -->
+      <div class="backdrop" *ngIf="isModalOpen"></div>
+      <div class="modal" *ngIf="isModalOpen">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h2>Start a Discussion</h2>
+            <button class="close-btn" (click)="closeModal()">&times;</button>
+          </div>
 
-        <form
-          [formGroup]="topicForm"
-          (ngSubmit)="postTopic()"
-          class="modal-form"
-        >
-          <div class="modal-inputs">
-            <div class="input-wrapper post-type-wrapper">
-              <label for="type">Type <span>*</span></label>
-              <p-select
-                id="type"
-                class="type-dropdown"
-                [options]="postTypeOptions"
-                placeholder="Select Type"
-                formControlName="feedType"
-                [optionLabel]="'label'"
-                [optionValue]="'value'"
-              ></p-select>
-              <div
-                class="error-mgs"
-                *ngIf="
-                  topicForm.get('feedType')?.invalid &&
-                  (topicForm.get('feedType')?.touched ||
-                    topicForm.get('feedType')?.dirty)
-                "
-              >
-                <span *ngIf="topicForm.get('feedType')?.errors?.['required']">
-                  Type is required.
-                </span>
-              </div>
-            </div>
-            <div class="input-wrapper">
-              <label for="title">Title <span>*</span></label>
-              <input
-                id="title"
-                type="text"
-                formControlName="title"
-                placeholder="Enter Title"
-                required
-                maxlength="101"
-              />
-
-              <!-- Validation Error Messages -->
-              <div
-                class="error-mgs"
-                *ngIf="
-                  topicForm.get('title')?.invalid &&
-                  (topicForm.get('title')?.touched ||
-                    topicForm.get('title')?.dirty)
-                "
-              >
-                <span *ngIf="topicForm.get('title')?.errors?.['required']">
-                  Title is required.
-                </span>
-                <span *ngIf="topicForm.get('title')?.errors?.['minlength']">
-                  Title must be at least 5 characters.
-                </span>
-                <span *ngIf="topicForm.get('title')?.errors?.['maxlength']">
-                  Title must be at most 30 characters.
-                </span>
-              </div>
-            </div>
-
-            <div class="input-wrapper">
-              <label for="description">Description <span>*</span></label>
-              <textarea
-                id="description"
-                formControlName="description"
-                placeholder="Enter Description"
-              ></textarea>
-              <div
-                class="error-mgs"
-                *ngIf="
-                  topicForm.get('description')?.invalid &&
-                  (topicForm.get('description')?.touched ||
-                    topicForm.get('description')?.dirty)
-                "
-              >
-                <span
-                  *ngIf="topicForm.get('description')?.errors?.['required']"
-                >
-                  Description is required.
-                </span>
-              </div>
-            </div>
-
-            <div class="input-wrapper">
-              <label for="tagsInput">Tags</label>
-              <input
-                id="tagsInput"
-                type="text"
-                formControlName="tagsInput"
-                placeholder="Enter Tags (comma-separated)"
-              />
-            </div>
-            <div *ngIf="topicForm.get('feedType')?.value === 'poll'">
-              <div class="poll-label-container">
-                <label>Add options</label>
-                <div class="multiselect-switch-container">
-                  <label>Multiple Choice</label>
-                  <p-toggleswitch
-                    formControlName="isMultiple"
-                    class="multiselect-switch"
-                  />
-                </div>
-              </div>
-
-              <div formArrayName="options" class="options-container">
+          <form
+            [formGroup]="topicForm"
+            (ngSubmit)="postTopic()"
+            class="modal-form"
+          >
+            <div class="modal-inputs">
+              <div class="input-wrapper post-type-wrapper">
+                <label for="type">Type <span>*</span></label>
+                <p-select
+                  id="type"
+                  class="type-dropdown"
+                  [options]="postTypeOptions"
+                  placeholder="Select Type"
+                  formControlName="feedType"
+                  [optionLabel]="'label'"
+                  [optionValue]="'value'"
+                ></p-select>
                 <div
-                  *ngFor="let opt of getOptions().controls; let i = index"
-                  class="option-wrapper"
+                  class="error-mgs"
+                  *ngIf="
+                    topicForm.get('feedType')?.invalid &&
+                    (topicForm.get('feedType')?.touched ||
+                      topicForm.get('feedType')?.dirty)
+                  "
                 >
-                  <ng-container [formGroupName]="i">
-                    <i class="fa-solid fa-bars"></i>
-                    <div class="input-wrapper">
-                      <input
-                        type="text"
-                        formControlName="option"
-                        placeholder="Option {{ i + 1 }}"
-                      />
-                      <div
-                        class="error-mgs"
-                        *ngIf="
-                          opt?.get('option')?.invalid &&
-                          (opt?.get('option')?.touched ||
-                            opt?.get('option')?.dirty)
-                        "
-                      >
-                        <span *ngIf="opt?.get('option')?.errors?.['required']">
-                          Option is required.
-                        </span>
-                      </div>
-                    </div>
-                    <i class="pi pi-trash" (click)="removeOption(i, opt)"></i>
-                  </ng-container>
+                  <span *ngIf="topicForm.get('feedType')?.errors?.['required']">
+                    Type is required.
+                  </span>
                 </div>
               </div>
-              <div class="add-option">
-                <button class="add-option-btn" (click)="addOption()">
-                  <i class="pi pi-plus"></i>
-                </button>
+              <div class="input-wrapper">
+                <label for="title">Title <span>*</span></label>
+                <input
+                  id="title"
+                  type="text"
+                  formControlName="title"
+                  placeholder="Enter Title"
+                  required
+                  maxlength="101"
+                />
+
+                <!-- Validation Error Messages -->
+                <div
+                  class="error-mgs"
+                  *ngIf="
+                    topicForm.get('title')?.invalid &&
+                    (topicForm.get('title')?.touched ||
+                      topicForm.get('title')?.dirty)
+                  "
+                >
+                  <span *ngIf="topicForm.get('title')?.errors?.['required']">
+                    Title is required.
+                  </span>
+                  <span *ngIf="topicForm.get('title')?.errors?.['minlength']">
+                    Title must be at least 5 characters.
+                  </span>
+                  <span *ngIf="topicForm.get('title')?.errors?.['maxlength']">
+                    Title must be at most 30 characters.
+                  </span>
+                </div>
+              </div>
+
+              <div class="input-wrapper">
+                <label for="description">Description <span>*</span></label>
+                <textarea
+                  id="description"
+                  formControlName="description"
+                  placeholder="Enter Description"
+                ></textarea>
+                <div
+                  class="error-mgs"
+                  *ngIf="
+                    topicForm.get('description')?.invalid &&
+                    (topicForm.get('description')?.touched ||
+                      topicForm.get('description')?.dirty)
+                  "
+                >
+                  <span
+                    *ngIf="topicForm.get('description')?.errors?.['required']"
+                  >
+                    Description is required.
+                  </span>
+                </div>
+              </div>
+
+              <div class="input-wrapper">
+                <label for="tagsInput">Tags</label>
+                <input
+                  id="tagsInput"
+                  type="text"
+                  formControlName="tagsInput"
+                  placeholder="Enter Tags (comma-separated)"
+                />
+              </div>
+              <div *ngIf="topicForm.get('feedType')?.value === 'poll'">
+                <div class="poll-label-container">
+                  <label>Add options</label>
+                  <div class="multiselect-switch-container">
+                    <label>Multiple Choice</label>
+                    <p-toggleswitch
+                      formControlName="isMultiple"
+                      class="multiselect-switch"
+                    />
+                  </div>
+                </div>
+
+                <div formArrayName="options" class="options-container">
+                  <div
+                    *ngFor="let opt of getOptions().controls; let i = index"
+                    class="option-wrapper"
+                  >
+                    <ng-container [formGroupName]="i">
+                      <i class="fa-solid fa-bars"></i>
+                      <div class="input-wrapper">
+                        <input
+                          type="text"
+                          formControlName="option"
+                          placeholder="Option {{ i + 1 }}"
+                        />
+                        <div
+                          class="error-mgs"
+                          *ngIf="
+                            opt?.get('option')?.invalid &&
+                            (opt?.get('option')?.touched ||
+                              opt?.get('option')?.dirty)
+                          "
+                        >
+                          <span
+                            *ngIf="opt?.get('option')?.errors?.['required']"
+                          >
+                            Option is required.
+                          </span>
+                        </div>
+                      </div>
+                      <i class="pi pi-trash" (click)="removeOption(i, opt)"></i>
+                    </ng-container>
+                  </div>
+                </div>
+                <div class="add-option">
+                  <button class="add-option-btn" (click)="addOption()">
+                    <i class="pi pi-plus"></i>
+                  </button>
+                </div>
               </div>
             </div>
-          </div>
-          <div class="input-wrapper anonymous-checkbox">
-            <input type="checkbox" formControlName="isAnonymous" />
-            <label> Post anonymously </label>
-          </div>
+            <div class="input-wrapper anonymous-checkbox">
+              <input type="checkbox" formControlName="isAnonymous" />
+              <label> Post anonymously </label>
+            </div>
 
-          <div class="modal-footer">
-            <button class="submit" type="submit" [disabled]="topicForm.invalid">
-              Post
-            </button>
-          </div>
-        </form>
+            <div class="modal-footer">
+              <button
+                class="submit"
+                type="submit"
+                [disabled]="topicForm.invalid"
+              >
+                Post
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   </div>
