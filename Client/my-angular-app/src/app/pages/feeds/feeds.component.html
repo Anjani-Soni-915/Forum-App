@@ -122,7 +122,13 @@
         >
           <div class="main-topic-cont">
             <div class="topic-title">
-              <h2>{{ topic.title }}</h2>
+              <h2
+                [ngStyle]="{
+                  'margin-bottom': !topic?.tags?.length ? '20px' : '2px'
+                }"
+              >
+                {{ topic.title }}
+              </h2>
             </div>
             <div *ngIf="topic.tags && topic.tags.length" class="tags-container">
               <div class="tag-wrapper" *ngFor="let tag of topic.tags">
@@ -152,7 +158,7 @@
             <div class="topic-content">
               <h3 [innerHTML]="topic.description"></h3>
               <div *ngIf="topic.feedType == 'poll'" style="color: black">
-                <app-poll [PollDataTopic] = "topic" ></app-poll>
+                <app-poll [PollDataTopic]="topic"></app-poll>
               </div>
               <div class="like-comment-container">
                 <div class="like-count-wrapper">
@@ -231,6 +237,7 @@
                   formControlName="feedType"
                   [optionLabel]="'label'"
                   [optionValue]="'value'"
+                  [panelStyleClass]="'type-dropdown-panel'"
                 ></p-select>
                 <div
                   class="error-mgs"
@@ -354,15 +361,19 @@
                   </div>
                 </div>
                 <div class="add-option">
-                  <button class="add-option-btn" (click)="addOption()">
+                  <div class="add-option-btn" (click)="addOption()">
                     <i class="pi pi-plus"></i>
-                  </button>
+                  </div>
                 </div>
               </div>
             </div>
             <div class="input-wrapper anonymous-checkbox">
-              <input type="checkbox" formControlName="isAnonymous" />
-              <label> Post anonymously </label>
+              <p-checkbox
+                formControlName="isAnonymous"
+                [binary]="true"
+                inputId="anonymous"
+              />
+              <label for="anonymous"> Post anonymously </label>
             </div>
 
             <div class="modal-footer">

@@ -17,7 +17,7 @@ export class PollComponent implements OnInit {
   hasUserVoted: boolean = false;
   votedOptionId: number | null = null;
   totalVotes: number = 0;
-  votePercentages: { [optionId: number]: string } = {};
+  votePercentages: { [optionId: number]: number } = {};
 
   constructor(private pollService: PollService) {}
 
@@ -26,25 +26,28 @@ export class PollComponent implements OnInit {
   }
 
   prepareDataForPoll(): void {
-    const userId =  Number(localStorage.getItem('userId'));
-    console.log(userId)
+    const userId = Number(localStorage.getItem('userId'));
+    console.log(userId);
     const voteRecord = this.PollDataTopic.pollVoteData?.find(
       (vote) => vote.userId === userId
     );
-    console.log(voteRecord)
+    console.log(voteRecord);
     if (voteRecord) {
       this.hasUserVoted = true;
       this.votedOptionId = voteRecord.pollOptionId;
     }
 
     const options = this.PollDataTopic.pollData[0].options;
-    this.totalVotes = options.reduce((sum, option) => sum + option.voteCount, 0);
-    console.log(this.totalVotes)
+    this.totalVotes = options.reduce(
+      (sum, option) => sum + option.voteCount,
+      0
+    );
+    console.log(this.totalVotes);
     options.forEach((option) => {
       const percentage =
         this.totalVotes > 0
-          ? ((option.voteCount / this.totalVotes) * 100).toFixed(1) + '%'
-          : '0%';
+          ? Number(((option.voteCount / this.totalVotes) * 100).toFixed(1))
+          : 0;
       this.votePercentages[option.id] = percentage;
     });
   }
@@ -68,7 +71,9 @@ export class PollComponent implements OnInit {
         this.hasUserVoted = true;
 
         // Update local vote count manually for now
-        const option = this.PollDataTopic.pollData[0].options.find(o => o.id === pollOptionId);
+        const option = this.PollDataTopic.pollData[0].options.find(
+          (o) => o.id === pollOptionId
+        );
         if (option) option.voteCount++;
 
         this.prepareDataForPoll(); // Recalculate totals and percentages
@@ -77,5 +82,9 @@ export class PollComponent implements OnInit {
         console.error('Error posting vote:', err);
       },
     });
+  }
+
+  getPollPercentage(option: any) {
+    return this.votePercentages[option.id] + '%';
   }
 }

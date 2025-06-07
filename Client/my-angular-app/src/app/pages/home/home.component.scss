@@ -148,11 +148,34 @@
     //   font-size: 14px;
     //   color: var(--grey-color);
     // }
- 
   }
-   .anonymous-checkbox{
-      color: black;
+  .anonymous-checkbox {
+    color: var(--input-color);
+    ::ng-deep {
+      .p-checkbox {
+        .p-checkbox-box {
+          background-color: #fff;
+          width: 16px;
+          height: 16px;
+          border: 1px solid var(--input-color);
+        }
+      }
+      .p-checkbox-checked {
+        .p-checkbox-box {
+          background-color: var(--primary-color);
+          border: 1px solid var(--primary-color);
+          .p-checkbox-icon {
+            color: #fff;
+          }
+        }
+      }
     }
+    label {
+      font-size: 14px;
+      user-select: none;
+      cursor: pointer;
+    }
+  }
   .input-wrapper {
     .error-mgs {
       span {
@@ -174,10 +197,12 @@
             width: 30px;
             height: 16px;
             .p-toggleswitch-slider {
+              background-color: #cbd5e1;
               .p-toggleswitch-handle {
                 height: 12px;
                 width: 12px;
                 top: 12px;
+                background-color: #fff;
               }
             }
           }
@@ -219,6 +244,8 @@
       border: 1px solid #989898;
       cursor: pointer;
       margin-bottom: 6px;
+      width: fit-content;
+      line-height: 1;
       i {
         color: var(--input-color);
         font-size: 14px;
@@ -283,6 +310,20 @@
       font-size: 16px;
       cursor: not-allowed;
     }
+  }
+}
+
+::ng-deep .p-select-overlay {
+  background-color: #fff !important;
+  border: 1px solid #e2e8f0 !important;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px -1px !important;
+  .p-select-option {
+    color: #334155;
+    background-color: #fff;
+  }
+  .p-select-option:not(.p-select-option-selected):not(.p-disabled).p-focus {
+    background-color: #f1f5f9;
+    color: #334155;
   }
 }
 

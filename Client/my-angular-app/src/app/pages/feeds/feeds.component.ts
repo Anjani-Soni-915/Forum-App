@@ -22,6 +22,7 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { LikeTopicService } from '../../shared/services/likeTopic.service';
 import { SelectModule } from 'primeng/select';
 import { ToggleSwitchModule } from 'primeng/toggleswitch';
+import { CheckboxModule } from 'primeng/checkbox';
 import { PollService } from '../../shared/services/poll.service';
 import { PollVoteInput } from '../../shared/interface/poll.interface';
 import { PollComponent } from '../../components/poll/poll.component';
@@ -35,6 +36,7 @@ import { PollComponent } from '../../components/poll/poll.component';
     ProgressSpinnerModule,
     SelectModule,
     ToggleSwitchModule,
+    CheckboxModule,
     PollComponent,
   ],
   templateUrl: './feeds.component.html',
@@ -113,12 +115,12 @@ export class FeedsComponent implements OnInit {
     this.topicService.fetchTopics(this.currentPage, this.pageSize).subscribe({
       next: (response: PaginatedTopics) => {
         this.topics = response.topics;
-              // Move topic with id 16 to the front (only once)
-      const topic16Index = this.topics.findIndex(topic => topic.id === 16);
-      if (topic16Index > 0) {
-        const [topic16] = this.topics.splice(topic16Index, 1);
-        this.topics.unshift(topic16);
-      }
+        // Move topic with id 16 to the front (only once)
+        const topic16Index = this.topics.findIndex((topic) => topic.id === 16);
+        if (topic16Index > 0) {
+          const [topic16] = this.topics.splice(topic16Index, 1);
+          this.topics.unshift(topic16);
+        }
         this.totalPages = response.totalPages;
         this.loading = false;
       },
@@ -204,40 +206,39 @@ export class FeedsComponent implements OnInit {
     }
   }
 
-loadMoreTopics() {
-  if (this.isFetchingMore || this.currentPage >= this.totalPages) return;
+  loadMoreTopics() {
+    if (this.isFetchingMore || this.currentPage >= this.totalPages) return;
 
-  this.isFetchingMore = true;
-  this.currentPage++;
+    this.isFetchingMore = true;
+    this.currentPage++;
 
-  this.topicService.fetchTopics(this.currentPage, this.pageSize).subscribe({
-    next: (response: PaginatedTopics) => {
-      if (response.topics.length === 0) {
-        console.warn('No more topics found!');
+    this.topicService.fetchTopics(this.currentPage, this.pageSize).subscribe({
+      next: (response: PaginatedTopics) => {
+        if (response.topics.length === 0) {
+          console.warn('No more topics found!');
+          this.isFetchingMore = false;
+          return;
+        }
+
+        // Append new topics
+        this.topics = [...this.topics, ...response.topics];
+
+        // Move topic with id 16 to the front (only once)
+        const topic16Index = this.topics.findIndex((topic) => topic.id === 16);
+        if (topic16Index > 0) {
+          const [topic16] = this.topics.splice(topic16Index, 1);
+          this.topics.unshift(topic16);
+        }
+
+        this.totalPages = response.totalPages;
         this.isFetchingMore = false;
-        return;
-      }
-
-      // Append new topics
-      this.topics = [...this.topics, ...response.topics];
-
-      // Move topic with id 16 to the front (only once)
-      const topic16Index = this.topics.findIndex(topic => topic.id === 16);
-      if (topic16Index > 0) {
-        const [topic16] = this.topics.splice(topic16Index, 1);
-        this.topics.unshift(topic16);
-      }
-
-      this.totalPages = response.totalPages;
-      this.isFetchingMore = false;
-    },
-    error: (err) => {
-      console.error('Error loading more topics:', err);
-      this.isFetchingMore = false;
-    },
-  });
-}
-
+      },
+      error: (err) => {
+        console.error('Error loading more topics:', err);
+        this.isFetchingMore = false;
+      },
+    });
+  }
 
   postTopic() {
     if (this.topicForm.invalid) return;
